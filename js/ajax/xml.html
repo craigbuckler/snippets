@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed: client-side DOM handler</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+<style type="text/css">
+/* <![CDATA[ */
+div#xmldoc
+{
+	padding: 6px;
+	margin: 0 0 0 4em;
+	background-color: #eee;
+	border: 1px solid #000;
+}
+/* ]]> */
+</style>
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/webservice.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/xml.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: XML handler</h1>
+
+<p>Client-side cross-browser XML manipulation. Note that this is closely tied to the WebService and DOM objects.</p>
+
+<div id="xmldoc"></div>
+
+
+<noscript>
+<p>Please use a JavaScript-enabled browser.</p>
+</noscript>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", XMLtesting);
+
+var xml = null;
+var xsl = null;
+
+function XMLtesting() {
+
+	// fetch XML
+	var wsXML = new WebService("resources/test.xml", "GET");
+	wsXML.Name = "xml";
+	wsXML.TimeOut = 10000;
+	wsXML.OnComplete = XMLcheck;
+	wsXML.ErrorFunction(XMLerror);
+	wsXML.Call();
+
+	// fetch XSL
+	var wsXSL = new WebService("resources/test.xsl", "GET");
+	wsXSL.Name = "xsl";
+	wsXSL.TimeOut = 10000;
+	wsXSL.OnComplete = XMLcheck;
+	wsXSL.ErrorFunction(XMLerror);
+	wsXSL.Call();
+}
+
+
+// store the returned document
+function XMLcheck(WS) {
+	if (WS.Name == "xml") xml = WS.ResponseXML; else xsl = WS.ResponseXML;
+
+	// if XML and XSL has been loaded
+	if (xml && xsl) {
+		var transdoc = XML.Transform(xml, xsl);
+		if (transdoc) XML.Copy(transdoc.documentElement, DOM.Id("xmldoc")); // copy XML to document
+		else DOM.SetText(DOM.Id("xmldoc"), "Transformation failed.");
+	}
+}
+
+
+// XML/XSL load error
+function XMLerror(WS) {
+	msg = "An error occurred when attempting to load the "+WS.Name.toUpperCase()+".\n";
+	msg += WS.ResponseText;
+	alert(msg);
+}
+// ]]>
+</script>
+
+<h2>XML class (static)</h2>
+
+<p>An object that provides XML document manipulation functions. Note that XSL transformations are not supported in Opera, so this object should be used with care.</p>
+
+<h3>Public properties</h3>
+<dl>
+<dt>XML.ElementNode</dt> <dd>the value of an element node (1)</dd>
+<dt>XML.AttributeNode</dt> <dd>the value of an attribute node (2)</dd>
+<dt>XML.TextNode</dt> <dd>the value of a text node (3)</dd>
+<dt>XML.CommentNode</dt> <dd>the value of an attribute node (8)</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt class="wide">XML.New()</dt> <dd>create a new XML document</dd>
+<dt class="wide">XML.Transform(XMLdocument xml, XMLdocument xsl)</dt> <dd>returns result of XML/XSL transformation (not supported in Opera)</dd>
+<dt class="wide">XML.Copy(node from, node to)</dt> <dd>copy the children of node 'from' to children of node 'to'. Unlike DOM.Copy, this works with XML documents</dd>
+<dt class="wide">XML.RemoveChildren(node)</dt> <dd>remove all node children</dd>
+</dl>
+
+<h3>Example</h3>
+<pre>
+function XMLtest() {
+	// use WebService object to fetch XML
+	var wsXML = new WebService("resources/test.xml", "GET");
+	wsXML.Name = "xml";
+	wsXML.OnComplete = XMLcheck;
+	wsXML.Call();
+
+	// use WebService object to fetch XSL
+	var wsXSL = new WebService("resources/test.xsl", "GET");
+	wsXSL.Name = "xsl";
+	wsXSL.OnComplete = XMLcheck;
+	wsXSL.Call();
+}
+
+function XMLcheck(WS) {
+	if (WS.Name == "xml") xml = WS.ResponseXML; else xsl = WS.ResponseXML;
+	if (xml &amp;&amp; xsl) {
+		var transdoc = XML.Transform(xml, xsl);
+		if (transdoc) XML.Copy(transdoc.documentElement, DOM.Id("xmldoc")); // copy transformed XML to document
+		else DOM.SetText(DOM.Id("xmldoc"), "Transformation failed.");
+	}
+}
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+/* container CSS */
+.econtainer
+{
+	display: block;
+	position: relative;
+	padding: 0;
+	margin: 0;
+	border: 0 none;
+	overflow: hidden;
+}
+
+.econtained
+{
+	position: absolute !important;
+	top: auto;
+	bottom: auto;
+	left: auto;
+	right: auto;
+	margin: 0 !important;
+}

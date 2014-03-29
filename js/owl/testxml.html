@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_xml.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_innerhtml.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+</head>
+<body>
+
+<h1>owl testbed</h1>
+
+<div id="test">
+	<p id="testinner">element 1</p>
+	<p><strong class="class">test</strong></p>
+</div>
+
+<div title="testy test">
+	<p><span>element 2</span></p>
+	<p><a id="link" href="http://www.optimalworks.net/" class="class">link</a></p>
+</div>
+
+<div id="test2">
+<p class="class">This is div#test2</p>
+</div>
+
+<form id="testform" action="" method="get">
+<div>
+<input type="text" id="input1" name="input1" />
+<input type="submit" value="go" />
+</div>
+</form>
+
+<p><a id="testlink" href="#">test</a></p>
+
+<div id="test3"></div>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+
+	var xmldoc = owl.Xml.Load("<Document><Title>This is the document title</Title><Author>Craig Buckler</Author><para>This is some XML that has been transformed using XSLT.</para><para>If you can read this, the transformation was successful.</para></Document>");
+	
+	var xsldoc = owl.Xml.Load('<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:output method="html" indent="no" /><xsl:variable name="comment"><![CDATA[<!-- new content -->]]></xsl:variable><xsl:template match="/"><div><xsl:value-of select="$comment" disable-output-escaping="yes" /><xsl:apply-templates /></div></xsl:template><xsl:template match="Title"><h1><xsl:value-of select="." /></h1></xsl:template><xsl:template match="Author"><h2><xsl:value-of select="." /></h2></xsl:template><xsl:template match="para"><p class="normal"><xsl:value-of select="." /></p></xsl:template></xsl:stylesheet>');
+	
+	var trans = owl.Xml.Transform(xmldoc, xsldoc);
+	var e = owl.Dom.Get("#test3")[0];
+	if (trans) owl.Xml.Copy(trans.documentElement, e);
+	
+	owl.innerHTML(owl.Dom.Get("div"), "<p><strong>innerHTML!</strong></p><p>Wahay!</p>", false);
+	
+	
+/*
+	var d = owl.Xml.Load("<div><p>this is a test!</p></div>");
+	var e = owl.Dom.Get("#test3")[0];
+	alert(d.documentElement.nodeName);
+	owl.Xml.Copy(d.documentElement, e);
+	
+	var g = owl.Dom.Get("p", d.documentElement);
+	alert(owl.Dom.Text(g[0]));
+*/
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

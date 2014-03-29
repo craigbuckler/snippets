@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<link type="text/css" rel="stylesheet" media="all" href="styles/assess.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_image.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_xml.js"></script>
+<script type="text/javascript" src="script/owl_innerhtml.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_effect.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_overlay.js"></script>
+<script type="text/javascript" src="script/owl_assess.js"></script>
+</head>
+<body>
+
+<h1>owl Q&amp;A testbed</h1>
+
+<div class="assess">
+
+<ol>
+<li><span>Are your people delivering what the business needs?</span></li>
+<li><span>Do you have the right people for the future growth of your business?</span></li>
+<li><span>Do the people that you have ensure that you retain a competitive edge?</span></li>
+<li><span>Are your most valuable people being developed fast enough?</span></li>
+<li><span>Are you developing high performance?</span></li>
+<li><span>Are your managers supporting and developing your strongest people?</span></li>
+<li><span>Do you have the internal flexibility to cope with constantly changing demands?</span></li>
+</ol>
+
+<p class="ask"></p>
+
+<ul>
+	<li><a href="#1" class="tick" title="answer yes"><strong>yes</strong></a></li>
+	<li><a href="#0" class="cross" title="answer no"><strong>no</strong></a></li>
+</ul>
+
+<p>If you answered "no"; to one or more questions, we can guarantee that your business will benefit from using this.</p>
+<p class="score6">Almost there - but not quite!</p>
+<p class="score7">If you answered "yes" to everything, then you do not need this service.</p>
+
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+	owl.Effect.FadeHover(owl.Dom.Get("ul a"));
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

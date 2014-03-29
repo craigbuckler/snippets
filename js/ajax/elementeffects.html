@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed: element effects</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/elementeffects.js"></script>
+<style type="text/css">
+/* <![CDATA[ */
+ol#colopts
+{
+	width: 99%;
+	padding: 0;
+	margin: 0.3em;
+	list-style-type: none;
+	overflow: auto;
+}
+
+.pointer { font-size: 0.85em; color: #00c; cursor: pointer; }
+
+ol#colopts li { float: left; width: 4em; text-align: center; }
+ol#colopts li { border-left: 1px solid #999; }
+ol#colopts li#colopen { border-left-style: none; }
+
+.elementcontainer
+{
+	display: none;
+}
+
+div.collapsable
+{
+	width: 15em;
+	text-align: center;
+	padding: 0.5em;
+	margin: 0.5em 1em 1em 1em;
+	background-color: #eee;
+	border: 2px solid #666;
+}
+
+p#collapsableclose
+{
+	font-size: 0.85em;
+	text-align: right;
+	margin-bottom: 0;
+	color: #00c;
+	cursor: pointer;
+}
+/* ]]> */
+</style>
+
+</head>
+<body>
+
+<h1>JavaScript testbed: element effects library</h1>
+
+<p>Provides cross-browser collapse and expand effects on any element.</p>
+
+<ol id="colopts">
+	<li id="colopen" class="pointer">open</li>
+	<li id="colclose" class="pointer">close</li>
+	<li id="coltoggle" class="pointer">toggle</li>
+</ol>
+
+<div id="collapsable1" class="collapsable">
+	<p>This element can be collapsed and re-opened if necessary.</p>
+	<p>It can contain any number of sub-elements and will size itself automatically.</p>
+	<p id="collapsableclose">close now</p>
+</div>
+
+<p id="col2toggle" class="pointer">toggle the second box</p>
+
+<div class="elementcontainer">
+
+	<div id="collapsable2" class="collapsable">
+		<p>This is another box that can be expanded or collapsed.</p>
+		<p>It has been set to start collapsed.</p>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", Main);
+
+// startup
+function Main() {
+
+	// element effect 1
+	var ee = new ElementEffect("collapsable1");
+	ee.HideEffects = [new ElementEffectFade(), new ElementEffectScroll(false, true, true, true)];
+	ee.ShowEffects = [new ElementEffectFade(), new ElementEffectScroll(false, true, true, true)];
+	
+	// element effect 2
+	var ee1 = new ElementEffect("collapsable2");
+	ee1.HideEffects = new ElementEffectScroll(true, false, false, true);
+	ee1.ShowEffects = new ElementEffectScroll(true, false, false, true);
+	
+	// element handlers
+	new Event(DOM.Id("colopen"), "click", function(evt) { ee.Show(); });
+	new Event(DOM.Id("colclose"), "click", function(evt) { ee.Hide(); });
+	new Event(DOM.Id("coltoggle"), "click", function(evt) { ee.Toggle(); });
+	new Event(DOM.Id("collapsableclose"), "click", function(evt) { ee.Hide(); });
+
+	new Event(DOM.Id("col2toggle"), "click", function(evt) { ee1.Toggle(); });
+}
+// ]]>
+</script>
+
+<h2>ElementEffect class</h2>
+<p>Opens or closes an element using one or more animation effects.</p>
+
+<h3>Usage notes</h3>
+<p>Create and style any block element, then assign it to an ElementEffect class. By default, a parent container will be created that is used to handle the animation. However, this is not necessary if you create a parent element with the class "elementcontainer" (which can be set to display: none or block).</p>
+
+<p>ElementEffects does not work in IE5.0 and below. IE5.5 and above are supported. Some effects may cause graphical glitches in Opera.</p>
+
+<h3>Dependencies</h3>
+<ul>
+<li>misc.js</li>
+<li>dom.js</li>
+<li>graphic.js</li>
+</ul>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>element</dt> <dd>the element node to be animated (or a string containing a node ID)</dd>
+</dl>
+
+<h3>Public properties</h3>
+<dl>
+<dt>.Element</dt> <dd>the element being animated</dd>
+<dt>.Container</dt> <dd>the element parent used within animation (will be created if necessary)</dd>
+<dt>.AnimationActive</dt> <dd>true if show/hide animation is currently active</dd>
+<dt>.FrameTime</dt> <dd>the time, in milliseconds, between animation frames (default 30)</dd>
+<dt>.HideTime</dt> <dd>the time, in milliseconds, for the hide animation (default 300)</dd>
+<dt>.HideEffect</dt> <dd>the <a href="#animationobject">element animation object</a> or an array of animation objects used for closing</dd>
+<dt>.HideEvent</dt> <dd>the function run when the element is closed. It is passed this ElementEffect object.</dd>
+<dt>.ShowTime</dt> <dd>the time, in milliseconds, for the show animation (default 300)</dd>
+<dt>.ShowEffect</dt> <dd>the <a href="#animationobject">element animation object</a> or an array of animation objects used for opening</dd>
+<dt>.ShowEvent</dt> <dd>the function run when the element is opened. It is passed this ElementEffect object.</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt>.Show()</dt> <dd>open any (collapsed) element.</dd>
+<dt>.Hide()</dt> <dd>close any (opened) element.</dd>
+<dt>.Toggle()</dt> <dd>open or close an element, depending on its current state.</dd>
+</dl>
+
+<h3 id="animationobject">Element animation objects</h3>
+<p>Several objects are provided to implement element animations. These can be assigned to the ElementEffect object's .HideEffect and .ShowEffect properties as a single object or an array of objects.</p>
+<p>Further effects can be added by creating objects with Reset(container, element, show), Show(container, element, frame) and Hide(container, element, frame) prototype functions. These are passed the outer container node, the element node, show (true for opening, false for closing) and the animation frame number. The Show() and Hide() functions should return true if they end before frame reaches zero.</p>
+<dl>
+<dt>ElementEffectSimple()</dt> <dd>a simple effect that just hides or shows the element (the default)</dd>
+<dt>ElementEffectFade()</dt> <dd>fades the element in or out</dd>
+<dt>ElementEffectScroll(hscroll, vscroll, fixleft, fixtop)</dt> <dd>a scroll effect. Parameters: hscroll - true for horizontal scrolling, vscroll - true for vertical scrolling, fixleft - true to fix the left of the element on the container (false for right), and fixtop - true to fix the top of the element on the container (false for bottom).</dd>
+</dl>
+
+<h3>Example:</h3>
+<pre>
+&lt;div id="collapsable1"&gt;
+	&lt;p&gt;This element can be collapsed and re-opened if necessary.&lt;/p&gt;
+	&lt;p&gt;It can contain any number of sub-elements and will size itself automatically.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- element container is already defined, so it can be set to "display:none" if necessary --&gt;
+&lt;div class="elementcontainer" style="display:none;"&gt;
+	&lt;div id="collapsable2"&gt;
+		&lt;p&gt;This is another box that can be expanded or collapsed.&lt;/p&gt;
+		&lt;p&gt;It has been set to start collapsed.&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href="#" onclick="ee2.Toggle()"&gt;toggle element 2&lt;/a&gt;&lt;/p&gt;
+</pre>
+
+<pre>
+// element effect 1
+var ee1 = new ElementEffect("collapsable1");
+ee1.HideEffects = [new ElementEffectFade(), new ElementEffectScroll(false, true, true, true)]; // Array of effects
+ee1.ShowEffects = [new ElementEffectFade(), new ElementEffectScroll(false, true, true, true)];
+ee1.Hide();
+
+// element effect 2
+var ee2 = new ElementEffect("collapsable2");
+ee2.HideEffects = new ElementEffectScroll(true, false, false, true);
+ee2.ShowEffects = new ElementEffectScroll(true, false, false, true);
+</pre>
+
+</body>
+</html>

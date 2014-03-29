@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed: graphic effects library</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<style type="text/css">
+/* <![CDATA[ */
+div.elements div
+{
+	width: 60%;
+	font-size: 1.2em;
+	font-weight: bold;
+	text-align: center;
+	padding: 0.8em 1em;
+	margin: 1em auto;
+	color: #000;
+	background: #ccc;
+	border: 1px solid #000;
+	cursor: pointer;
+}
+
+ol#colopts
+{
+	width: 100%;
+	padding: 0;
+	margin: 0.3em;
+	list-style-type: none;
+	overflow: auto;
+}
+
+ol#colopts li { float: left; width: 4em; font-size: 0.85em; text-align: center; color: #00c; cursor: pointer; }
+ol#colopts li#colclose { border-left: 1px solid #999; }
+
+div#collapsable
+{
+	width: 15em;
+	text-align: center;
+	padding: 0.5em;
+	background-color: #eee;
+	border: 2px solid #666;
+}
+
+p#collapsableclose
+{
+	font-size: 0.85em;
+	text-align: right;
+	margin-bottom: 0;
+	color: #00c;
+	cursor: pointer;
+}
+/* ]]> */
+</style>
+
+</head>
+<body>
+
+<h1>JavaScript testbed: graphic effects library</h1>
+
+<p>Provides cross-browser graphic effects.</p>
+<p>The following elements will be moved to within the top 10-20% of the browser viewport when clicked (where possible).</p>
+
+<div class="elements">
+	<div id="element1">element 1</div>
+	<div id="element2">element 2</div>
+	<div id="element3">element 3</div>
+	<div id="element4">element 4</div>
+	<div id="element5">element 5</div>
+	<div id="element6">element 6</div>
+	<div id="element7">element 7</div>
+	<div id="element8">element 8</div>
+	<div id="element9">element 9</div>
+	<div id="element10">element 10</div>
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", Main);
+
+// startup
+function Main() {
+	
+	// handlers for viewport move
+	var element;
+	for (var e = 1; e <= 10; e++) {
+		element = DOM.Id("element"+e);
+		element.title = "reposition element "+e;
+		Graphic.Opacity(element, e*10);
+		new Event(element, "click", function(evt) { Graphic.PositionViewport(evt.Raised.Element, 10, 20, false); });
+	}
+
+}
+// ]]>
+</script>
+
+<h2>graphic.js</h2>
+<p>A static Graphic class is provided in graphic.js.</p>
+
+<h3>Graphic.Opacity(element, opacity, autohide)</h3>
+<p>Changes the opacity/transparency of an HTML element. Pass a node/ID string, the opacity value (0 = fully transparent to 100 = fully opaque). If autohide is set to true, the element will automatically have its visibility set to hidden if the opacity is 0.</p>
+
+<p>Note that Opera and IE5.5 and below do not support transparent elements.</p>
+
+
+<h3>Dynamic CSS classes</h3>
+<p>The following implement CSS style-changing methods:</p>
+
+<ul>
+<li><strong>Graphic.ClassApply(element, CSSclass)</strong><br />
+apply a CSS class to an element specified by node or ID string</li>
+
+<li><strong>Graphic.ClassRemove(element, CSSclass)</strong><br />
+remove a CSS class from an element specified by node or ID string</li>
+</ul>
+
+
+<h3>Browser viewport handling</h3>
+<p>The following return information and handle the browser viewport (visible area of the page within the browser):</p>
+
+<ul>
+<li><strong>Graphic.ViewportWidth()</strong><br />
+returns the browser viewport width</li>
+
+<li><strong>Graphic.ViewportHeight()</strong><br />
+returns the browser viewport height</li>
+
+<li><strong>Graphic.ViewportScrollX()</strong><br />
+returns the number of pixels horizontally scrolled from the left edge</li>
+
+<li><strong>Graphic.ViewportScrollY()</strong><br />
+returns the number of pixels horizontally scrolled from the top edge</li>
+
+<li><strong>Graphic.PositionViewport(element, viewtop, viewbottom, absolute)</strong><br />
+Where possible, the page will be vertically scrolled so the top of the element is positioned within viewtop% and viewbottom% of the browser window. If absolute is set as true, viewtop and viewbottom are assumed to be pixel amounts. For example, Graphic.PositionViewport(e, 0, 25) will ensure element e appears in the top quarter of the browser window. Graphic.PositionViewport(e, 0, 100, true) will ensure element e appears in the top 100 pixels of the browser window.</li>
+</ul>
+
+
+<h3>Graphic.ComputedStyle(element, styleName)</h3>
+<p>Returns the computed style for an element. Pass a node/ID string and a style name, i.e. width, padding-left, background-color, etc. This works cross-browser, but the returned values are not necessarily consistent.</p>
+
+
+<h3>Internet Explorer quirk handling</h3>
+<p>The following methods can be used to handle IE quirks.</p>
+
+<ul>
+<li><strong>Graphic.IFrameRequired()</strong><br />
+returns true if this is IE5.5 or IE6.0 and the page contains selects, iframes or applets. If true is returned, a transparent iframe should be positioned below any moved page element. This will allow the element to appear on top of all content.</li>
+
+<li><strong>Graphic.HideElements(activenode, xpos, ypos, width, height)</strong><br />
+The iframe trick will not work in IE5.0, so select, iframe, or applet elements must be hidden if they are under the box defined. When this method is called, all previously hidden elements are made visible. The method then hides the appropriate elements, with the exception of activenode (if specified).</li>
+</ul>
+
+</body>
+</html>

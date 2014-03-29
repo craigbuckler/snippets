@@ -1,0 +1,55 @@
+/* owl context menu control CSS */
+
+.contextmenu
+{
+	position: relative;
+	display: inline;
+	float: left;
+	cursor: pointer;
+	outline: 0 none;
+	z-index: 0;
+}
+
+.contextmenu.hover
+{
+	background-color: #ccc;
+}
+
+.contextmenu ul
+{
+	display: none;
+}
+
+ul.context
+{
+	position: absolute;
+	visibility: hidden;
+	float: left;
+	width: 8em;
+	left: 100%;
+	top: 100%;
+	list-style-type: none;
+	margin: 0;
+	background-color: #666;
+	z-index: 1;
+}
+
+ul.context li
+{
+	margin: 1px;
+}
+
+ul.context li a
+{
+	display: block;
+	height: 1%;
+	padding: 1px 4px;
+	text-decoration: none;
+	color: #fff;
+}
+
+ul.context li a:hover, ul.context li a:focus
+{
+	background-color: #000;
+}
+

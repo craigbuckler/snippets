@@ -1,0 +1,293 @@
+/* form styling */
+*
+{
+	font-family: arial, sans-serif;
+}
+
+html
+{
+	padding: 0;
+	margin: 0;
+	border-style: none;
+}
+
+body
+{
+	font-size: small;
+	padding: 10px;
+	margin: 0px;
+}
+
+h1
+{
+	font-size: 1.4em;
+	padding: 0;
+	margin: 0 0 0.6em 0;
+	border-bottom: 2px solid #000;
+}
+
+h2
+{
+	font-size: 1.2em;
+	padding: 0;
+	margin: 2em 0 0.6em 0;
+	border-bottom: 1px solid #000;
+}
+
+h3
+{
+	font-size: 1em;
+	padding: 0;
+	margin: 1em 0 0 0;
+	color: #333;
+}
+
+p
+{
+	font-size: 1em;
+	padding: 0;
+	margin: 0 0 1em 0;
+}
+
+ul, ol
+{
+	padding: 0;
+	margin: 1em 0 2em 4em;
+}
+
+li
+{
+	margin: 0 0 1em 0;
+}
+
+dl
+{
+	padding: 0;
+	margin: 0.5em 0 2em 4em;
+}
+
+dt
+{
+	clear: both;
+	float: left;
+	width: 15em;
+	font-weight: bold;
+	padding: 0;
+	margin: 0 0 0.5em 0;
+	color: #369;
+}
+
+dl.wide dt, dt.wide
+{
+	width: 28em;
+}
+
+dd
+{
+	padding: 0;
+	margin: 0 0 0.5em 0;
+	color: #666;
+}
+
+pre
+{
+	width: 90%;
+	font-family: monospace;
+	font-size: 1em;
+	padding: 3px;
+	margin: 1em 0 2em auto;
+	overflow: auto;
+	border: 1px solid #999;
+}
+
+/* ############################### FORM styles ############################### */
+
+fieldset
+{
+	width: 75%;
+	padding: 1em;
+	margin: 0 auto;
+	border: 1px solid #7f9db9;
+}
+
+fieldset legend
+{
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #7f9db9;
+	padding: 0 0.4em 0 0.2em;
+	margin: 0;
+	border: 1px solid #7f9db9;
+	cursor: help;
+}
+
+input, select, textarea, button
+{
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	text-align: left;
+	padding: 1px 2px;
+	margin: 0;
+	color: #000;
+	background-color: #fff;
+	border: 1px solid #7f9db9;
+	cursor: help;
+}
+
+div.button input
+{
+	float: right;
+	width: 8em;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px 1px 3px 1px;
+	color: #fff;
+	background-color: #7f9db9;
+	border: 2px outset #7f9db9;
+	cursor: pointer;
+}
+
+div.button input:hover
+{
+	background-color: #7093b1;
+	border: 2px inset #7f9db9;
+}
+
+.checkbox, .radio, .inputfirst input { width: auto; border-style: none; }
+.inputiny { width: 4ex; }
+.inputsml { width: 12ex; }
+.inputmed { width: 22ex; }
+.inputbig { width: 32ex; }
+.validDIGIT, .validNUMBER, .validCURRENCY, .validPERCENT, .validDATE { text-align: right; }
+
+fieldset div
+{
+	clear: both;
+	padding: 0;
+	margin: 1px;
+}
+
+fieldset div label
+{
+	display: block;
+	float: left;
+	width: 12em;
+	text-align: right;
+	line-height: 1.6em;
+	padding: 0;
+	margin: 0 0.5em 0 0;
+	cursor: help;
+}
+
+fieldset div.inputfirst input
+{
+	margin: 0 0 0 12.5em;
+}
+
+fieldset div.inputfirst label
+{
+	display: inline;
+	float: none;
+	text-align: left;
+	margin: 0;
+}
+
+fieldset div div.fieldhelp
+{
+	/*display: none; - define this if form can not be used without JavaScript */
+	font-style: italic;
+	margin: 0 0 1em 12.5em;
+	color: #7f9db9;
+}
+
+fieldset div div.fieldhelp *
+{
+	font-size: 0.85em;
+	padding: 0;
+	margin: 0 0 0.3em 0;
+}
+
+/*
+fieldset div.buttons
+{
+	text-align: right;
+}
+*/
+
+/* focus styles */
+label.focus
+{
+	font-weight: bold;
+}
+
+input.focus, select.focus, textarea.focus
+{
+	background-color: #eff2f5;
+}
+
+/* error styles */
+label.inputerror
+{
+	color: #c00;
+}
+
+input.inputerror, select.inputerror, textarea.inputerror
+{
+	color: #c00;
+}
+
+/* disabled styles */
+label.disabled
+{
+	color: #999;
+}
+
+/* field help box */
+div#fieldhelpbox
+{
+	position: absolute;
+	width: 12em;
+}
+
+div#fieldhelpbox div#fht, div#fieldhelpbox div#fhb
+{
+	height: 1px;
+	padding: 0;
+	margin: 0 1px;
+	background-color: #7f9db9;
+	overflow: hidden;
+}
+
+div#fieldhelpbox div#fhc
+{
+	font-size: 0.85em;
+	text-align: left;
+	padding: 2px 6px;
+	margin: 0;
+	background-color: #dee7ed;
+	border-width: 1px 2px;
+	border-style: solid;
+	border-color: #7f9db9;
+}
+
+div#fieldhelpbox div#fhs
+{
+	width: 0px;
+	height: 0px;
+	margin-left: 6px;
+	border-width: 3px;
+	border-style: solid;
+	border-color: #7f9db9 #fff #fff #7f9db9;
+	overflow: hidden;
+}
+
+div#fieldhelpbox > div#fhs
+{
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+}
+
+div#fieldhelpbox div#fhc p
+{
+	margin: 0.3em 0;
+}

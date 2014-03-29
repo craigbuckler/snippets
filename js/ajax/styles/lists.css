@@ -1,0 +1,39 @@
+html { padding: 0; margin: 0; } /* Opera override */
+
+#controls ul, #controls ol
+{
+	padding: 0;
+	margin: 2em 0 2em 30%;
+}
+
+#controls li
+{
+	display: block;
+	width: 10em;
+	padding: 2px;
+	margin: 2px;
+	background-color: #fff;
+	border: 1px solid #7f9db9;
+	cursor: n-resize;
+}
+
+#controls li.move
+{
+	background-color: #d8e0e9;
+}
+
+#controls .horizontal
+{
+	display: block;
+	height: 2em;
+	overflow: auto;
+	margin: 2em 0 2em 10%;
+}
+
+#controls .horizontal li
+{
+	display: inline;
+	float: left;
+	width: 6em;
+	cursor: e-resize;
+}

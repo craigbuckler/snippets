@@ -1,0 +1,287 @@
+/*
+CreationVideo desktop layout
+*/
+
+div.content, nav div.content
+{
+	width: 97%;
+	max-width: 64em;
+	margin: 0 auto;
+}
+
+/* grid */
+.s25, .feature, article ul#news li
+{
+	width: 25%;
+}
+
+.s33, .s66 .feature { width: 33%; }
+.s50 { width: 50%; }
+.s66 { width: 66%; }
+.s100 { width: 100%; }
+
+/* header */
+header
+{
+	height: 58px;
+	padding: 10px 0;
+	margin: 0 0 2.2em 0;
+	border-top: 6px solid #247;
+}
+
+header img
+{
+	float: left;
+	margin: 0;
+	max-width: 60%;
+}
+
+header p
+{
+	clear: right;
+	float: right;
+	max-width: 100%;
+	text-align: right;
+	margin: 0;
+}
+
+header a:link, header a:visited
+{
+	padding: 0 20px;
+}
+
+header a.phone:link
+{
+	font-size: 1.42em;
+	padding-top: 0.3em;
+}
+
+/* navigation */
+nav
+{
+	position: absolute;
+	top: 84px;
+	box-shadow: none;
+}
+
+nav label
+{
+	display: none;
+}
+
+nav ul
+{
+	display: block;
+	position: static;
+	width: auto;
+	padding: 0 0 0 20px;
+	background-color: transparent;
+	border-bottom: 0 none;
+}
+
+nav li
+{
+	clear: none;
+	position: relative;
+	float: left;
+}
+
+nav a:link, nav a:visited
+{
+	line-height: 2.2em;
+	padding: 0 15px;
+}
+
+nav ul ul
+{
+	display: none;
+	position: absolute;
+	width: 12em;
+	top: 2.2em;
+	left: 0;
+	padding: 0;
+	background-color: rgba(200,200,200,0.95);
+	box-shadow: 0 3px 2px rgba(0,0,0,0.3);
+}
+
+nav ul ul li
+{
+	float: none;
+}
+
+nav li:hover ul
+{
+	display: block;
+	border-bottom: 0 none;
+}
+
+/* paged navigation */
+ol#pagenav li
+{
+	line-height: 1.55em;
+}
+
+ol#pagenav a, ol#pagenav strong, ol#pagenav span
+{
+	width: 1.6em;
+	height: 1.6em;
+	line-height: 1.55em;
+}
+
+ol#pagenav li.control a, ol#pagenav li.control span
+{
+	width: 4em;
+}
+
+/* search */
+#search fieldset
+{
+	right: 20px;
+	width: 28%;
+	max-width: 15.4em;
+}
+
+/* introduction */
+article#intro div.content > p
+{
+	font-size: 3em;
+	text-align: left;
+	padding: 80px 0 0 20px;
+	margin: 0;
+}
+
+article#intro div.content > p strong.cv
+{
+	font-weight: 300;
+}
+
+article#intro div.vcont
+{
+	padding-right: 20px;
+}
+
+/* video images */
+#intro div.vcont
+{
+	float: right;
+	width: 648px;
+	margin: 0 0 0 10px;
+}
+
+div.pc
+{
+	float: right;
+	width: 388px;
+	height: 218px;
+	padding: 33px 86px 82px 90px;
+	background: url("images/pc.png") 0 0 no-repeat;
+}
+
+/* feature boxes */
+.feature h2
+{
+	height: auto;
+	white-space: nowrap;
+}
+
+/* news */
+ul#news h3
+{
+	height: 2.5em;
+}
+
+/* footer */
+@media all and (min-width: 58em) {
+	footer section
+	{
+		clear: none;
+		float: left;
+		margin: 0;
+	}
+
+	footer section#copyright
+	{
+		float: right;
+	}
+
+	#copyright p
+	{
+		text-align: right;
+	}
+}
+
+/* form */
+article fieldset label
+{
+	display: inline;
+	float: left;
+	width: 30%;
+	text-align: right;
+	margin: 0 2% 0 0;
+}
+
+article fieldset .checkbox label
+{
+	float: none;
+	width: auto;
+	text-align: left;
+	margin: 0 0 0 1%;
+}
+
+article fieldset label.help
+{
+	width: 65%;
+	text-align: left;
+	margin: 6px 0 1px 33%;
+}
+
+article input, article textarea, article select
+{
+	width: 60%;
+}
+
+article input.sml
+{
+	width: 30%;
+}
+
+article .checkbox input
+{
+	margin-left: 34%;
+}
+
+/* typography */
+article p, article li
+{
+	margin-right: 25%;
+}
+
+blockquote
+{
+	clear: right;
+	float: right;
+	margin: 10px 0 20px 20px;
+}
+
+blockquote p
+{
+	margin-right: 10px;
+}
+
+blockquote p.cite
+{
+	text-align: right;
+}
+
+article img
+{
+	clear: right;
+	float: right;
+	max-width: 90%;
+	margin: 0 0 20px 20px;
+}
+
+article p img
+{
+	margin-right: -33%;
+}

@@ -1,0 +1,36 @@
+/* link handler styles */
+
+a { font-weight: bold; color: #00c; text-decoration: none; border-style: none; }
+a:visited { color: #c0c; }
+a:hover { text-decoration: underline; border-style: none; }
+
+a.image, a.sound, a.video, a.document, a.application, a.archive, a.website, a.email, a.feed
+{
+	min-height: 16px;
+	padding-left: 19px;
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+
+a.image { background-image: url("../images/icons/iconimage.gif"); }
+
+a.sound { background-image: url("../images/icons/iconaudio.gif"); }
+a.video { background-image: url("../images/icons/iconvideo.gif"); }
+
+a.document { background-image: url("../images/icons/icontext.gif"); }
+a.pdf { background-image: url("../images/icons/iconpdf.gif"); }
+a.doc { background-image: url("../images/icons/icondoc.gif"); }
+a.xls { background-image: url("../images/icons/iconxls.gif"); }
+a.ppt { background-image: url("../images/icons/iconppt.gif"); }
+
+a.application { background-image: url("../images/icons/iconexe.gif"); }
+a.archive { background-image: url("../images/icons/iconzip.gif"); }
+
+a.website { background-image: url("../images/icons/iconweb.gif"); }
+a.email { background-image: url("../images/icons/iconemail.gif"); }
+a.feed { background-image: url("../images/icons/iconfeed.gif"); }
+
+#links
+{
+	margin: 2em 0 2em 4em;
+}

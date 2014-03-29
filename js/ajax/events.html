@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>JavaScript testbed: client-side event handler</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side event handler</h1>
+
+<p>Client-side cross-browser event testing. Note that browsers treat events differently.</p>
+
+<div id="info">
+<h2>event information</h2>
+
+<table summary="event results">
+<tr><td>type:</td><td id="etype">-</td></tr>
+<tr><td>element:</td><td id="eelement">-</td></tr>
+<tr><td>id:</td><td id="eid">-</td></tr>
+
+<tr><td>control:</td><td id="econtrol">-</td></tr>
+<tr><td>key:</td><td id="ekey">-</td></tr>
+
+<tr><td>ctrl:</td><td id="ectrl">-</td></tr>
+<tr><td>shift:</td><td id="eshift">-</td></tr>
+<tr><td>alt:</td><td id="ealt">-</td></tr>
+
+<tr><td>mouse x:</td><td id="emousex">-</td></tr>
+<tr><td>mouse y:</td><td id="emousey">-</td></tr>
+
+</table>
+</div>
+
+<div id="clickdiv">click or tab to me!</div>
+
+<p>Only numbers permitted (unless ESC used to cancel event):</p>
+<form id="demoform" action="events.html" method="get">
+<div>
+<textarea id="tainput" name="tainput" rows="6" cols="40"></textarea><br />
+<textarea id="messages" name="messages" rows="3" cols="40" readonly="readonly"></textarea><br />
+<input type="submit" value="submit" class="button" />
+</div>
+</form>
+
+<p><a href="events.html">refresh...</a></p>
+
+<script type="text/javascript">
+// <![CDATA[
+// simulation of an existing DOM0 assignment
+window.onload = function() { alert("Existing DOM0 event assigned with window.onload"); };
+
+// window events
+new Event(window, "load", function(evt) { alert("page has loaded!"); DOM.Id("messages").value = "window load event #1 fired\n"; });
+new Event(window, "load", function(evt) { AttachEvents(); DOM.Id("messages").value += "window load event #2 fired (AttachEvents)\n"; });
+new Event(window, "unload", function(evt) { alert("window unload event fired"); });
+
+// attach main events
+function AttachEvents() {
+	var clickdiv = DOM.Id("clickdiv");
+	if (clickdiv) {
+		clickdiv.setAttribute("tabindex", 0); // ensure element can be focused
+		new Event(clickdiv, "keydown", function(e) { if (e.Raised.ControlKey!="") e.Raised.StopDefaultAction(); eventInfo(e); }); // stop action in IE
+		new Event(clickdiv, "keypress", stopEvent);
+		//new Event(clickdiv, "keyup", stopEvent);
+		new Event(clickdiv, "click", stopEvent);
+		new Event(clickdiv, "mousemove", stopEvent);
+	}
+	new Event(DOM.Id("demoform"), "submit", function(evt) { evt.Raised.StopDefaultAction(); alert("submit disabled!"); });
+	new Event(DOM.Id("tainput"), "keypress", numbersOnly);
+}
+
+// numbers only permitted (unless ESC cancels event)
+function numbersOnly(e) {
+	eventInfo(e);
+	var key = e.Raised.Key;
+	if (key != "" && (key <= "0" || key >= "9")) e.Raised.StopDefaultAction(); // numbers only permitted
+	if (e.Raised.ControlKey == "esc") e.Detach(); // stop this event
+}
+
+// show event information
+function stopEvent(e) {
+	e.Raised.StopDefaultAction();
+	e.Raised.StopPropagation();
+	eventInfo(e);
+}
+
+// show event information
+function eventInfo(e) {
+	var i = e.Raised;
+	DOM.Id("etype").firstChild.nodeValue = i.Type;
+	DOM.Id("eelement").firstChild.nodeValue = (typeof i.Element);
+	DOM.Id("eid").firstChild.nodeValue = i.Element.id;
+
+	DOM.Id("econtrol").firstChild.nodeValue = i.ControlKey;
+	DOM.Id("ekey").firstChild.nodeValue = i.Key;
+
+	DOM.Id("ectrl").firstChild.nodeValue = i.Ctrl;
+	DOM.Id("eshift").firstChild.nodeValue = i.Shift;
+	DOM.Id("ealt").firstChild.nodeValue = i.Alt;
+
+	DOM.Id("emousex").firstChild.nodeValue = i.MouseX;
+	DOM.Id("emousey").firstChild.nodeValue = i.MouseY;
+}
+// ]]>
+</script>
+
+<h2>Event class</h2>
+<p>Creates a cross-browser event object. Existing DOM0 handlers will also be handled. Browser memory leaks are prevented by detaching event handlers from elements.</p>
+
+<h3>IMPORTANT NOTES</h3>
+<p>Avoid using JavaScript alerts for window unload events. One is used on this demonstration page, but they can cause Firefox 1.0.x to crash if the browser is closed.</p>
+
+<p>Also see <a href="#keyboard">keyboard events</a> below.</p>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>element</dt> <dd>HTML element event is applied to, e.g. window, document.documentElement, document.getElementById("idname")</dd>
+<dt>eventType</dt> <dd>load, unload, change, focus, blur, resize, submit, mouseover, mouseout, mousedown, mouseup, mousemove, click, keypress, etc.</dd>
+<dt>eventHandler</dt> <dd>function used to handle event (do not use () brackets after name)</dd>
+</dl>
+
+<h3>eventHandler functions</h3>
+<p>The Event object is passed back to the eventHandler. The following method can be run:</p>
+<dl>
+<dt>.Detach()</dt> <dd>removes the event handler</dd>
+</dl>
+
+<p>and the following property can be inspected:</p>
+<dl>
+<dt>.Raised</dt> <dd>an EventInformation object</dd>
+</dl>
+
+<h3>The EventInformation object</h3>
+<p>This provides the following properties:</p>
+<dl>
+<dt>.Type</dt> <dd>the eventType</dd>
+<dt>.Element</dt> <dd>the object that raised the event</dd>
+<dt>.ControlKey</dt> <dd>a non-character key, e.g. enter, backspace, tab, pageup, f1, etc. (only on keydown events for IE)</dd>
+<dt>.Key</dt> <dd>the key that was pressed (generally returned on keypress events)</dd>
+<dt>.Shift</dt> <dd>true if the Shift key was pressed</dd>
+<dt>.Ctrl</dt> <dd>true if the Control key was pressed</dd>
+<dt>.Alt</dt> <dd>true if the Alt key was pressed</dd>
+<dt>.MouseX</dt> <dd>the pointer horizontal co-ordinate (from top of page)</dd>
+<dt>.MouseY</dt> <dd>the pointer vertical co-ordinate (from top of page)</dd>
+</dl>
+
+<p>The EventInformation object provides the following methods:</p>
+<dl>
+<dt>.StopPropagation() </dt> <dd>stops futher events propagating to parent elements</dd>
+<dt>.StopDefaultAction()</dt> <dd>stops the default action occurring, e.g. a key press adding a character to a text box. Some events cannot be stopped.</dd>
+</dl>
+
+<h3>Example:</h3>
+<pre>
+// calls StartUp function on page load
+new Event(window, "load", StartUp);
+
+// attaches keypress event to an element with ID "textbox"
+function StartUp() { new Event(document.getElementById("textbox"), "keypress", numbersOnly); }
+
+// if the keypress is not a number, cancel the default action (adding a character to the box)
+function numbersOnly(evt) {
+	if (evt.Raised.Key != "") {
+		var reNumChar = new RegExp("[0-9]");
+		if (!reNumChar.test(evt.Raised.Key)) evt.Raised.StopDefaultAction();
+	}
+}
+</pre>
+
+<h3 id="keyboard">DHTML controls and keyboard events</h3>
+<p>All the latest browsers permit elements to be controlled using keyboard events. An element becomes accessible from the keyboard by setting the tabindex to zero. To ensure that this does not cause XHTML validation errors, the following code can be used:</p>
+
+<pre>
+element.setAttribute("tabindex", 0);
+</pre>
+
+<p>It is now possible to track the element using focus and blur events. Once the element has focus, key presses can be analysed and the element can be moved or modified as necessary. Notes:</p>
+
+<ul>
+<li>to enable or disable a control, set the tabindex to 0 or -1 as necessary</li>
+<li>every mouse event should have a corresponding keyboard event</li>
+<li>key repeating is not consistent across platforms</li>
+<li>you cannot apply a :focus CSS selector on the element in IE - the focus event can call a function to change the element style.</li>
+</ul>
+
+<p>The event class will attempt to return a Key (ASCII value) or ControlKey (up, down, pageup, etc) in the EventInformation object. However, three keyboard events can be raised, and they act slightly differently across browsers. The following codes are used in the table below:</p>
+
+<ul>
+<li><strong>stan</strong>: can return a standard key code</li>
+<li><strong>ascii</strong>: a real character has been returned, i.e. Shift+1 will return "!"</li>
+<li><strong>kbd</strong>: a keyboard code has been returned, e.g. Shift+1 will return "1". In most cases these will be similar to the ascii equivalent, but some punctuation keys can return strange codes.</li>
+<li><strong>ctrl</strong>: can return a control key code, such as up, down, pageup, etc.</li>
+<li><strong>cancel</strong>: the event can be cancelled at this point to ensure that the default action does not occur</li>
+</ul>
+
+<table summary="keyboard events" class="summary">
+
+<tr>
+<th>&nbsp;</th>
+<th>keydown</th>
+<th>keypress</th>
+<th>keyup</th>
+</tr>
+
+<tr>
+<th>fired</th>
+<td>when a key is pressed and before it is displayed</td>
+<td>just before the key character is displayed. This event is the only one that will return a true ASCII value for the key that has been pressed.</td>
+<td>just after the key character is displayed</td>
+</tr>
+
+<tr>
+<th>Firefox</th>
+<td>stan - kbd<br />ctrl<br />cancel</td>
+<td>stan - ascii<br />ctrl<br />cancel</td>
+<td>ctrl<br />standard keys cannot be cancelled and may start a quick find</td>
+</tr>
+
+<tr>
+<th>Internet Explorer</th>
+<td>stan - kbd<br />ctrl<br />cancel</td>
+<td>stan - ascii<br />control keys are not captured at this point<br />only standard key presses can be cancelled</td>
+<td>stan - kbd<br />ctrl</td>
+</tr>
+
+<tr>
+<th>Opera</th>
+<td>ctrl<br />standard keys start browser shortcuts</td>
+<td>stan - ascii<br />ctrl<br />cancel</td>
+<td>ctrl<br />standard keys start browser shortcuts</td>
+</tr>
+
+</table>
+
+<p>To ensure an element can be manipulated with the keyboard across browsers:</p>
+<ol>
+<li>Create a keydown event. If a control key is pressed, then cancel the default action (e.g. pressing down does not scroll the page). This ensures IE compatibility.</li>
+<li>Create a keypress event. Analsye the returned keys to modify the element and cancel default actions. Note that Opera returns the same key codes for some standard and control keys, e.g. an apostrophe has the same code as the right cursor. By default, the Event object assumes that an apostrophe has been entered. Therefore, if you are checking for the right cursor key, check for the apostrophe too. (Note that this is not a problem in IE since control keys do not fire keypress events).</li>
+</ol>
+
+<noscript>
+<p>Please use a JavaScript-enabled browser.</p>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+/* owl lightbox CSS */
+.lightbox
+{
+	width: 420px;
+	list-style-type: none;
+	margin: 0 auto;
+	overflow: auto;
+}
+
+.lightbox li
+{
+	display: inline;
+	float: left;
+	margin: 5px;
+}
+
+.lightbox li a
+{
+	display: block;
+	padding: 3px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+
+.lightbox li a:focus, .lightbox li a:hover { background-color: #ff9; }
+
+.lightbox li a *
+{
+	display: none;
+}
+
+.lightbox li a img
+{
+	display: block;
+	border: 1px solid #ccc;
+}
+
+/* window overlay */
+#lb_pageoverlay
+{
+	background-color: #000;
+}
+
+/* lightbox window */
+#lb_window
+{
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 5px;
+	background-color: #fff;
+	overflow: hidden;
+}
+
+#lb_image
+{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: #fff url("images_lightbox/load.gif") 50% 50% no-repeat;
+	overflow: hidden;
+}
+
+#lb_image img
+{
+	position: absolute;
+}
+
+#lb_bar
+{
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	min-height: 44px;
+	height: auto !important;
+	height: 44px;
+	font-size: 0.85em;
+	padding: 0;
+	margin: 0;
+	color: #fff;
+	background: #000 url("images_lightbox/description.gif") 0 0 repeat-x;
+	overflow: visible;
+}
+
+#lb_bar p
+{
+	padding: 0;
+	margin: 2px 5.5em 4px 5px;
+}
+
+#lb_bar p strong, #lb_bar p span { display: block; }
+
+#lb_bar a
+{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 18px;
+	height: 19px;
+	text-decoration: none;
+	background: url("images_lightbox/next.gif") 0 0 no-repeat;
+}
+
+#lb_bar a#lb_next strong, #lb_bar a#lb_back strong { display: none; }
+
+#lb_bar a#lb_back
+{
+	right: 30px;
+	background-image: url("images_lightbox/back.gif")
+}
+
+#lb_bar a#lb_close
+{
+	top: auto;
+	bottom: 5px;
+	width: auto;
+	height: auto;
+	padding-right: 14px;
+	color: #fff;
+	background: url("images_lightbox/close.gif") 100% 65% no-repeat;
+}

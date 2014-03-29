@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_image.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+
+<style type="text/css">
+/* <![CDATA[ */
+#image
+{
+	width: 200px;
+	height: 200px;
+	padding: 5px;
+	background-color: #ccc;
+	margin: 20px auto;
+}
+
+#image div
+{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	overflow: hidden;
+}
+
+#image div img
+{
+	position: absolute;
+}
+
+#image div#control
+{
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	min-height: 44px;
+	height: auto !important;
+	height: 44px;
+	font-size: 0.85em;
+	padding: 0;
+	margin: 0;
+	color: #fff;
+	background: #000 url("styles/images_lightbox/description.gif") 0 0 repeat-x;
+	overflow: visible;
+	opacity: 0.70;
+}
+
+#image div#control p
+{
+	padding: 0;
+	margin: 2px 5.5em 4px 5px;
+}
+
+#image div#control p strong, #image div#control p span { display: block; }
+
+div#control a
+{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 18px;
+	height: 19px;
+	text-decoration: none;
+	background: url("styles/images_lightbox/next.gif") 0 0 no-repeat;
+}
+
+div#control a#next strong, div#control a#back strong { display: none; }
+
+div#control a#back
+{
+	right: 30px;
+	background-image: url("styles/images_lightbox/back.gif")
+}
+
+div#control a#close
+{
+	top: auto;
+	bottom: 5px;
+	width: auto;
+	height: auto;
+	padding-right: 14px;
+	color: #fff;
+	background: url("styles/images_lightbox/close.gif") 100% 65% no-repeat;
+}
+
+/* ]]> */
+</style>
+
+</head>
+<body>
+
+<h1>Image lightbox test</h1>
+
+<p>Need an inner DIV with overflow:hidden.</p>
+<p>Must calculate difference between inner and outer dimensions. Then use those to calculate the image maximum width and height? NO - offsetWidth will be the same as the outer width because padding is added.</p>
+<p>Can image always be centered?</p>
+
+<p><a href="#">redimension and centre image</a></p>
+
+<div id="image">
+	<div>
+	
+		<img src="images/sophie.jpg" width="400" height="300" alt="Sophie" />
+		
+		<div id="control">
+		
+			<p><strong>Sophie</strong> <span>a lovely picture of Sophie Louise!</span></p>
+			
+			<a id="close" href="#" title="close"><strong>close</strong></a>
+			<a id="next" href="#" title="next image"><strong>next</strong></a>
+			<a id="back" href="#" title="previous image"><strong>back</strong></a>
+			
+		</div>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+
+var image, inner, img;
+
+function Start() {
+	image = owl.Dom.Get("#image")[0];
+	inner = owl.Dom.Descendents(image, 1)[0];
+	img = owl.Dom.Descendents(inner, 1)[0];
+	new owl.Event(owl.Dom.Get("a"), "click", function(e) {
+		e.StopDefaultAction();
+		e.Element.blur();
+		NewDimensions(Math.round(Math.random()*500), Math.round(Math.random()*400));
+	});
+}
+
+function NewDimensions(w, h) {
+	image.style.width = w+"px";
+	image.style.height = h+"px";
+
+	img.style.left = (w - img.width) / 2 + "px";
+	img.style.top = (h - img.height) / 2 + "px";
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

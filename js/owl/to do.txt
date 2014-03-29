@@ -1,0 +1,95 @@
+OWL to do
+---------
+
+Keyboard events:
+	http://unixpapa.com/js/key.html
+	
+JS XPath:
+	http://coderepos.org/share/wiki/JavaScript-XPath
+
+owl.Graphics
+	implement hex/rgb to hsv
+	http://js.fleegix.org/plugins/color/convert
+	http://svn.fleegix.org/fleegix_js/trunk/plugins/color/convert.js
+	http://www.cs.rit.edu/~ncs/color/t_convert.html
+
+owl.Form
+	hidden label effect:
+	http://www.456bereastreet.com/archive/200710/autopopulating_text_input_fields_with_javascript/
+
+	Autocomplete box:
+	http://www.webreference.com/programming/javascript/ncz/
+	http://developer.yahoo.com/ypatterns/pattern.php?pattern=autocomplete
+	http://www.codeproject.com/KB/scripting/jsactb.aspx?df=100&forumid=92394&exp=0&fr=26&select=2145061
+
+	Date Picker - small, lightweight, few features
+
+owl.Image
+	scrolling thumbnail?
+	Never actually used it!
+
+owl.Timer
+	could provide function for step? Pass from, to, current - return new current?
+	would allow variable animation e.g. fast to slow.
+	
+owl.DOM
+	onReady event - use instead on window.onload
+	in Fx/Opera - document.addEventListener("DOMContentLoaded", funcName, false);
+
+owl.Ajax
+	See http://snook.ca/archives/javascript/xmlhttprequest_activex_ie/
+	Use: ["Msxml2.XMLHTTP.6.0", "Msxml2.XMLHTTP", "Microsoft.XMLHTTP"]
+	
+
+owl.Event - allow event triggers to be implemented. Rather than passing string such as "click", pass a registered function, e.g. owl.EventFire.TextResize.
+
+
+AutoSelect an element's text:
+
+function autoSelect(selectTarget) {
+	if(selectTarget != null && ((selectTarget.childNodes.length == 1 && selectTarget.childNodes[0].nodeName == "#text") || (selectTarget.tagName == "INPUT" && selectTarget.type == "text"))) {
+		if(selectTarget.tagName == 'TEXTAREA' || (selectTarget.tagName == "INPUT" && selectTarget.type == "text")) { // Cross-browser
+			selectTarget.select();
+		} else if(window.getSelection) { // FF, Safari, Opera
+			var sel = window.getSelection();
+			var range = document.createRange();
+			range.selectNode(selectTarget.firstChild);
+			sel.removeAllRanges();
+			sel.addRange(range);
+		} else { // IE
+			document.selection.empty();
+			var range = document.body.createTextRange();
+			range.moveToElementText(selectTarget);
+			range.select();
+		}
+	}
+}
+
+
+DID NOT NEED:
+Remove owl.RegEx - put regex's into items that use them, unless it has global appeal!
+/*	---------------------------------------------
+
+	owl.RegEx
+	regularly used expressions
+
+	--------------------------------------------- */
+owl.RegEx = {
+
+	toNumeric: (/[^0-9-.]/g),
+	Trim: (/^\s*|\s*$/g),
+	Clean: (/[^\w|\s|@|&|.|,|!|%|(|)|+|-]/g),
+	Whitespace: (/[_|\s]+/g),
+
+	// add a new regex with a unique name
+	Add: function(name, regex) {
+		var i = 0, eName = (name ? String(name) : "Undefined");
+		do {
+			name = eName + (i > 0 ? i : '');
+			i++;
+		} while (typeof owl.RegEx[name] != 'undefined');
+		owl.RegEx[name] = regex;
+		return name;
+	}
+
+}

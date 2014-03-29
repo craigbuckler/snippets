@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>JavaScript testbed: client-side list ordering</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="styles/lists.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/dragdrop.js"></script>
+<script type="text/javascript" src="scriptlibrary/listcontrol.js"></script>
+<script type="text/javascript" src="scriptlibrary/localisation.js"></script>
+<script type="text/javascript" src="scriptlibrary/validatorsupport.js"></script>
+<script type="text/javascript" src="scriptlibrary/validator.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side list ordering control</h1>
+
+<p>Client-side cross-browser generic list ordering control. Drag and drop any item on the list...</p>
+
+<div id="controls">
+
+<ol id="listcontrol1">
+<li>item 1</li>
+<li>item 2</li>
+<li>item 3</li>
+<li>item 4</li>
+<li>item 5</li>
+</ol>
+
+<p>list item ordering for <span id="order"></span></p>
+
+<div class="button"><input id="randorder" type="button" value="random list order" /></div>
+
+<h2>horizontal list control</h2>
+<ul class="horizontal listcontrol">
+<li>item 1</li>
+<li>item 2</li>
+<li>item 3</li>
+<li>item 4</li>
+<li>item 5</li>
+</ul>
+
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+var lc;
+new Event(window, "load", Initialise);
+
+// initialise list control
+function Initialise() {
+	lc = new ListControl("listcontrol1", UpdateResult);
+	lc.DragStyle = "move";
+	UpdateResult(lc);
+	new Event(DOM.Id("randorder"), "click", RandomOrder);
+}
+
+// update result
+function UpdateResult(lc) {
+	var msg = "control "+lc.ID+": ";
+	var order = lc.Order();
+	for (var i = 0; i < order.length; i++) msg += "["+order[i]+"] ";
+	DOM.SetText("order", msg);
+}
+
+// randomly order list
+function RandomOrder() {
+	if (lc) {
+		var i, pos;
+		var order = new Array();
+		var items = lc.Item.length;
+		for (i = 0; i < items; i++) order[i] = null;
+		for (i = 0; i < items; i++) {
+			do { pos = Math.floor(Math.random()*items); } while (order[pos] != null);
+			order[pos] = i;
+		}
+	
+		if (lc.SetOrder(order)) {
+			var msg = "setting "+lc.ID+" order to ";
+			for (i = 0; i < items; i++) msg += "["+order[i]+"] ";
+			window.status = msg;
+		}
+
+	}
+}
+// ]]>
+</script>
+
+<h2>ListControl class</h2>
+<p>Creates a re-orderable list control given an OL or UL element.</p>
+
+<h3>Features</h3>
+<p>The list control implements the following features:</p>
+<ul>
+<li>automatic horizontal or vertical configuration depending on the list CSS applied</li>
+<li>smooth movement and re-ordering</li>
+<li>transparency and styling options for the active item</li>
+<li>a ListControl is automatically created if the OL or UL has a class of 'listcontrol'</li>
+<li>sliders will remain in position even if the browser is resized, text is resized, or the background element changes dimensions. (A clone of each LI is made before changing their positions to absolute. The clone has its visibility hidden and its dimensions are periodically examined. This also ensures the parent UL/OL retains its dimensions.)</li>
+<li>automatic event clean up.</li>
+</ul>
+
+<h3>CSS notes</h3>
+<p>Note the following CSS issues:</p>
+<ul>
+<li>Ensure each LI uses a background color (even #fff), otherwise IE may not register the click event on the whole block.</li>
+<li>It is recommended that LI margins and padding are specified in px to avoid minor Mozilla rendering issues.</li>
+<li>Whilst you can assign an ID to an individual LI, avoid applying different dimensions to a single list element.</li>
+</ul>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>list</dt> <dd>the list element. If a string is passed, an the HTML element with that ID is used.</dd>
+<dt>OnChangeEvent</dt> <dd>the function to call when a value is updated. This listcontrol object is passed as the only argument.</dd>
+</dl>
+
+<h3>Public properties (get)</h3>
+<dl>
+<dt>.ID</dt> <dd>the ID of the list element (can be used to identify a slider)</dd>
+<dt>.Item</dt> <dd>an array of items with properties element, dd (dragdrop object) and slot (current position)</dd>
+<dt>.ItemMoved</dt> <dd>the item currently being moved (zero based)</dd>
+<dt>.Order</dt> <dd>returns an array (zero based) containing the item order (zero based)</dd>
+</dl>
+
+<h3>Public properties (set)</h3>
+<dl>
+<dt>.OnChange</dt> <dd>the function called when the slider value changes</dd>
+<dt>.SlideOn</dt> <dd>set to true if the items should slide in to place (default true)</dd>
+<dt>.SlideTime</dt> <dd>the number of milliseconds a slide will take (default 300). Run .PositionCheck() after setting</dd>
+<dt>.DragOpacity</dt> <dd>the opacity of the dragged item: 0 transparent - 100 opaque (default 50). Run .PositionCheck() after setting</dd>
+<dt>.DragStyle</dt> <dd>the CSS class applied to the dragged item</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt>.SetOrder(array)</dt> <dd>defines the starting order for the items (zero based). Returns true if order is valid.</dd>
+<dt>.PositionCheck(reset)</dt> <dd>updates the position of items (set reset to anything to re-initialise)</dd>
+</dl>
+
+<h3>Example</h3>
+<pre>
+&lt;ol id="listcontrol1"&gt;
+	&lt;li&gt;list item 1&lt;/li&gt;
+	&lt;li&gt;list item 2&lt;/li&gt;
+	&lt;li&gt;list item 3&lt;/li&gt;
+	&lt;li&gt;list item 4&lt;/li&gt;
+	&lt;li&gt;list item 5&lt;/li&gt;
+&lt;/ol&gt;
+</pre>
+
+<pre>
+new Event(window, "load", function(evt) { evt.Detach(); Initialise(); });
+
+function Initialise() {
+	var lc = new ListControl("listcontrol1", UpdateResult);
+	lc.SetOrder([4,3,2,1,0]);
+	lc.DragStyle = "move";
+	UpdateResult(lc);
+}
+
+function UpdateResult(lc) {
+	if (lc) {
+		var id = lc.ID;
+		var o = lc.Order();
+	}
+}
+</pre>
+
+
+</body>
+</html>

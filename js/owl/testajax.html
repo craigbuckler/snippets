@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<link type="text/css" rel="stylesheet" media="all" href="styles/lightbox.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_image.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_xml.js"></script>
+<script type="text/javascript" src="script/owl_innerhtml.js"></script>
+<script type="text/javascript" src="script/owl_ajax.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_container.js"></script>
+<script type="text/javascript" src="script/owl_effect.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_overlay.js"></script>
+<script type="text/javascript" src="script/owl_lightbox.js"></script>
+</head>
+<body>
+
+<h1>owl Ajax testbed</h1>
+
+<form id="ajaxtest" action="webservices/sum.php" method="get">
+
+<fieldset>
+<legend>Ajax test</legend>
+
+<div>
+<label for="arg1">argument 1:</label>
+<input type="text" id="arg1" name="arg1" size="4" />
+</div>
+
+<div>
+<label for="arg2">argument 2:</label>
+<input type="text" id="arg2" name="arg2" size="4" />
+</div>
+
+<div>
+<label for="arg3">argument 3:</label>
+<input type="text" id="arg3" name="arg3" size="4" />
+</div>
+
+<div>
+<input type="submit" value="calculate sum" />
+</div>
+
+<p>sum: <span>&nbsp;</span></p>
+
+</fieldset>
+
+</form>
+
+<p><a id="abort" href="#">abort</a></p>
+
+<p><a id="scriptcall" href="#">remote script call</a> | <a id="scriptabort" href="#">abort</a></p>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+
+	// form Hijax
+	var ws = new owl.Ajax(owl.Dom.Get("#ajaxtest")[0], FormResponse);
+	
+	new owl.Event(owl.Dom.Get("#abort"), "click", function(e) {
+		e.StopDefaultAction();
+		e.Element.blur();
+		ws.Abort();
+	});
+	
+	// remote script call
+	var js = new owl.Ajax();
+	js.ID = "scriptcall";
+	js.URL = "webservices/sumjs.php";
+	js.Method = "SCRIPT";
+	js.SetCallback(JsResponse);
+	
+	new owl.Event(owl.Dom.Get("#scriptcall"), "click", function(e) {
+		e.StopDefaultAction();
+		e.Element.blur();
+		var form = owl.Dom.Get("#ajaxtest")[0];
+		owl.Each(form.elements, function(e) { if (e.name && e.value) js.Argument(e.name, e.value); });
+		js.Call();
+	});
+	
+	new owl.Event(owl.Dom.Get("#scriptabort"), "click", function(e) {
+		e.StopDefaultAction();
+		e.Element.blur();
+		js.Abort();
+	});
+	
+}
+
+// analyse form response
+function FormResponse(ws) {
+
+	var update = owl.Dom.Get("#ajaxtest p span")[0];
+
+	if (ws.Status.Complete) {
+
+		var xml = ws.Response.XML;
+		owl.Dom.Text(update, (ws.Response.XML ? String(xml.getElementsByTagName("Total")[0].firstChild.nodeValue) : (ws.Status.Abort ? "abort" : "timeout") ));
+
+		//alert("ID: "+ws.ID+"\nMethod: "+ws.Method+"\ncomplete: "+ws.Status.Complete+"\nsuccess: "+ws.Status.Success+"\nText: "+ws.Response.Text+"\nXML: "+ws.Response.XML);
+
+	}
+	else owl.Dom.Text(update, "calculating...");
+}
+
+// analyse JS response
+function JsResponse(ws) {
+	if (ws.Status.Complete) {
+		alert("ID: "+ws.ID+"\nMethod: "+ws.Method+"\ncomplete: "+ws.Status.Complete+"\nsuccess: "+ws.Status.Success+"\nabort: "+ws.Status.Abort+"\ntimeout: "+ws.Status.Timeout+(ws.Status.Success ? "\n\nargtotal = "+argtotal : ""));
+	}
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

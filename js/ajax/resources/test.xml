@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<Document>
+
+	<Title>This is the document title</Title>
+	<Author>Craig Buckler</Author>
+
+	<para>This is some XML that has been transformed using XSLT.</para>
+	<para>If you can read this, the transformation was successful.</para>
+
+</Document>
+

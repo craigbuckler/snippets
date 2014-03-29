@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed</title>
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="styles/imagescroller.css" />
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/imagescroller.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: image scroller</h1>
+
+<p>Creates a cross-browser image scroller.</p>
+
+<div class="pics">
+<a href="images/screenshot.gif" class="imagescroller" title="click to enlarge"><img src="images/screenshotthumb.gif" width="184" height="138" alt="screenshot" /></a>
+
+<a href="images/exmouth.jpg" class="imagescroller" title="click to enlarge"><img src="images/exmouththumb.jpg" alt="screenshot" /></a>
+
+<a href="images/city.jpg" class="imagescroller" title="click to enlarge"><img src="images/citythumb.jpg" alt="screenshot" /></a>
+</div>
+
+<h2 style="clear:both;">ImageScroller system</h2>
+
+<p>This system scrolls an image within the thumbnail area when the cursor moves over it.</p>
+
+<p>Any &lt;a&gt; link to an image that has a class including "imagescroller" and a child &lt;img&gt; node will have the ImageScroller system applied, i.e.</p>
+
+<pre>
+&lt;a href="images/large.jpg" class="imagescroller" title="click to enlarge"&gt;
+	&lt;img src="images/thumb.jpg" alt="screenshot" /&gt;
+&lt;/a&gt;
+</pre>
+
+<p>The function ImageScrollerSetup() is run when the page loads. This function will look for appropriate image links and apply the appropriate event handlers. ImageScrollerSetup() can be run again if further image links are added to the DOM. Image links that are already controlled will not be affected.</p>
+
+<p>Notes:</p>
+<ul>
+<li>the system is unobtrusive and cross-browser</li>
+<li>the user can still click a thumbnail for the full image
+<li>the system fails gracefully: if the large graphic can not be loaded, the thumbnail remains in place</li>
+<li>image fade in and out can be enabled or disabled if necessary (change the variables ISfadeOn, ISfadeStep, and ISfadePause)</li>
+<li>all large graphics are downloaded and cached in the background</li>
+<li>because all large graphics are loaded, care should be taken to preserve bandwidth</li>
+<li>in Opera, clicking an image then clicking back fails to run the window onload event and the ImageScroller will not be initialised</li>
+</ul>
+
+</body>
+</html>

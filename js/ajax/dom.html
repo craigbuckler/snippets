@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed: client-side DOM handler</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side DOM handler</h1>
+
+<p>Client-side cross-browser DOM manipulation.</p>
+
+<div id="testdoc">
+<!--start of content-->
+<h2>test document</h2>
+<p>This is a test document that is manipulated using DOM techniques.</p>
+<p>Note that browsers have different levels of DOM support, e.g.</p>
+
+<!--browser differences-->
+<ul>
+<li>IE ignores whitespace childnodes, whereas Mozilla will not</li>
+<li>IE5 and IE5.5 ignore comments in the document</li>
+</ul>
+
+<p>This sentence may change!</p>
+
+</div>
+
+
+<h2>DOM information</h2>
+<p>The following information is available:</p>
+
+<table id="dominfo" summary="DOM information table">
+<tr><th>document node found:</th><td>no</td></tr>
+<tr><th>number of childNodes:</th><td></td></tr>
+<tr><th>number of child elements:</th><td></td></tr>
+<tr><th>x co-ordinate:</th><td></td></tr>
+<tr><th>y co-ordinate:</th><td></td></tr>
+<tr><th>first child's text:</th><td></td></tr>
+</table>
+
+<div class="button"><input id="bchange" type="button" value="change text" /></div>
+
+<div class="button"><input id="domadd" type="button" value="add to DOM" /></div>
+
+<div class="button"><input id="loadjs" type="button" value="load new JavaScript file" /></div>
+<div class="button"><input id="loadcss" type="button" value="load new CSS file" /></div>
+<div class="button"><input id="unloadcss" type="button" value="unload new CSS file" style="display:none;" /></div>
+
+<noscript>
+<p>Please use a JavaScript-enabled browser.</p>
+</noscript>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", DOMtesting);
+
+var count = 0;
+var cssfile;
+
+function DOMtesting(evt) {
+
+	new Event(DOM.Id("bchange"), "click", ChangeText);
+	new Event(DOM.Id("domadd"), "click", DomAdd);
+	new Event(DOM.Id("loadjs"), "click", LoadJS);
+	new Event(DOM.Id("loadcss"), "click", LoadCSS);
+	new Event(DOM.Id("unloadcss"), "click", UnloadCSS);
+
+	UpdateInfo();
+}
+	
+function UpdateInfo() {
+	var testdoc = DOM.Id("testdoc");
+	var info = DOM.Tags("td", "dominfo");
+	if (testdoc && info) {
+		DOM.SetText(info[0], "yes");
+		DOM.SetText(info[1], testdoc.childNodes.length);
+		DOM.SetText(info[2], DOM.ChildElements(testdoc).length);
+		DOM.SetText(info[3], DOM.AbsoluteX(testdoc));
+		DOM.SetText(info[4], DOM.AbsoluteY(testdoc));
+		DOM.SetText(info[5], DOM.Text(DOM.ChildElements(testdoc)[0]));
+	}
+}
+
+function ChangeText(evt) {
+	count++;
+	var ce = DOM.ChildElements(DOM.Id("testdoc"));
+	DOM.SetText(ce[ce.length-1], "Button clicked "+count+" time"+(count>1 ? "s" : "")+".");
+	ce = null;
+}
+
+function DomAdd(evt) {
+
+	var frag = {
+		p:
+		{
+			"#": "Paragraph added using a document fragment generated from an object literal. ",
+			strong:
+			{
+				"#": "Random number: "+Math.round(Math.random()*100)
+			}
+		}
+	}
+	
+	var testdoc = DOM.Id("testdoc");
+	if (testdoc) {
+		testdoc.insertBefore(DOM.CreateFragment(frag), DOM.ChildElements(testdoc)[1]);
+		UpdateInfo();
+	}
+	
+}
+
+function LoadJS(evt) {
+	evt.Detach();
+	DOM.LoadJS("resources/import.js");
+	DOM.Id("loadjs").style.display = "none";
+}
+
+function LoadCSS(evt) {
+	cssfile = DOM.LoadCSS("resources/import.css");
+	DOM.Id("loadcss").style.display = "none";
+	DOM.Id("unloadcss").style.display = "inline";
+}
+
+function UnloadCSS(evt) {
+	if (cssfile) DOM.HeadRemove(cssfile);
+	DOM.Id("loadcss").style.display = "inline";
+	DOM.Id("unloadcss").style.display = "none";
+}
+// ]]>
+</script>
+
+<h2>DOM class (static)</h2>
+<p>An object that provides access to the DOM of the XHTML page or an XML document.</p>
+
+<h3>Notes</h3>
+<p>It is possible to use n = LoadCSS(file) to dynamically load a stylesheet. The stylesheet can then be removed with DOM.HeadRemove(n), but this does not change modified styles back in IE6 and below.</p>
+<p>It would have been preferable to provide prototype functions for HTMLElements. Unfortunately, this is not possible within Internet Explorer.</p>
+
+<h3>Public properties</h3>
+<dl>
+<dt>DOM.Enabled</dt> <dd>true if this is a DOM enabled browser</dd>
+<dt>DOM.ElementNode</dt> <dd>the value of an element node (1)</dd>
+<dt>DOM.AttributeNode</dt> <dd>the value of an attribute node (2)</dd>
+<dt>DOM.TextNode</dt> <dd>the value of a text node (3)</dd>
+<dt>DOM.CommentNode</dt> <dd>the value of an attribute node (8)</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt class="wide">DOM.Id(string id, [string|node rootElement])</dt> <dd>find an element by ID name (assumes document rootNode if not specified)</dd>
+<dt class="wide">DOM.Tags(string tag, [string|node rootElement])</dt> <dd>returns an array of nodes matching the tag (assumes document rootNode if not specified)</dd>
+<dt class="wide">DOM.Class(string className, [string tag, string|node rootElement])</dt> <dd>returns an array of nodes that are assigned a class containing className (can optionally specify a tag name and rootElement)</dd>
+<dt class="wide">DOM.AllElements(string|node rootElement)</dt> <dd>returns an array of all element nodes in the tree, ignoring text and whitespace (can optionally specify a rootElement node)</dd>
+<dt class="wide">DOM.ChildElements(string|node element)</dt> <dd>returns an array of child nodes that are elements (ignores text and whitespace)</dd>
+<dt class="wide">DOM.FindNodeType(string|node element, int nodetype)</dt> <dd>recurses child tree until a matching node type is found</dd>
+<dt class="wide">DOM.Text(string|node element)</dt> <dd>returns the text of the first text node found</dd>
+<dt class="wide">DOM.SetText(string|node element, string text)</dt> <dd>defines the first child text element. Appends a text node if required.</dd>
+
+<dt class="wide">DOM.Copy(node from, node to)</dt> <dd>copies (clones) children of DOM node from to children of DOM node to (faster and more reliable than XML.Copy, but both nodes must be in the HTML DOM, not XML documents).</dd>
+<dt class="wide">DOM.RemoveChildren(node element)</dt> <dd>removes all child nodes of element</dd>
+<dt class="wide">DOM.RemoveID(node element)</dt> <dd>removes ID attributes from node and children</dd>
+
+<dt class="wide">DOM.AbsoluteX(string|node element)</dt> <dd>returns the absolute X co-ordinate from the top of the page</dd>
+<dt class="wide">DOM.AbsoluteY(string|node element)</dt> <dd>returns the absolute Y co-ordinate from the top of the page</dd>
+
+<dt class="wide">DOM.CreateFragment(object)</dt> <dd>creates a DOM fragment from an object literal (see <a href="#oblit">below</a>)</dd>
+
+<dt class="wide">DOM.HeadAppend(element)</dt> <dd>appends an element as a child of the HTML &lt;head&gt; and returns the node</dd>
+<dt class="wide">DOM.HeadRemove(element)</dt> <dd>removes the child element from the HTML &lt;head&gt; and returns the node</dd>
+<dt class="wide">DOM.LoadJS(file)</dt> <dd>loads a JS file (uses DOM.HeadAppend) and returns the node</dd>
+<dt class="wide">DOM.LoadCSS(file)</dt> <dd>loads a CSS file (uses DOM.HeadAppend) and returns the node</dd>
+</dl>
+
+<h3 id="oblit">Using object literal to create a DOM fragment</h3>
+<p>The easiest way to add a segment of HTML to the DOM is to use innerHTML, e.g.</p>
+<pre>
+node.innerHTML = "&lt;p&gt;This is new content&lt;/p&gt;";
+</pre>
+
+<p>Although this method is fast and usually works well, it is not part of the W3C recommendation and can cause DOM rendering issues.</p>
+
+<p>The DOM.CreateFragment method can be passed an object literal to create a DOM fragment which can be appended to a node (see the example).</p>
+
+<p>Object literal notation:</p>
+<ul>
+<li>only one root node can be used</li>
+<li>nodes must be followed by { ...argX, argY, argZ, ... }</li>
+<li>attribute name and value arguments are strings, e.g. "id" : "test"</li>
+<li>text arguments must be a name starting with "#" and the text string, e.g. "#" : "display me". If a node has two or more text strings, they must have different names, i.e. #1 and #2</li>
+<li>child nodes are passed as another object literal, e.g. strong: { ...args...}</li>
+</ul>
+
+<h3>Example</h3>
+<pre>
+if (DOM.Enabled) {
+	var e = DOM.Id("doc");				// find element with ID of "doc"
+	var ptag = DOM.Tags("p", e);			// array of &lt;p&gt; tag child nodes within e
+	var children = DOM.ChildElements(e);		// array of child element nodes within e
+	DOM.SetText(ptag[0], DOM.Text(ptag[1]));	// set the first &lt;p&gt; tag to the text in the second
+	posX = DOM.AbsoluteX(children[0]);		// x co-ordinate of first child node
+	posY = DOM.AbsoluteY(children[0]);		// y co-ordinate of first child node
+	
+	// create an object literal
+	// this will render &lt;p id=&quot;objlit&quot; class=&quot;text&quot;&gt;This is &lt;strong&gt;object literal&lt;/strong&gt; notation.&lt;/p&gt;
+	var frag = {
+		p:
+		{
+			"id": "objlit",
+			"class": "text",
+			"#1": "This is ",
+			strong: 
+			{
+				"#": "object literal"
+			}
+			"#2": " notation."
+		}
+	}
+	
+	e.appendChild(DOM.CreateFragment(frag));
+}
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,342 @@
+/* form styling */
+*
+{
+	font-family: arial, sans-serif;
+}
+
+html
+{
+	padding: 0;
+	margin: 0;
+	border-style: none;
+}
+
+body
+{
+	font-size: small;
+	padding: 10px;
+	margin: 0px;
+}
+
+h1
+{
+	font-size: 1.4em;
+	padding: 0;
+	margin: 0 0 0.6em 0;
+	border-bottom: 2px solid #000;
+}
+
+h2
+{
+	font-size: 1.2em;
+	padding: 0;
+	margin: 2em 0 0.6em 0;
+	border-bottom: 1px solid #000;
+}
+
+h3
+{
+	font-size: 1em;
+	padding: 0;
+	margin: 1em 0 0 0;
+	color: #333;
+}
+
+p
+{
+	font-size: 1em;
+	padding: 0;
+	margin: 0 0 1em 0;
+}
+
+ul, ol
+{
+	padding: 0;
+	margin: 1em 0 2em 4em;
+}
+
+li
+{
+	margin: 0 0 1em 0;
+}
+
+dl
+{
+	padding: 0;
+	margin: 0.5em 0 2em 4em;
+}
+
+dt
+{
+	clear: both;
+	float: left;
+	width: 15em;
+	font-weight: bold;
+	padding: 0;
+	margin: 0 0 0.5em 0;
+	color: #369;
+}
+
+dl.wide dt, dt.wide
+{
+	width: 28em;
+}
+
+dd
+{
+	padding: 0;
+	margin: 0 0 0.5em 0;
+	color: #666;
+}
+
+pre
+{
+	width: 90%;
+	font-family: monospace;
+	font-size: 1em;
+	padding: 3px;
+	margin: 1em 0 2em auto;
+	overflow: auto;
+	border: 1px solid #999;
+}
+
+/* ############################### FORM styles ############################### */
+
+fieldset
+{
+	width: 35ex;
+	padding: 1em;
+	margin: 0 auto;
+	border: 1px solid #7f9db9;
+	overflow: auto;
+}
+
+fieldset legend
+{
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #7f9db9;
+	padding: 0 0.4em 0 0.2em;
+	margin: 0;
+	border: 1px solid #7f9db9;
+	cursor: help;
+}
+
+input, select, textarea, button
+{
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	text-align: left;
+	padding: 1px 2px;
+	margin: 0;
+	color: #000;
+	background-color: #fff;
+	border: 1px solid #7f9db9;
+	cursor: help;
+}
+
+div.button
+{
+	clear: both;
+	width: 100%;
+	margin: 1em 0;
+}
+
+div.button input
+{
+	display: block;
+	width: 8em;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px 1px 3px 1px;
+	margin: 0 auto 0 auto;
+	color: #fff;
+	background-color: #7f9db9;
+	border: 2px outset #7f9db9;
+	cursor: pointer;
+}
+
+.checkbox, .radio, .inputfirst input { width: auto; border-style: none; }
+.inputsml { width: 8ex; }
+.inputmed { width: 18ex; }
+.inputbig { width: 28ex; }
+.validNUMBER, .validCURRENCY, .validPERCENT, .validDATE { text-align: right; }
+
+div.slidervert
+{
+	float: left;
+	width: 10ex;
+	padding: 0.5ex 0.5ex;
+}
+
+div.slidervert label
+{
+	display: block;
+	text-align: center;
+	padding: 0 0 0.2em 0;
+}
+
+div.slidervert input
+{
+	display: block;
+	margin: 0 auto;
+}
+
+div.sliderhorz label
+{
+	width: 4em;
+	float: left;
+	text-align: right;
+	padding-right: 0.5em;
+}
+
+div.sliderhorz input
+{
+	float: left;
+}
+
+/* slider backgrounds */
+div.slidert, div.sliderb
+{
+	display: block;
+	width: 3px;
+	height: 199px;
+	margin: 0 auto;
+	background: url("../images/sliderscale.gif") center top repeat-y;
+	border-left: 1px solid #7f9db9;
+}
+div.slidert { border-top: 1px solid #7f9db9; }
+div.sliderb { border-bottom: 1px solid #7f9db9; }
+
+div.sliderl, div.sliderr
+{
+	float: left;
+	width: 100px;
+	height: 3px;
+	background: url("../images/sliderscale.gif") left top repeat-x;
+	border-top: 1px solid #7f9db9;
+	margin-top: 0.7em;
+	overflow: hidden;
+}
+div.sliderl { border-left: 1px solid #7f9db9; }
+div.sliderr { border-right: 1px solid #7f9db9; }
+
+/* sliders */
+div.sliderH
+{
+	position: absolute;
+	display: block;
+	width: 13px;
+	height: 16px;
+	cursor: e-resize;
+	background: url("../images/sliderh.gif") 50% 50% no-repeat;
+}
+
+div.sliderV
+{
+	position: absolute;
+	display: block;
+	width: 16px;
+	height: 13px;
+	cursor: n-resize;
+	background: url("../images/sliderv.gif") 50% 50% no-repeat;
+}
+
+/* focus styles */
+label.focus
+{
+	font-weight: bold;
+}
+
+input.focus, select.focus, textarea.focus
+{
+	background-color: #eff2f5;
+}
+
+/* error styles */
+label.inputerror
+{
+	color: #c00;
+}
+
+input.inputerror, select.inputerror, textarea.inputerror
+{
+	color: #c00;
+}
+
+/* disabled styles */
+label.disabled
+{
+	color: #999;
+}
+
+/* field help box */
+div#fieldhelpbox
+{
+	position: absolute;
+	width: 12em;
+}
+
+div#fieldhelpbox div#fht, div#fieldhelpbox div#fhb
+{
+	position: relative;
+	height: 1px;
+	padding: 0;
+	margin: 0 1px;
+	background-color: #7f9db9;
+	overflow: hidden;
+}
+
+div#fieldhelpbox div#fhc
+{
+	position: relative;
+	font-size: 0.85em;
+	text-align: left;
+	padding: 2px 6px;
+	margin: 0;
+	background-color: #dee7ed;
+	border-width: 1px 2px;
+	border-style: solid;
+	border-color: #7f9db9;
+}
+
+div#fieldhelpbox div#fhs
+{
+	position: relative;
+	left: 6px;
+	overflow: hidden;
+	width: 0px;
+	height: 0px;
+	border-width: 3px;
+	border-style: solid;
+	border-color: #7f9db9 #fff #fff #7f9db9;
+}
+
+div#fieldhelpbox > div#fhs
+{
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+}
+
+div#fieldhelpbox div#fhc p
+{
+	margin: 0.3em 0;
+}
+
+/* results */
+div.result
+{
+	clear: both;
+}
+
+div.result p
+{
+	font-weight: bold;
+	text-align: center;
+	margin: 0.3em 0;
+}
+
+div.result p span
+{
+	font-weight: normal;
+}

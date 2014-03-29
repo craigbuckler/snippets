@@ -1,0 +1,15 @@
+/* ImageScroller styles */
+a.imagescroller, a.imagescroller:hover
+{
+	display: block;
+	float: left;
+	padding: 0;
+	margin: 1em;
+	border: 1px solid #000;
+}
+
+a.imagescroller img
+{
+	display: block;
+	border-style: none;
+}

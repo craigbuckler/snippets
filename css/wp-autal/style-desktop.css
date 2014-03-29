@@ -1,0 +1,115 @@
+/*
+Autal desktop layout
+*/
+
+div.content
+{
+	width: 97%;
+	max-width: 76em;
+	margin: 0 auto;
+}
+
+/* grid */
+.s25 { width: 23%; }
+.s33 { width: 31.3%; }
+.s50 { width: 48%; }
+.s66 { width: 64.6%; }
+.s75 { width: 73%; }
+.s100 { width: 98%; }
+.sectionlist section { width: 33%; }
+
+/* navigation */
+nav
+{
+	clear: right;
+	float: right;
+	width: auto;
+}
+
+nav li
+{
+	float: left;
+	width: auto;
+}
+
+nav a
+{
+	padding: 0 1em;
+}
+
+nav > ul > li > a > span
+{
+	display: inline;
+}
+
+nav > ul > li.sub > a:after
+{
+	font-family: icon;
+	content: "\e817";
+	font-size: 0.5em;
+	vertical-align: top;
+	padding-left: 2px;
+	color: #666;
+}
+
+/* news and twitter */
+.news, .twitterstatus
+{
+	min-height: 30em;
+}
+
+/* paged navigation */
+ol#pagenav li
+{
+	line-height: 1.55em;
+}
+
+ol#pagenav a, ol#pagenav strong, ol#pagenav span
+{
+	width: 1.6em;
+	height: 1.6em;
+	line-height: 1.55em;
+}
+
+ol#pagenav li.control a, ol#pagenav li.control span
+{
+	width: 4em;
+}
+
+/* resource index */
+ul#resourceindex li
+{
+	width: 20%;
+	float: left;
+}
+
+ul#resourceindex.size2 li
+{
+	width: 50%;
+}
+
+ul#resourceindex.size3 li
+{
+	width: 33.333%;
+}
+
+ul#resourceindex.size4 li
+{
+	width: 25%;
+}
+
+ul#resourceindex.size6 li
+{
+	width: 16.666%;
+}
+
+/* table */
+th, td
+{
+	padding: 1.5%;
+}
+
+th
+{
+	padding: 0.5% 1.5%;
+}

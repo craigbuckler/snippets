@@ -1,0 +1,446 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>JavaScript testbed: client-side form validator</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/form.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/localisation.js"></script>
+<script type="text/javascript" src="scriptlibrary/validatorsupport.js"></script>
+<script type="text/javascript" src="scriptlibrary/validator.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side form validator</h1>
+
+<p>Client-side cross-browser generic and localised form validation. Validation parameters are passed in the input tag's class attribute.</p>
+
+<form id="myform" action="validator.html" method="get">
+
+<fieldset>
+<legend title="form validation demonstration">custom form</legend>
+
+<div>
+	<label for="surname" title="your last name">surname:</label>
+	<input  id="surname" name="surname" type="text" value="" class="inputmed validALPHA req max30" />
+	<div class="fieldhelp">
+		<p>Please enter your last name. This entry is required.</p>
+	</div>
+</div>
+
+<div>
+	<label for="name" title="your first name(s)">first name(s):</label>
+	<input  id="name" name="name" value="" class="inputmed validALPHA min3 max30" />
+	<div class="fieldhelp">
+		<p>Please enter your first name or names.</p>
+	</div>
+</div>
+
+<div>
+	<label for="gender" title="your gender">gender:</label>
+	<select id="gender" name="gender" class="inputmed validSTRING">
+		<option value="">choose...</option>
+		<option value="male">male</option>
+		<option value="female">female</option>
+		<option value="confidential">confidential</option>
+	</select>
+	<div class="fieldhelp">
+		<p>Please select your gender.</p>
+	</div>
+</div>
+
+<div>
+	<label for="dob" title="the date you were born">date of birth:</label>
+	<input  id="dob" name="dob" type="text" value="" class="inputsml validDATE min19000101 max20050101" />
+	<div class="fieldhelp">
+		<p>Please enter the date you were born.</p>
+	</div>
+</div>
+
+<div>
+	<label for="telephone" title="your telephone number">telephone:</label>
+	<input  id="telephone" name="telephone" type="text" value="" class="inputmed validTEXT max20" />
+	<div class="fieldhelp">
+		<p>Please enter your telephone number.</p>
+	</div>
+</div>
+
+<div>
+	<label for="email" title="your email address">email:</label>
+	<input  id="email" name="email" type="text" value="" class="inputbig validEMAIL req max50" />
+	<div class="fieldhelp">
+		<p>Please enter your email address. This entry is required.</p>
+		<p>Your address will not be passed to third parties, and we will only contact you if you subscribe to the newsletter.</p>
+	</div>
+</div>
+
+<div>
+	<label for="url" title="your web address">URL:</label>
+	<input  id="url" name="url" type="text" value="" maxlength="50" class="inputbig validURL" />
+	<div class="fieldhelp">
+		<p>Please enter your website address if you have one.</p>
+	</div>
+</div>
+
+<div>
+	<label for="salary" title="your yearly earnings before tax">annual salary:</label>
+	<input  id="salary" name="salary" type="text" value="" class="inputsml validCURRENCY dp0 min0 max100000" />
+	<div class="fieldhelp">
+		<p>Please enter the amount you earn per year before tax. Any value between up to &pound;100,000 can be entered.</p>
+	</div>
+</div>
+
+<div>
+	<label for="dependents" title="number of dependent children">dependents:</label>
+	<input  id="dependents" name="dependents" type="text" value="" class="inputsml validNUMBER dp0 min0 max20" />
+	<div class="fieldhelp">
+		<p>Please enter the number of dependent children you have.</p>
+	</div>
+</div>
+
+<div>
+	<label for="tax" title="your tax bracket">tax bracket:</label>
+	<input  id="tax" name="tax" type="text" value="" class="inputsml validPERCENT min0 max40" />
+	<div class="fieldhelp">
+		<p>Please enter your top tax bracket, e.g. 0%, 10%, 22% or 40%.</p>
+	</div>
+</div>
+
+<div>
+	<label for="cc" title="your credit card number">credit card number:</label>
+	<input  id="cc" name="cc" type="text" value="" class="inputmed validDIGIT min16 max16" />
+	<div class="fieldhelp">
+		<p>Please enter your 16-digit credit card number or leave this box blank</p>
+	</div>
+</div>
+
+<div>
+	<label for="ccem" title="your credit card expiry date">expiry month:</label>
+	<input  id="ccem" name="ccem" type="text" value="" class="inputiny validDIGIT min2 max2" />
+	<div class="fieldhelp">
+		<p>your 2-digit credit card expiry month, i.e. 01 to 12</p>
+	</div>
+</div>
+
+<div>
+	<label for="ccey" title="your credit card expiry date">expiry year:</label>
+	<input  id="ccey" name="ccey" type="text" value="" class="inputiny validDIGIT min2 max2" />
+	<div class="fieldhelp">
+		<p>your 2-digit credit card expiry year, e.g. 08, 09</p>
+	</div>
+</div>
+
+<div>
+	<label for="subscribe" title="subscribe to our newsletter">subscribe:</label>
+	<input id="subscribe" name="subscribe" type="checkbox" class="checkbox" />
+	<div class="fieldhelp">
+		<p>Tick this box to subscribe to our email newsletter.</p>
+	</div>
+</div>
+
+<div class="inputfirst">
+	<input id="opttype_0" name="opttype" type="radio" value="html" checked="checked" class="radio" />
+	<label for="opttype_0" title="receive the HTML newsletter">HTML</label>
+	<div class="fieldhelp">
+		<p>Receive the HTML newsletter. This provides a formatted email, but check your email application supports it.</p>
+	</div>
+</div>
+
+<div class="inputfirst">
+	<input id="opttype_1" name="opttype" type="radio" value="text" class="radio" />
+	<label for="opttype_1" title="receive the plain text newsletter">plain text</label>
+	<div class="fieldhelp">
+		<p>Receive a plain text newsletter. This can be received by any email application.</p>
+	</div>
+</div>
+
+<div>
+	<label for="comments" title="your comments or questions">comments:</label>
+	<textarea  id="comments" name="comments" rows="3" cols="10" class="inputbig validTEXT max100"></textarea>
+	<div class="fieldhelp">
+		<p>Please enter any comments or questions you have.</p>
+	</div>
+</div>
+
+<div class="button">
+	<input type="submit" value="submit" title="send your form information to us" />
+</div>
+
+</fieldset>
+
+</form>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", Initialise);
+
+function Initialise() {
+
+	// validate myform
+	var vform = new FormValidator("myform");
+
+	// enable/disable newsletter subscription
+	var emailcheck = function(evt) {
+		vform.Element.email.Validate();
+		var e = (vform.Element.email.Value != null && vform.Element.email.Value != "");
+		ElementEnable(vform.Element.subscribe, e);
+
+		// test limit changing - if a valid email is entered, change the surname string maximum length to 10
+		// if (e) { vform.Element.surname.Max=String(10); vform.Element.surname.SetMaxLength(); vform.Element.surname.Validate(); ValidationReport(vform.Element.surname); }
+
+		e = (e && vform.Element.subscribe.InputNode.checked);
+		ElementEnable(vform.Element.opttype_0, e);
+		ElementEnable(vform.Element.opttype_1, e);
+
+
+	}
+
+	// enable/disable newsletter type
+	var subscribecheck = function(evt) {
+		var e = (vform.Element.subscribe.InputNode.checked && vform.Element.email.Value != null && vform.Element.email.Value != "");
+		ElementEnable(vform.Element.opttype_0, e);
+		ElementEnable(vform.Element.opttype_1, e);
+	}
+
+	emailcheck();
+	new Event(DOM.Id("email"), "blur", emailcheck);
+	subscribecheck();
+	new Event(DOM.Id("subscribe"), "click", subscribecheck);
+}
+// ]]>
+</script>
+
+<h2>FormValidator class</h2>
+<p>Validates form input values according to data defined in the class attribute. Characters are checked and inputs are formatted in accordance with the current locale.</p>
+
+<h3>Dependencies</h3>
+<ul>
+<li>misc.js</li>
+<li>events.js</li>
+<li>dom.js</li>
+<li>graphic.js (for validatorsupport.js)</li>
+<li>localisation.js (<a href="#localisation">see below</a>)</li>
+<li>validatorsupport.js (<a href="#validatorsupport">see below</a>)</li>
+</ul>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>form</dt> <dd>the form node (or a string containing the form ID)</dd>
+</dl>
+
+<h3>Public properties</h3>
+<dl>
+<dt>.Form</dt> <dd>the form node being controlled</dd>
+<dt>.Element</dt> <dd>an associative array FormElement objects. The key is the element ID, or "elementN" where that is not available</dd>
+<dt>.ElementLength</dt> <dd>the number of controlled input nodes</dd>
+<dt>.ReportingFunction</dt> <dd>the function handles errors (default is <em>ValidationReport</em>). It is passed a FormElement object </dd>
+<dt>.ValidForm</dt> <dd>true if the whole form is valid</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt>.ValidateForm()</dt> <dd>validates the whole form and returns true or false (.ValidForm is also set). Should only need to be run if an event occurs that is outside the control of the FormValidator, e.g. a tab is clicked.</dd>
+<dt>.Highlight(ename)</dt> <dd>set focus to an element (first element is used if none is specified)</dd>
+</dl>
+
+<h3 id="formelement">FormElement object</h3>
+<p>A single FormElement object contains information about a single validated input. Every input can be accessed using the .Element array (e.g. MyForm.Element.MyInputBox.<em>property|method</em>).</p>
+
+<p>A single FormElement object is also passed to the ReportingFunction when an event occurs (load, focus, blur, submit, or unload). The following properties can be examined:</p>
+<dl>
+<dt>.InputNode</dt> <dd>the input node</dd>
+<dt>.LabelNode</dt> <dd>the associated label node (if any)</dd>
+<dt>.HelpNode</dt> <dd>the help text node (has a class of "fieldhelp")</dd>
+<dt>.TitleText</dt> <dd>the title (in the label or input)</dd>
+<dt>.Required</dt> <dd>value is required (can be changed using FormValidator.Element[name].Required = true|false)</dd>
+<dt>.Min</dt> <dd>the minimum value (can be changed using FormValidator.Element[name].Min = value|null)</dd>
+<dt>.Max</dt> <dd>the maximum value (can be changed using FormValidator.Element[name].Max = value|null)</dd>
+<dt>.DP</dt> <dd>the number of decimal places for numeric values (can be changed using FormValidator.Element[name].DP = value)</dd>
+<dt>.MaxLength</dt> <dd>the maximum number of chacters that can be entered (set using .SetMaxLength())</dd>
+<dt>.Value</dt> <dd>the formatted value (null if invalid)</dd>
+<dt>.ValueLast</dt> <dd>the last known valid value, or the starting value (could be invalid)</dd>
+<dt>.Valid</dt> <dd>true if the current value is valid</dd>
+<dt>.InvalidIndex</dt> <dd>the invalid value index when checking all fields (e.g. first invalid value = 1)</dd>
+<dt>.EventType</dt> <dd>the event type (load, focus, blur, submit or unload)</dd>
+<dt>.UserChanged</dt> <dd>returns true if the user has changed the value</dd>
+</dl>
+
+<p>The following methods are available but do not normally need to be called unless you have an <a href="#advancedusage">advanced form</a>:</p>
+<dl class="wide">
+<dt>.Validate()</dt> <dd>validates the field and updates the FormElement properties</dd>
+<dt>.KeyCheck(char key, bool noLimitTest)</dt> <dd>returns true if key is a valid character for this data type. If noLimitTest is true, the maximum string length is ignored</dd>
+<dt>.UpdateField(null|value)</dt> <dd>update the field with a new value (or null). This is automatically called by .Validate().</dd>
+<dt>.SetLimits(null|min, null|max)</dt> <dd>set the minimum and maximum values (null will not change them)</dd>
+<dt>.SetMaxLength()</dt> <dd>updates an input field's maxlength depending on the .Min or .Max values. This is automatically called by .SetLimits().</dd>
+</dl>
+
+<h3 id="usage">Usage notes</h3>
+<p>FormValidatorSetup() is called when the page loads. This automatically creates a FormValidator object for all unvalidated forms with the class "validate" and sets focus to the first field. This function can be run again if necessary, but it is also possible to use:</p>
+
+<pre>
+var myform = new FormValidator("myform");
+</pre>
+
+<p>This will give you a reference to the FormValidator object so it can be manipulated accordingly.</p>
+
+<p>input, select and textarea elements can be assigned any number of the following classes:</p>
+
+<ul>
+<li><strong>validTYPE</strong><br />
+Defines the TYPE of validation: STRING, ALPHA (letters, space, hyphen and apostrophe only), TEXT (limited to a-z, 0-9, punctuation and whitespace), EMAIL, URL, DATE, DIGIT (0-9 digits only), NUMBER, CURRENCY, or PERCENT. The TYPE can be any case (uppercase makes it easier to read) and the value must be specified for validation to occur. If more than one type is specified, the last one takes priority.</li>
+
+<li><strong>req</strong><br />
+Indicates this is a required value and empty inputs will be marked as not valid.</li>
+
+<li><strong>dpVALUE</strong><br />
+Specifies the number of decimal places for numeric types as a localised number (other types will ignore this setting).</li>
+
+<li><strong>minVALUE</strong><br />
+Specifies the minimum localised value (inclusive). For STRING, ALPHA, TEXT, EMAIL, URL and DIGIT this is the minimum string length. For NUMBER, CURRENCY, and PERCENT, this is the minimum value. For dates, this is the earliest date (dates can be specified using the localised date format or YYYYMMDD).</li>
+
+<li><strong>maxVALUE</strong><br />
+Specified the maximum localised value (inclusive), in the same way as min.</li>
+</ul>
+
+<p>All values are specified according to the <a href="#localisation">locale</a> set. For example, min1.0 would set a minimum of 1 in the UK, but 10 for France.</p>
+
+<p>In addition, the first element (generally a &lt;div&gt;) found with a class of "fieldhelp" after an input is defined as the help text node. This node can contain any child elements.</p>
+
+<p>Example:</p>
+<pre>
+&lt;form id="myform" action="submit.html" method="get" class="validate"&gt;
+	&lt;div&gt;
+		&lt;label for="name" title="your name"&gt;name:&lt;/label&gt;
+		&lt;input type="text" id="name" name="name" class="largebox validALPHA req min1 max50" /&gt;
+		&lt;!-- a required alpha string, minimum length of 1, maximum length of 50 --&gt;
+		&lt;div class="fieldhelp"&gt;please enter your name&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div&gt;
+		&lt;label for="age" title="your age"&gt;date of birth:&lt;/label&gt;
+		&lt;input type="text" id="dob" name="dob" class="smallbox validDATE min19000101 max20000101" /&gt;
+		&lt;!-- an optional date, minimum of 01-01-1900, maximum of 01-01-2000 --&gt;
+		&lt;div class="fieldhelp"&gt;please enter your date of birth&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div&gt;
+		&lt;input type="submit" /&gt;
+	&lt;/div&gt;
+&lt;/form&gt;
+</pre>
+
+<h3>Submit event</h3>
+<p>A form can be submitted by pressing enter on an &lt;input&gt; form element (select boxes and textareas will not submit the form). This will only work in IE and Firefox if a submit button is available. In IE, the submit button must also be "visible", i.e. it is not possible to use CSS display: none;.</p>
+
+<h3 id="advancedusage">Advanced usage</h3>
+<p>Simple forms require no further code, however, it is often necessary to change form elements depending on what has been entered, i.e. the 'subscribe' tickbox above is only enabled if the user enters a valid email address.</p>
+
+<p>This functionality can be implemented by defining a blur or change event for a particular field. However, the FormValidator may not have validated the field before your event handler is called, so you should always run the field's .Validate() method first, e.g.</p>
+
+<pre>
+var vform = new FormValidator("myform");
+
+// enable/disable newsletter subscription function
+var emailcheck = function(evt) {
+	vform.Element.email.Validate();
+	// e is set to true if the field is valid and something has been entered
+	var e = (vform.Element.email.Valid &amp;&amp; vform.Element.email.Value != "");
+	ElementEnable(vform.Element.subscribe, e); // function defined in validatorsupport.js
+}
+
+emailcheck(); // run on load to enable/disable subscribe box
+new Event(DOM.Id("email"), "blur", emailcheck); // define new event
+</pre>
+
+
+<h2 id="validatorsupport">validatorsupport.js event handler</h2>
+<p>The FormValidator object will prevent invalid inputs and stop submission if there are one or more invalid inputs. Any graphical effects are handled by the funcion specified in the .ReportingFunction property. By default, this is set to ValidationReport - a function defined in validatorsupport.js - but it is easy to create your own.</p>
+
+<p>The ReportingFunction is always passed a <a href="#formelement">FormElement object</a> as a single argument. This object can be examined to find the input node, its current value, its validity, and what event fired the handler (load, focus, blur, submit, or unload). The event can then be handled accordingly.</p>
+
+<p>The ValidationReport() function provided here will:</p>
+<ul>
+<li>hide all 'fieldhelp' nodes when the page loads</li>
+<li>apply styles to the input box and its label when it has or loses focus</li>
+<li>shows a popup DHTML speech bubble containing the 'fieldhelp' text when an element has focus</li>
+<li>apply styles to an input box and its label if the field is not valid</li>
+</ul>
+
+<p>Note that the DHTML speech bubble is created dynamically. DHTML layers can cause issues in Internet Explorer: select boxes, iframes and applets will overlay the layer no matter what z-index is set. To fix this in IE5.5+, a transparent &lt;iframe&gt; is positioned below the bubble. In IE5.0, any object that would float above the layer is temporarily hidden.</p>
+
+
+<h2 id="localisation">localisation.js</h2>
+<p>The Locale object defines parameters for the country where the page is being used. The FormValidator uses this object to check that a field is valid and how it should be formatted.</p>
+
+<h3>Dependencies</h3>
+<ul>
+<li>misc.js</li>
+<li>HTML page must use: &lt;meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" /&gt; for some symbols</li>
+</ul>
+
+<h3>Usage notes</h3>
+<p>The object defaults to UK localisation. Localisation setups for the US, France, Germany and Spain are included.</p>
+
+<h3>Public properties</h3>
+<p>Note that these values need only be set if the Locale object does not contain a specific localisation:</p>
+<dl>
+<dt>.ThousandsSep</dt> <dd>number thousands character</dd>
+<dt>.DecimalPoint</dt> <dd>number decimal point character</dd>
+<dt>.NegativePre</dt> <dd>the character at the start of the number that denotes a negative value</dd>
+<dt>.NegativePost</dt> <dd>the character at the end of the number that denotes a negative value</dd>
+<dt>.CurrencyPre</dt> <dd>the character at the start of the number that denotes a currency</dd>
+<dt>.CurrencyPost</dt> <dd>the character at the end of the number that denotes a currency</dd>
+<dt>.PercentPre</dt> <dd> the character at the start of the number that denotes a percentage</dd>
+<dt>.PercentPost</dt> <dd> the character at the end of the number that denotes a percentage</dd>
+<dt>.DateFormat</dt> <dd>a date format string using d, m and y, e.g. d/m/y or m.d.y</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt>.Initialise()</dt> <dd>initialise the locale setup. Need only be run if a property is changed.</dd>
+<dt>.SetUK()</dt> <dd>set UK localisation (the default)</dd>
+<dt>.SetUS()</dt> <dd>set US localisation</dd>
+<dt>.SetCA()</dt> <dd>set Canadian localisation</dd>
+<dt>.SetFR()</dt> <dd>set French localisation</dd>
+<dt>.SetDE()</dt> <dd>set German localisation</dd>
+<dt>.SetES()</dt> <dd>set Spanish localisation</dd>
+</dl>
+
+<p>The following methods are available, but need not be used as object prototypes are provided.</p>
+<dl>
+<dt>.toNumber(value)</dt> <dd>converts a localised value to a real number (returns null if not valid)</dd>
+<dt>.toDate(value)</dt> <dd>converts a localised value to a real date (returns null if not valid)</dd>
+<dt>.formatNumber(value, dp)</dt> <dd>formats a value to a localised number at dp decimal places</dd>
+<dt>.formatCurrency(value, dp)</dt> <dd>formats a value to a localised currency at dp decimal places</dd>
+<dt>.formatPercentage(value, dp)</dt> <dd>formats a value to a localised percentage at dp decimal places</dd>
+<dt>.formatDate(value)</dt> <dd>formats a value to a localised date (returns null if not a date)</dd>
+<dt>.validCharacter(char, type)</dt> <dd>returns true if the char is valid for the type (string, alpha, text, digit, number, currency, percent, or date)</dd>
+</dl>
+
+
+<h3>Object prototypes</h3>
+<p>The following prototypes are defined. Some implement Locale methods for ease of use.</p>
+<dl class="wide">
+<dt>String.toNumber()</dt> <dd>converts a localised string to a real number (returns null if not a number)</dd>
+<dt>String.toDate()</dt> <dd>converts a localised string to a real date (returns null if not a date)</dd>
+<dt>String.toEmail()</dt> <dd>converts a string to a valid email address (returns null if not valid)</dd>
+<dt>String.toURL()</dt> <dd>converts a string to a valid URL (returns null if not valid)</dd>
+<dt>Number.formatNumber(dp)</dt> <dd>converts a number to a local numeric string at dp decimal places</dd>
+<dt>Number.formatCurrency(dp)</dt> <dd>converts a number to a local currency string at dp decimal places</dd>
+<dt>Number.formatPercent(dp)</dt> <dd>converts a number to a local percentage string at dp decimal places</dd>
+<dt>Date.formatDate()</dt> <dd>converts a date to a local date string</dd>
+<dt>String.validStringCharacter()</dt> <dd>returns true if the character is valid for a string</dd>
+<dt>String.validAlphaCharacter()</dt> <dd>returns true if the character is valid for a alpha string (a-z, -, ' or space)</dd>
+<dt>String.validTextCharacter()</dt> <dd>returns true if the character is valid for a text string (a-z, 0-9, punctuation or whitespace)</dd>
+<dt>String.validDigitCharacter()</dt> <dd>returns true if the character is a valid digit (0-9)</dd>
+<dt>String.validNumberCharacter()</dt> <dd>returns true if the character is valid for a number</dd>
+<dt>String.validCurrencyCharacter()</dt> <dd>returns true if the character is valid for a currency</dd>
+<dt>String.validPercentCharacter()</dt> <dd>returns true if the character is valid for a percentage</dd>
+<dt>String.validDateCharacter()</dt> <dd>returns true if the character is valid for a date</dd>
+</dl>
+
+</body>
+</html>

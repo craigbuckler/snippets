@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<link type="text/css" rel="stylesheet" media="all" href="styles/lightbox.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_session.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_xml.js"></script>
+<script type="text/javascript" src="script/owl_innerhtml.js"></script>
+</head>
+<body>
+
+<h1>owl testbed: session system</h1>
+
+<p><a href="http://www.optimalworks.net/">Optimalworks.net</a></p>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+
+	var a = [];
+	a[0] = 9;
+	a[2] = 8;
+	a[5] = 7;
+
+	var s = {
+		a: 1,
+		b: 2,
+		c: 3,
+		n: null,
+		u: undefined,
+		s: "hello!",
+		bool: true,
+		d: a,
+		e: {
+			w: { a: "a", b: 2 },
+			x: null,
+			y: [10, 9 , 8, [7,6,5]],
+			z: false
+		},
+		f: function(x) { alert(x);}
+	};
+
+
+	//owl.Session.Store("s", s);
+	
+	// console.log(s);
+	owl.Session.Store("var1", s);
+	//console.log(owl.Session.Restore("var1"));
+	/*
+	console.log(owl.Session.Restore("s"));
+	console.log(owl.Session.Restore("s"));
+	console.log(owl.Session.Restore("s"));
+	*/
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed: client-side dragdrop handler</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+<style type="text/css">
+/* <![CDATA[ */
+div#dragitems
+{
+	position: relative;
+	padding: 0;
+	margin: 0;
+	height: 420px;
+}
+
+div.draggable
+{
+	display: block;
+	font-size: 11px;
+	text-align: center;
+	width: 50px;
+	height: 50px;
+	background-color: #ccc;
+	border: 1px solid #000;
+	overflow: hidden;
+}
+
+div#window
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 200px;
+	background-color: #eee;
+	border: 1px solid #000;
+}
+
+div#window div#handle
+{
+	height: 1%;
+	font-weight: bold;
+	padding: 2px;
+	color: #fff;
+	background-color: #006;
+}
+
+div.drop
+{
+	position: absolute;
+	top: 300px;
+	width: 200px;
+	height: 50px;
+	text-align: center;
+	color: #c00;
+	border: 1px solid #c00;
+}
+
+div#window p
+{
+	margin: 2px 2px 1em 2px;
+}
+
+.move { cursor: move; }
+.movev { cursor: n-resize; }
+.moveh { cursor: e-resize; }
+.movene { cursor: ne-resize; }
+.movenw { cursor: nw-resize; }
+/* ]]> */
+</style>
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/dragdrop.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side dragdrop handler</h1>
+
+<p>Client-side cross-browser element dragging and dropping.</p>
+
+<div id="dragitems"><!--recommend items are within the same DIV for browser consistency-->
+
+<div id="drop1" class="drop" style="left:10%;">drop point 1</div>
+<div id="drop2" class="drop" style="left:40%;">drop point 2</div>
+<div id="drop3" class="drop" style="left:70%;">drop point 3</div>
+
+<div id="dragme1" class="draggable moveh">horz + snap + event</div>
+<div id="dragme2" class="draggable movenw">diag + return</div>
+<div id="dragme3" class="draggable movev">vert</div>
+<div id="dragme4" class="draggable move">box + snap + return</div>
+<div id="dragme5" class="draggable moveh">sine wave</div>
+
+<div id="window">
+<div id="handle" class="move">drag me</div>
+<p>This is a window that can be dragged to any drop point (the top bar is used as the handle).</p>
+<p>IE6 and Mozilla can fade the elements as they are moved.</p>
+</div>
+
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", Initialise);
+
+function Initialise() {
+
+	var dd = new DragDrop("handle", "window");
+	dd.DragOpacity = 50;
+	dd.ReturnTime = 100;
+	dd.AddDropElement("drop1", "box 1");
+	dd.MoveToDrop(null, true);
+	dd.AddDropElement("drop2", "box 2");
+	dd.AddDropElement("drop3", "box 3");
+	dd.DropLock = true;
+	dd.EventDropOver = function(d) { d.DropElement.style.backgroundColor = '#fee'; };
+	dd.EventDropOut = function(d) { d.DropElement.style.backgroundColor = '#fff'; };
+	dd.EventDropStop = function(d) { window.status = "dropped on "+d.DropID; };
+
+	dd = new DragDrop("dragme1");
+	dd.DragOpacity = 50;
+	dd.AddRestriction(new DragLine(100, 100, 500, 100));
+	dd.AddRestriction(new DragGrid(100, 1));
+	dd.EventStart = function(d) { window.status = "dragme1: move started"; };
+	dd.EventMove = function(d) { window.status = "dragme1: moved to (" +d.PosX+", "+d.PosY+")"; };
+	dd.EventStop = function(d) { window.status = "dragme1: move stopped"; };
+	dd.MoveTo(100, 100);
+
+	dd = new DragDrop("dragme2");
+	dd.DragOpacity = 30;
+	dd.AddRestriction(new DragLine(100, 150, 400, 450));
+	dd.ReturnAlways = true;
+	dd.ReturnTime = 200;
+
+	dd = new DragDrop("dragme3");
+	dd.AddRestriction(new DragLine(100, 200, 100, 500));
+
+	dd = new DragDrop("dragme4");
+	dd.DragOpacity = 50;
+	dd.AddRestriction(new DragBox(100, 250, 500, 500));
+	dd.AddRestriction(new DragGrid(25, 25));
+	dd.ReturnAlways = true;
+	dd.ReturnTime = 800;
+
+	dd = new DragDrop("dragme5");
+	dd.DragOpacity = 70;
+	dd.AddRestriction(new DragBox(100, 200, 500, 400));
+	dd.AddRestriction(new DragPath(
+		function(x, y) {
+			y = Math.sin((Math.PI * 2) * ((x % 101) / 100)) * 20 + 300;
+			return ([x, y]);
+		}
+	));
+
+}
+// ]]>
+</script>
+
+<h2 style="clear:both;">DragDrop class</h2>
+<p>Configures an element that can be dragged and dropped. The movement of the element can be restricted to certain paths, snap to a grid, or lock on to specific drop points. Only a single set of document events are used to manage all DragDrop elements.</p>
+
+<h3>Usage notes</h3>
+<p>To avoid browser differences, it is recommended that related dragged elements have the same offsetParent node.</p>
+<p>Opera can incorrectly position elements (body.offsetTop/Left appears to return the same offset as the first element). It can be fixed by either setting the BODY position to relative, ensuring the first page element has no margin, or setting the draggable element's parent to relative.</p>
+<p>CSS can be used to change the cursor style when hovering over an element; this will give the user a visual clue to the element's function.</p>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>element</dt> <dd>the HTML element drag handle. If a string is passed, an the HTML element with that ID is used.</dd>
+<dt>dragged</dt> <dd>optional parent element. If not specified, the 'element' is moved. If specified, 'element' is used as a drag handle for 'dragged'</dd>
+</dl>
+
+<h3>Public properties (set)</h3>
+<dl>
+<dt>.Enabled</dt> <dd>if true, the element can be dragged (default true)</dd>
+<dt>.DragZIndex</dt> <dd>the z-index of the element while it is dragged (default 10)</dd>
+<dt>.DragOpacity</dt> <dd>the opacity (0 to 100) of the element while it is dragged (default 100)</dd>
+<dt>.ReturnAlways</dt> <dd>if true, the element will always return to its starting position (default false)</dd>
+<dt>.ReturnTime</dt> <dd>the time (in ms) the element can take to return to a starting position (default 300)</dd>
+<dt>.DropLock</dt> <dd>if true and drop points are specified, the element will lock to the top-left of the drop point (default true)</dd>
+<dt>.EventStart</dt> <dd>the event handler called when movement starts</dd>
+<dt>.EventMove</dt> <dd>the event handler called when movement occurs</dd>
+<dt>.EventStop</dt> <dd>the event handler called when movement stops</dd>
+<dt>.EventDropOver</dt> <dd>the event handler called when the element is moved over a drop point</dd>
+<dt>.EventDropOut</dt> <dd>the event handler called when the element is moved off a drop point</dd>
+<dt>.EventDropStop</dt> <dd>the event handler called when the element stops on a drop point</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt>.MoveTo(x, y[, slide])</dt> <dd>move the element to a specific absolute co-ordinate. Slide in to place if slide is true</dd>
+<dt>.MoveToDrop([dp][, slide])</dt> <dd>move to drop point dp (0 based). Uses the last point if dp is not specified or null. Slide in to place if slide is true</dd>
+<dt>.SlideBack()</dt> <dd>move back to the starting position</dd>
+<dt>.AddRestriction(func)</dt> <dd>add a movement restriction (see below)</dd>
+<dt>.RemoveLastRestriction()</dt> <dd>removes the last restriction added</dd>
+<dt>.RemoveRestrictions()</dt> <dd>removes all restrictions</dd>
+<dt>.AddDrop(x1, y1, x2, y2, id)</dt> <dd>add a drop point using the co-ordinates. The id is an optional identifier that is returned in .DropID</dd>
+<dt>.AddDropElement(element, id)</dt> <dd>add a drop point that is an HTML element. The id is an optional identifier that is returned in .DropID</dd>
+<dt>.RemoveLastDrop()</dt> <dd>removes the last drop point added</dd>
+<dt>.RemoveDrops()</dt> <dd>removes all drop points</dd>
+</dl>
+
+<h3>Public properties (get)</h3>
+<dl>
+<dt>.UserMoved</dt> <dd>returns true if the user has moved the element</dd>
+<dt>.PosX</dt> <dd>the x co-ordinate of the element</dd>
+<dt>.PosY</dt> <dd>the y co-ordinate of the element</dd>
+<dt>.StartPosX</dt> <dd>the starting x co-ordinate</dd>
+<dt>.StartPosY</dt> <dd>the starting y co-ordinate</dd>
+<dt>.DropIndex</dt> <dd>the drop point index (zero based)</dd>
+<dt>.DropID</dt> <dd>the drop point ID specified in .AddDrop or .AddDropElement</dd>
+<dt>.DropElement</dt> <dd>the drop point HTML element specified in .AddDropElement</dd>
+</dl>
+
+<h3>Drop points</h3>
+<p>If one or more drop points are specified, the element can only be dropped at those locations. Dropping at any other point will return the element back to its starting location (likely to be another drop point). Note that drop points can overlap, but the first one specified will take priority.</p>
+
+<h3>Movement restrictions</h3>
+<p>The .AddRestriction method is passed an object that restricts the movement of the element. Any number of restrictions can be specified, and they are applied in order. The following movement restriction objects are available:</p>
+<dl>
+<dt>new DragGrid(xGrid, yGrid)</dt> <dd>snaps the element to a grid specified by xGrid and yGrid pixels</dd>
+<dt>new DragLine(x1, y1, x2, y2)</dt> <dd>constricts movement to a straight line between the points</dd>
+<dt>new DragBox(x1, y1, x2, y2)</dt> <dd>constricts movement within a box</dd>
+<dt>new DragPath(func)</dt> <dd>specifies a path restriction function. The function must take the arguments x and y, and return ([x, y]), e.g.
+<pre>new DragPath( function(x, y) { x = (x % 101); y = (100 - x); return ([x, y]); } );</pre></dd>
+</dl>
+
+<h3>Examples</h3>
+<pre>
+var dd = new DragDrop("dragme1");
+dd.DragOpacity = 50;
+dd.AddRestriction(new DragLine(0, 0, 200, 200)); // restrict to a line
+dd.EventStop = function(d) { window.status = "dragme1 stopped at "+d.PosX+" , "+d.PosY; };
+dd.MoveTo(50, 50);
+dd.ReturnAlways = true; // will always return to 50,50 after drag
+
+var dd = new DragDrop("handle", "box"); // drag "box" using child element "handle"
+dd.ReturnTime = 100;
+dd.AddDropElement("drop1", "drop location 1");
+dd.MoveToDrop(); // move to drop1
+dd.AddDropElement("drop2", "drop location 2");
+dd.AddDropElement("drop3", "drop location 3");
+dd.DropLock = true;
+dd.EventDropStop = function(d) { window.status = "box has been put on "+d.DropID; };
+</pre>
+</body>
+</html>

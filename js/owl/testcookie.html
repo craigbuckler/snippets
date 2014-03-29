@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+</head>
+<body>
+
+<h1>owl testbed</h1>
+
+<div id="test">
+	<p id="testinner">element 1</p>
+	<p><strong class="class">test</strong></p>
+</div>
+
+<div title="testy test">
+	<p><span>element 2</span></p>
+	<p><a id="link" href="http://www.optimalworks.net/" class="class">link</a></p>
+</div>
+
+<div id="test2">
+<p class="class">This is div#test2</p>
+</div>
+
+<form id="testform" action="" method="get">
+<div>
+<input type="text" id="input1" name="input1" />
+<input type="submit" value="go" />
+</div>
+</form>
+
+<p><a id="testlink" href="#">test</a></p>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+
+	//alert(owl.Cookie.Enabled());
+	
+	var count = owl.Cookie.Get("count");
+	if (!count) count = 1; else count++;
+	owl.Cookie.Set("count", count, 3);
+
+	//alert(count);
+
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

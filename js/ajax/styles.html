@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed: client-side DOM handler</title>
+
+<link type="text/css" rel="stylesheet" media="screen" title="default" href="styles/styles.css" />
+<link type="text/css" rel="alternate stylesheet" media="screen" title="alternative" href="styles/stylesalt.css" />
+
+<link type="text/css" rel="stylesheet" media="print" href="styles/styles.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/styles.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side style handler</h1>
+
+<p>Cross-browser style switcher and handler. Choose your style...</p>
+
+<p><label for="stylechooser">styles available:</label> <select id="stylechooser" name="stylechooser"></select></p>
+
+<p>Show a list of all styles... <input id="showstyles" type="button" value="show styles" class="button" /></p>
+
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", DefineChooser);
+
+// define style selector
+function DefineChooser() {
+	if (DOM.Enabled) {
+
+		new Event(DOM.Id("stylechooser"), "change", ChangeStyle);
+		new Event(DOM.Id("showstyles"), "click", ShowStyles);
+
+		var chooser = DOM.Id("stylechooser"); // select list element
+		while (chooser.childNodes.length > 0) chooser.removeChild(chooser.lastChild); // remove all options
+
+		// add options in new order
+		var styles = StyleHandler.Titles();
+		var opt;
+		for (var i = 0; i < styles.length; i++) {
+			opt = document.createElement("option");
+			opt.setAttribute("value", styles[i]);
+			DOM.SetText(opt, styles[i]);
+			chooser.appendChild(opt);
+		}
+		chooser.value = StyleHandler.Current();
+	}
+}
+
+
+// change style
+function ChangeStyle(evt) {
+	StyleHandler.Activate(evt.Raised.Element.value);
+}
+
+
+// show a list of all styles
+function ShowStyles(evt) {
+	var s = StyleHandler.Titles();
+	var c = StyleHandler.Current();
+	var msg = "";
+	for (var i = 0; i < s.length; i++) msg += i + ": "+ s[i] + (s[i]==c ? " (current)" : "")+ "\n";
+	alert(msg);
+}
+// ]]>
+</script>
+
+<h2>StyleHandler class (static)</h2>
+<p>Provides CSS switching functionality in all browsers.</p>
+
+<h3>Public methods</h3>
+<dl class="wide">
+<dt>StyleHandler.Current()</dt> <dd>returns the title of the active style</dd>
+<dt>StyleHandler.Titles()</dt> <dd>returns an array of all style titles</dd>
+<dt>StyleHandler.Activate(string title)</dt> <dd>sets the active style (will revert to the current one if the title is not valid)</dd>
+<dt>StyleHandler.LoadPreference()</dt> <dd>sets the user's saved style (done automatically on page load)</dd>
+<dt>StyleHandler.SavePreference()</dt> <dd>stores the user's style (done on page unload and when Activate is called)</dd>
+</dl>
+
+<h3>Notes</h3>
+<p>It was intended to provide load and unload events whenever a new style was activated. However, since some browsers natively support style switching, this could not easily be implemented. The only solution would be to periodically check the default stylesheet and run events accordingly.</p>
+
+<p>Event handlers have therefore been removed. If a style implements functionality that is not required in an alternative style, e.g. a drop-down menu, you will either need to create a style watcher, or (preferably) implement appropriate show/hide selectors in the CSS.</p>
+
+</body>
+</html>

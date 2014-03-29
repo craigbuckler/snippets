@@ -1,0 +1,116 @@
+/* owl documentation styles */
+*
+{
+	padding: 0;
+	margin: 0;
+}
+
+body
+{
+	font-family: arial, freesans, sans-serif;
+	font-size: 0.75em;
+	margin: 6px;
+	color: #444;
+	background-color: #fff;
+}
+
+h1, h2, h3
+{
+	font-size: 1.5em;
+	font-weight: bold;
+	padding: 0.1em 0.2em;
+	margin: 0 0 0.2em 0;
+	background-color: #bcf;
+}
+
+h2
+{
+	font-size: 1.25em;
+	background-color: #cdf;
+}
+
+h3
+{
+	font-size: 1.1em;
+	background-color: #eef;
+}
+
+h4
+{
+	font-size: 1em;
+	font-weight: bold;
+}
+
+ol
+{
+	list-style-type: none;
+	margin: 2em 0;
+}
+
+ol ol, ul
+{
+	margin: 1em 0 1em 3em;
+}
+
+li
+{
+	margin: 1em 0;
+}
+
+p
+{
+	margin: 0.8em 0;
+}
+
+dl
+{
+	margin: 0 0 1em 1em;
+}
+
+dt
+{
+	display: block;
+	font-weight: bold;
+}
+
+dd
+{
+	display: block;
+	margin: 0.2em 0 1em 3em;
+	color: #888;
+}
+
+table
+{
+	font-size: 1em;
+	margin: 0.2em 0 1em 3em;
+	border-collapse: collapse;
+}
+
+th
+{
+	font-weight: bold;
+	background-color: #eee;
+}
+
+th, td
+{
+	text-align: left;
+	vertical-align: top;
+	padding: 1px 2px;
+	border: 1px solid #999;
+}
+
+code
+{
+	display: block;
+	white-space: pre;
+	padding: 0.2em 0.3em;
+	margin: 0.5em 0 1em 3em;
+	background-color: #eee;
+	border: 1px solid #ddd;
+	overflow: auto;
+}
+
+a, a:link, a:visited { text-decoration: underline; color: #00f; }
+a:hover { color: #f00; }

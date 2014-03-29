@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>JavaScript testbed: text effects</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/form.css" />
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/texteffects.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: text effects</h1>
+
+<p>Client-side cross-browser generic text effects.</p>
+
+<p id="text1">text item 1</p>
+<p id="text2">text item 2</p>
+<p id="text3">text item 3</p>
+
+<form id="teform" action="texteffects.html" method="get">
+<fieldset>
+<legend>text effect demonstration</legend>
+
+	<div>
+		<label for="textitem" title="text item">text item:</label>
+		<select id="textitem">
+			<option value="1">1</option><option value="2">2</option><option value="3">3</option>
+		</select>
+	</div>
+
+	<div>
+		<label for="hideeffect" title="hide effect">hide effect:</label>
+		<select id="hideeffect">
+			<option value="simple">simple</option><option value="fade" selected="selected">fade</option><option value="teletype">teletype</option><option value="scroll">scroll out</option>
+		</select>
+	</div>
+
+	<div>
+		<label for="hidetime" title="hide time">hide time (ms):</label>
+		<input  id="hidetime" type="text" value="500" class="inputsml" />
+	</div>
+
+	<div>
+		<label for="showeffect" title="show effect">show effect:</label>
+		<select id="showeffect">
+			<option value="simple">simple</option><option value="fade">fade</option><option value="teletype" selected="selected">teletype</option><option value="scroll">scroll in</option>
+		</select>
+	</div>
+
+	<div>
+		<label for="showtime" title="show time">show time (ms):</label>
+		<input  id="showtime" type="text" value="500" class="inputsml" />
+	</div>
+
+	<div>
+		<label for="cursor" title="show cursor">cursor:</label>
+		<input id="cursor" type="checkbox" class="checkbox" checked="checked" />
+	</div>
+
+	<div>
+		<label for="cursorflash" title="flash cursor">flash cursor:</label>
+		<input id="cursorflash" type="checkbox" class="checkbox" checked="checked" />
+	</div>
+
+	<div>
+		<label for="newtext" title="new text">new text:</label>
+		<input  id="newtext" type="text" value="new text string" />
+	</div>
+
+	<div class="button">
+		<input type="submit" value="submit" />
+	</div>
+
+</fieldset>
+</form>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", Initialise);
+var text = [];
+
+// initialise tab control
+function Initialise() {
+	text[1] = new TextEffect("text1");
+	text[2] = new TextEffect("text2");
+	text[3] = new TextEffect("text3");
+
+	new Event(DOM.Id("teform"), "submit", Update);
+}
+
+// form handler
+function Update(evt) {
+	evt.Raised.StopDefaultAction();
+
+	var t = DOM.Id("textitem").value;
+	text[t].HideEffect = Effect(DOM.Id("hideeffect").value);
+	text[t].HideTime = DOM.Id("hidetime").value.toInt();
+	text[t].ShowEffect = Effect(DOM.Id("showeffect").value);
+	text[t].ShowTime = DOM.Id("showtime").value.toInt();
+
+	if (text[t].HideEffect.Cursor) text[t].HideEffect.Cursor = DOM.Id("cursor").checked;
+	if (text[t].HideEffect.CursorFlash) text[t].HideEffect.CursorFlash = DOM.Id("cursorflash").checked;
+
+	if (text[t].ShowEffect.Cursor) text[t].ShowEffect.Cursor = DOM.Id("cursor").checked;
+	if (text[t].ShowEffect.CursorFlash) text[t].ShowEffect.CursorFlash = DOM.Id("cursorflash").checked;
+
+	text[t].ChangeText(DOM.Id("newtext").value);
+}
+
+function Effect(etype) {
+	var ret = null;
+	switch(etype) {
+		case "fade": ret = new TextEffectFade(); break;
+		case "teletype": ret = new TextEffectTeletype(); break;
+		case "scroll": ret = new TextEffectScroll(); break;
+		default: ret = new TextEffectSimple(); break;
+	}
+	return ret;
+}
+// ]]>
+</script>
+
+<h2>TextEffect class</h2>
+<p>Changes the text contained in a node using various provided effects.</p>
+
+<h3>Dependencies</h3>
+<ul>
+<li>misc.js</li>
+<li>dom.js</li>
+<li>graphic.js</li>
+</ul>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>node</dt> <dd>the text node (or a string containing a node ID)</dd>
+</dl>
+<p>The actual text element node or its parent tag node can be passed in. If a tag node is passed and it does not contain any content, a text node will be added as the last child.</p>
+
+<h3>Public properties</h3>
+<dl>
+<dt>.TextNode</dt> <dd>the text element node</dd>
+<dt>.Node</dt> <dd>the tag node (parent of the text element)</dd>
+<dt>.TextCurrent</dt> <dd>the current text</dd>
+<dt>.TextNext</dt> <dd>the text that will be used once the animation is complete</dd>
+<dt>.AnimationActive</dt> <dd>true if show/hide animation is currently active</dd>
+<dt>.FrameTime</dt> <dd>the time, in milliseconds, between animation frames (default 30)</dd>
+<dt>.HideTime</dt> <dd>the time, in milliseconds, for the hide animation (default 300)</dd>
+<dt>.HideEffect</dt> <dd>the <a href="#animationobject">text animation object</a> used for hiding the current text (default is TextEffectSimple)</dd>
+<dt>.HideEvent</dt> <dd>the function run when the text is fully hidden. It is passed this TextEffect object.</dd>
+<dt>.ShowTime</dt> <dd>the time, in milliseconds, for the show animation (default 300)</dd>
+<dt>.ShowEffect</dt> <dd>the <a href="#animationobject">text animation object</a> used for showing the next text (default is TextEffectSimple)</dd>
+<dt>.ShowEvent</dt> <dd>the function run when the text is fully shown. It is passed this TextEffect object.</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt>.ChangeText(text)</dt> <dd>changes the current text using the defined animation factors. If no argument is passed, the current text will be reused.</dd>
+</dl>
+
+<h3 id="animationobject">Text animation objects</h3>
+<p>Several objects are provided to implement text animation. These can be assigned to the TextEffect object's .HideEffect and .ShowEffect properties.</p>
+<p>Further effects can be added by creating objects with Show() and Hide() prototype functions. These are passed the node, the textnode, the old text, the new text, and the frame number (ending with zero). The functions should return true if they end before frame reaches zero.</p>
+<dl>
+<dt>TextEffectSimple()</dt> <dd>a simple effect that just replaces the text</dd>
+<dt>TextEffectFade()</dt> <dd>fades text in or out</dd>
+<dt>TextEffectTeletype()</dt> <dd>a teletype effect (additional boolean properties are .Cursor and .CursorFlash)</dd>
+<dt>TextEffectScroll()</dt> <dd>scrolls text in or out (additional boolean properties are .Cursor and .CursorFlash)</dd>
+</dl>
+
+<h3>Example:</h3>
+<pre>
+&lt;p id="text1"&gt;this text will change&lt;/p&gt;
+</pre>
+
+<pre>
+var te = new TextEffect("text1");
+te.HideTime = 300;
+te.HideEffect = new TextEffectFade();
+
+te.ShowTime = 500;
+te.ShowEffect = new TextEffectTeletype();
+te.ShowEffect.Cursor = true;
+
+te.ShowEvent = function(txtobj) { alert("animation complete"); }
+
+te.ChangeText("The node with ID 'text 1' will now hold this text.");
+</pre>
+
+</body>
+</html>

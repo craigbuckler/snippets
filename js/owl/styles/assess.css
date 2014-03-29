@@ -1,0 +1,92 @@
+/* Assessment functionality */
+.assess ol
+{
+	list-style-type: decimal;
+	padding: 0;
+	margin: 1em 0 1.5em 3em;
+}
+
+.assess ol li
+{
+	padding: 0;
+	margin: 1em 0;
+}
+
+.assess ol li span
+{
+	padding-right: 18px;
+	background: none 100% 50% no-repeat;
+}
+
+.assess.active ol li
+{
+	position: absolute;
+	visibility: hidden;
+	cursor: pointer;
+}
+
+.assess ol li.yes, .assess ol li.no
+{
+	position: static;
+	visibility: visible;
+}
+
+.assess ol li.yes span { color: #090; background-image: url("images_assess/tick.png"); }
+.assess ol li.no span { font-weight: bold; color: #c00; background-image: url("images_assess/cross.png"); }
+
+.assess p
+{
+	clear: both;
+	width: 100%;
+	text-align: center;
+}
+
+.assess p.ask
+{
+	display: none;
+	width: 100%;
+	font-size: 1.25em;
+	text-align: center;
+	margin: 2em auto 0 auto;
+}
+
+.assess p.ask strong { display: block; }
+
+.assess p.restart
+{
+	text-align: right;
+}
+
+.assess ul
+{
+	display: none;
+	width: 138px;
+	height: 64px;
+	list-style-type: none;
+	padding: 0;
+	margin: 10px auto;
+}
+
+.assess ul li
+{
+	display: inline;
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+
+.assess ul li a
+{
+	display: block;
+	width: 64px;
+	height: 64px;
+	background: url("images_assess/tickbig.png") 0 0 no-repeat;
+}
+
+.assess ul li a.cross
+{
+	background-image: url("images_assess/crossbig.png");
+	margin-left: 10px;
+}
+
+.assess ul li a strong { display: none; }

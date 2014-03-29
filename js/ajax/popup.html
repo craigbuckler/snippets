@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>JavaScript testbed: popup handler</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="styles/popup.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/popup.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: popup handler</h1>
+
+<p>Client-side cross-browser popup window handling.</p>
+
+<div id="links">
+<p>This is a link to <a href="index.html" title="view all pages">the contents page</a></p>
+<p>This is a link to a <a href="images/exmouth.jpg">large image</a></p>
+<p>This is a link to a <a href="images/exmouth.jpg" class="popupsize500x400">large image - fixed window size</a></p>
+<p>This is a link to a <a href="downloads/download.mp3">MP3 music file</a></p>
+<p>This is a link to a <a href="downloads/download.mpg">MPG video file</a></p>
+<p>This is a link to a <a href="downloads/download.pdf">PDF document</a></p>
+<p>This is a link to a <a href="downloads/download.doc">Word document</a></p>
+<p>This is a link to a <a href="downloads/download.rtf">RTF document</a></p>
+<p>This is a link to a <a href="downloads/download.txt">TXT document</a></p>
+<p>This is a link to an <a href="downloads/download.xls">Excel document</a></p>
+<p>This is a link to a <a href="downloads/download.ppt">PowerPoint document</a></p>
+<p>This is a link to an <a href="downloads/download.exe">executable application</a></p>
+<p>This is a link to a <a href="downloads/download.zip">ZIP archive</a></p>
+
+<p>This is a link to a <a href="http://www.example.com/download.zip">ZIP archive on another site</a></p>
+
+<p>This is a link to <a href="http://www.google.co.uk/" title="Google">an external site (Google)</a></p>
+<p>This is a link to <a href="http://www.yahoo.co.uk/" title="Yahoo" class="popupalways popupnotools popupsize800x600">another external site (Yahoo) - always popup</a></p>
+
+<p>This is a <a href="mailto:craigb@digita.com">send email</a> link.</p>
+<p>This is a <a href="feed://http//craigxp/wordpress/?feed=rss2">RSS feed</a> link.</p>
+</div>
+
+<h2>Popup object (static)</h2>
+<p>Handles links to content such as external sites, images and downloads.</p>
+
+<h3>Features</h3>
+<p>The Popup object implements the following features:</p>
+<ul>
+<li>appends an icon next to the link if required</li>
+<li>allows the user to choose whether a popup window is used or not</li>
+<li>XHTML author can specify popup window size and controls within CSS class declaration</li>
+<li>popup window for images can resize to the size of the image</li>
+<li>user's popup preferences are saved</li>
+<li>links to downloadable files can be sent via a link handler so the user is always offered save/open options</li>
+<li>handler types can be defined.</li>
+</ul>
+
+<h3>Dependencies</h3>
+<ul>
+<li>misc.js</li>
+<li>dom.js</li>
+<li>events.js</li>
+<li>graphic.js</li>
+</ul>
+
+<h3>Usage</h3>
+<p>The Popup object is self-contained and will run automatically when the page is loaded. However, several variables can be modifed to change the behavior:</p>
+
+<dl>
+<dt>Popup.ClassAlways</dt> <dd>the CSS class name that forces a popup always (default 'popupalways')</dd>
+</dl>
+<p>If this class is applied to the link, a popup will always appear and the user will never be asked for their preference, e.g.</p>
+
+<pre>
+&lt;a href="http://www.google.com/" class="popupalways"&gt;this link to Google will appear in a popup&lt;/a&gt;
+</pre>
+
+<dl>
+<dt>Popup.ClassIconOn</dt> <dd>the CSS class name that states a link icon is required (default 'popupicon')</dd>
+<dt>Popup.ClassIconOff</dt> <dd>the CSS class name that states a link icon is not required (default 'popupiconoff')</dd>
+</dl>
+<p>By default, all appropriate links will have an icon applied unless that link or one of its parent elements has a class of 'popupiconoff'. The 'poupicon' class can then be applied if individual links require icons, e.g.</p>
+
+<pre>
+&lt;body&gt;
+	&lt;div&gt;
+		&lt;a href="image.jpg"&gt;this link to an image will have an icon&lt;/a&gt;
+	&lt;/div&gt;
+	&lt;div class="popupiconoff"&gt;
+		&lt;a href="http://www.google.com/"&gt;this external link will not have an icon&lt;/a&gt;
+		&lt;a href="image.jpg"&gt;this link to an image will not have an icon&lt;/a&gt;
+		&lt;a href="image.jpg" class="popupicon"&gt;this link to an image WILL have an icon&lt;/a&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+</pre>
+
+<dl>
+<dt>Popup.ClassSize</dt> <dd>the CSS class that specifies the popup window size (default 'popupsize'), e.g. class="popupsize800x600"</dd>
+<dt>Popup.ClassNoTools</dt> <dd>the CSS class that specifies no window toolbars (default 'popupnotools')</dd>
+<dt>Popup.UserChoiceCookie</dt> <dd>the name of the cookie used to save user preferences (default 'popupchoice')</dd>
+<dt>Popup.UserChoicePeriod</dt> <dd>the period to save the cookie in seconds (default 10080 = 1 week)</dd>
+</dl>
+
+<dl>
+<dt>Popup.UserConfirmMessage</dt> <dd>the message used to ask the user's preference</dd>
+</dl>
+<p>The default confirmation message is set to <em>"do you want to open this LINKTYPE\nand other LINKGROUP in a new window?"</em>. LINKTYPE and LINKGROUP are applied by the <a href="#handlers">Popup handler definitions</a>, e.g. "PDF document" and "documents"</p>
+
+<dl>
+<dt>Popup.DownloadHandler </dt> <dd>the URL of the download handler</dd>
+</dl>
+<p>This specifies a URL that controls file downloads, e.g. <em>"downloads/downloadhandler.php?file="</em>. Typically, this page can provide the download as an attachment to force the open/save dialog. It could also count downloads and collate other usage statistics. Note that only downloads available from the originating server will be handled by this file.</p>
+
+<h3 id="handlers">Popup handler definitions</h3>
+<p>Popup handlers are defined within the PHandlers array of the Popup.Initialise() method. Three types of handler are available, although more can be added if necessary:</p>
+
+<ul>
+<li><strong>PopupHandlerFileType</strong> - examines a file extension, e.g. JPG or ZIP</li>
+<li><strong>PopupHandlerLinkString</strong> - examines the link for a matching string, e.g. "mailto:"</li>
+<li><strong>PopupHandlerExternal</strong> - examines the URL to check if it is not on this server</li>
+</ul>
+
+<p>Handlers are then defined using code such as:</p>
+<pre>
+new PopupHandlerFileType(id, baseclass, subclass, linktype, linkgroup, handler, popupallowed, isbitmap),
+new PopupHandlerLinkString(id, baseclass, subclass, linktype, linkgroup, handler, popupallowed, isbitmap),
+new PopupHandlerExternal(id, baseclass, subclass, linktype, linkgroup, handler, popupallowed, isbitmap)
+</pre>
+
+<p>The following arguments are used:</p>
+
+<dl>
+<dt>id</dt> <dd>identifies a link (an extension, string, or null for PopupHandlerExternal)</dd>
+<dt>baseclass</dt> <dd>the CSS class applied to all links of this type</dd>
+<dt>subclass</dt> <dd>the CSS class applied to links matching this type</dd>
+<dt>linktype</dt> <dd>text describing the link and used in LINKTYPE within Popup.UserConfirmMessage</dd>
+<dt>linkgroup</dt> <dd>text describing type of link and used in LINKGROUP within Popup.UserConfirmMessage</dd>
+<dt>handler</dt> <dd>the URL of the handler used for this file type</dd>
+<dt>popupallowed</dt> <dd>true if a popup is permitted, e.g. images or external sites</dd>
+<dt>isbitmap</dt> <dd>true if this is an image (popup window may be resized)</dd>
+</dl>
+
+<p>Handlers must be listed in order of priority. For example, if a link is defined to an image on an external site, the image handler will be applied rather than the external link handler.</p>
+
+</body>
+</html>

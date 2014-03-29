@@ -1,0 +1,245 @@
+*
+{
+	font-family: arial, sans-serif;
+}
+
+html
+{
+	padding: 10px;
+	margin: 0;
+	border-style: none;
+}
+
+body
+{
+	font-size: small;
+}
+
+h1
+{
+	font-size: 1.4em;
+	padding: 0;
+	margin: 0 0 0.6em 0;
+	border-bottom: 2px solid #000;
+}
+
+h2
+{
+	font-size: 1.2em;
+	padding: 0;
+	margin: 2em 0 0.6em 0;
+	border-bottom: 1px solid #000;
+}
+
+h3
+{
+	font-size: 1em;
+	padding: 0;
+	margin: 1em 0 0 0;
+	color: #333;
+}
+
+p
+{
+	font-size: 1em;
+	padding: 0;
+	margin: 0 0 1em 0;
+}
+
+ul, ol
+{
+	padding: 0;
+	margin: 1em 0 2em 4em;
+}
+
+li
+{
+	margin: 0 0 1em 0;
+}
+
+fieldset
+{
+	position: relative;
+	border: 1px solid #7F9DB9;
+	padding: 0 10px 10px 10px;
+	margin: 0;
+}
+
+legend
+{
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #7F9DB9;
+}
+
+fieldset div
+{
+	clear: both;
+	margin: 0.2em;
+}
+
+label
+{
+	float: left;
+	width: 48%;
+	text-align: right;
+	font-weight: bold;
+	line-height: 1.6em;
+	margin: 0 0.5em;
+}
+
+input
+{
+	font-size: 1em;
+	text-align: right;
+	padding: 1px 2px;
+	border: 1px solid #7F9DB9;
+}
+
+input[type="radio"], input[type="checkbox"]
+{
+	width: auto;
+}
+
+div.button
+{
+	text-align: center;
+	margin: 0.4em;
+}
+
+div.button input, input.button
+{
+	font-weight: bold;
+	padding: 0.2em 1em 0.3em 1em;
+	margin: 0;
+	text-align: center;
+	color: #fff;
+	background-color: #7F9DB9;
+	border: 1px solid #000;
+}
+
+div.button input:hover, input.button:hover
+{
+	color: #7F9DB9;
+	background-color: #fff;
+	cursor: pointer;
+}
+
+span#total
+{
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #300;
+}
+
+dl
+{
+	padding: 0;
+	margin: 0.5em 0 2em 4em;
+}
+
+dt
+{
+	clear: both;
+	float: left;
+	width: 15em;
+	font-weight: bold;
+	padding: 0;
+	margin: 0 0 0.5em 0;
+	color: #369;
+}
+
+dl.wide dt, dt.wide
+{
+	width: 28em;
+}
+
+dd
+{
+	padding: 0;
+	margin: 0 0 0.5em 0;
+	color: #666;
+}
+
+pre
+{
+	width: 90%;
+	font-family: monospace;
+	font-size: 1em;
+	padding: 3px;
+	margin: 1em 0 2em auto;
+	overflow: auto;
+	border: 1px solid #999;
+}
+
+table.summary
+{
+	width: 80%;
+	margin: 1em auto;
+	border-collapse: collapse;
+}
+
+th
+{
+	font-size: 1em;
+	font-weight: bold;
+	text-align: right;
+}
+
+table.summary th
+{
+	text-align: center;
+	background-color: #ccc;
+	border: 1px solid #666;
+}
+
+td
+{
+	font-size: 1em;
+}
+
+table.summary td
+{
+	text-align: center;
+	padding: 1px 2px;
+	border: 1px solid #666;
+}
+
+#clickdiv
+{
+	text-align: center;
+	font-style: italic;
+	width: 200px;
+	height: 150px;
+	padding: 0;
+	margin: 10px;
+	border: 1px solid #000;
+	background-color: #eceee3;
+}
+
+#info
+{
+	float: right;
+	margin: 0 0 20px 20px;
+	padding: 1em;
+	border: 1px solid #000;
+	background-color: #eceee3;
+}
+
+#info h2
+{
+	font-size: 1.2em;
+	font-weight: bold;
+	padding: 0;
+	margin: 0 0 0.4em 0;
+}
+
+#info td
+{
+	padding: 0;
+	margin: 0;
+}
+
+a { font-weight: bold; color: #00c; text-decoration: none; }
+a:visited { color: #c0c; } 
+a:hover { border-bottom: 1px dotted; }

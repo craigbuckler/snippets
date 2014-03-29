@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed: client-side web service testing</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/webservice.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side web service testing</h1>
+
+<p>The following example uses a small ASP web service to total the numbers entered in the form. Note that this page also uses the event class, DOM object, and miscellaneous functions.</p>
+
+<form id="wsform" action="webservice.html" method="get">
+<fieldset>
+<legend>AJAX calculator</legend>
+<div><label for="value1">value 1:</label><input id="value1" name="value1" type="text" value="1" size="6" maxlength="8" /></div>
+<div><label for="value2">value 2:</label><input id="value2" name="value2" type="text" value="2" size="6" maxlength="8" /></div>
+<div><label for="value3">value 3:</label><input id="value3" name="value3" type="text" value="3" size="6" maxlength="8" /></div>
+<div>
+	<label for="use">use webservice:</label>
+	<select id="use" name="use">
+		<option value="webservice/sum.asp">sum.asp</option>
+		<option value="webservice/sum.php">sum.php</option>
+		<option value="webservice/sum.txt">sum.txt</option>
+		<option value="webservice/none">none</option>
+	</select>
+</div>
+</fieldset>
+
+<div class="button"><input type="submit" value="sum" /></div>
+
+<fieldset>
+<legend>result</legend>
+<p>The total of the above boxes is: <span id="total">not calculated</span></p>
+</fieldset>
+
+</form>
+
+<script type="text/javascript">
+// <![CDATA[
+// calculate event
+function Calculate(e) {
+	e.Raised.StopDefaultAction(); // stop actual submit
+
+	DOM.Id("total").firstChild.nodeValue = "calculating..."; // shown whilst call is active
+
+	// start web service call
+	var ws = new WebService(DOM.Id("use").value, "GET", true);
+	ws.Name = "sum";
+	ws.TimeOut = 5000;
+	ws.Argument("value1", DOM.Id("value1").value.toInt());
+	ws.Argument("value2", DOM.Id("value2").value.toInt());
+	ws.Argument("value3", DOM.Id("value3").value.toInt());
+
+	ws.OnComplete = sumDetails;
+	ws.ErrorFunction(sumDetails);
+	ws.Call();
+}
+
+// web service response
+function sumDetails(ws) {
+	if (ws.Success && ws.ResponseXML) DOM.SetText("total", ws.ResponseXML.getElementsByTagName("Total")[0].firstChild.nodeValue);
+	else DOM.SetText("total", "an error occurred? Please try again...");
+}
+
+// attach form submit event
+new Event(window, "load", function(evt) { if (DOM.Enabled) new Event(DOM.Id("wsform"), "submit", Calculate); });
+// ]]>
+</script>
+
+<noscript>
+<p>Please use a JavaScript-enabled browser.</p>
+</noscript>
+
+<h2>WebService class</h2>
+<p>Creates an object that can send data to a web service and fetch a response.</p>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>url</dt> <dd>URL of web service</dd>
+<dt>method</dt> <dd>"GET" or "POST" (default)</dd>
+<dt>async</dt> <dd>false for synchronous call, true for asynchronous call (default)</dd>
+</dl>
+
+
+<h3>Public properties - set before calling web service</h3>
+<dl>
+<dt>.Name</dt> <dd>an optional indentifier for this object. Can be useful if the same event handlers are used.</dd>
+<dt>.URL</dt> <dd>URL of web service</dd>
+<dt>.PostMethod</dt> <dd>"GET" or "POST"</dd>
+<dt>.Async</dt> <dd>false for synchronous call, true for asynchronous call (default)</dd>
+<dt>.TimeOut</dt> <dd>web service timeout in milliseconds (0 for no timeout - not recommended)</dd>
+<dt>.OnLoading</dt> <dd>event handler function</dd>
+<dt>.OnLoaded</dt> <dd>event handler function</dd>
+<dt>.OnInteractive</dt> <dd>event handler function</dd>
+<dt>.OnComplete</dt> <dd>event handler function (called when web service has completed)</dd>
+<dt>.OnAbort</dt> <dd>event handler function</dd>
+<dt>.OnError</dt> <dd>event handler function</dd>
+<dt>.OnTimeOut</dt> <dd>event handler function</dd>
+</dl>
+
+
+<h3>Public methods</h3>
+<dl>
+<dt>.Argument(<em>name</em>, <em>value</em>)</dt> <dd>set an argument name (string) and value</dd>
+<dt>.ErrorFunction(<em>functionName</em>)</dt> <dd>set an error event handler for OnAbort, OnError and OnTimeOut</dd>
+<dt>.Call()</dt> <dd>start the web service request</dd>
+<dt>.Abort()</dt> <dd>abort the web service request</dd>
+</dl>
+
+
+<h3>Public properties - set after calling web service</h3>
+<dl>
+<dt>.Complete</dt> <dd>true for finished, false if not</dd>
+<dt>.Success</dt> <dd>true if response was successful, false if not</dd>
+<dt>.ReadyState</dt> <dd>current XMLHttpRequest readystate (4 if complete)</dd>
+<dt>.Status</dt> <dd>completed HTTP response code (200 if successful)</dd>
+<dt>.StatusText</dt> <dd>completed HTTP response text (OK if successful)</dd>
+<dt>.ResponseText</dt> <dd>text representation of response</dd>
+<dt>.ResponseXML</dt> <dd>XML representation of response</dd>
+</dl>
+
+
+<h3>Event handler functions</h3>
+<p>The WebService object is returned as the argument to the event handler function.</p>
+
+<h3>Example</h3>
+
+<pre>
+function wstest() {
+	var ws = new WebService("webservice/sum.asp", "GET");
+	ws.Name = "sum";
+	ws.TimeOut = 10000;
+	ws.Argument("arg1", "10"); ws.Argument("arg2", "20"); ws.Argument("arg3", "30");
+	ws.OnComplete = sumDetails;
+	ws.ErrorFunction(sumDetails);
+	ws.Call();
+}
+
+function sumDetails(WS) {
+	var msg = "name: " + WS.Name;
+	msg += "\nCompleted? " + WS.Complete;
+	msg += "\nSuccessful? " + WS.Success;
+	msg += "\nReadyState: " + WS.ReadyState;
+	msg += "\nStatus: " + WS.Status;
+	msg += "\nStatusText: " + WS.StatusText;
+	msg += "\nResponseText:\n" + WS.ResponseText;
+	msg += "\nResponseXML:\n"+(typeof WS.ResponseXML);
+	alert(msg);
+}
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>JavaScript testbed: client-side tab control</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/form.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="styles/lists.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="styles/tabs.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/dragdrop.js"></script>
+<script type="text/javascript" src="scriptlibrary/tabcontrol.js"></script>
+<script type="text/javascript" src="scriptlibrary/listcontrol.js"></script>
+<script type="text/javascript" src="scriptlibrary/localisation.js"></script>
+<script type="text/javascript" src="scriptlibrary/validatorsupport.js"></script>
+<script type="text/javascript" src="scriptlibrary/validator.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side tab control</h1>
+
+<p>Client-side cross-browser generic tab control.</p>
+
+<div id="tool">
+
+<ol id="tabs">
+	<li><a href="#tabcontent1">tab 1</a></li>
+	<li><a href="#tabcontent2">tab 2</a></li>
+	<li><a href="#tabcontent3">tab 3</a></li>
+</ol>
+
+<div id="tabcontent1">
+	<p>This is content on tab 1.</p>
+	<p>Tab content is identified by an ID. That ID is used as the # link in the tab's &lt;a&gt; tag.</p>
+
+	<div id="controls">
+		<ol id="listcontrol">
+		<li>drag list item 1</li>
+		<li>drag list item 2</li>
+		<li>drag list item 3</li>
+		<li>drag list item 4</li>
+		<li>drag list item 5</li>
+		</ol>
+	</div>
+
+</div>
+
+<form id="tabcontent2" action="tabcontrol.html" method="get">
+
+	<p>Please enter your details. Form must be valid before switching tabs.</p>
+
+	<fieldset>
+	<legend title="form validation demonstration">custom form</legend>
+
+		<div>
+			<label for="surname" title="your last name">surname:</label>
+			<input  id="surname" name="surname" type="text" value="" class="inputmed validALPHA req max30" />
+			<div class="fieldhelp">
+				<p>Please enter your last name. This entry is required.</p>
+			</div>
+		</div>
+
+		<div>
+			<label for="name" title="your first name(s)">first name(s):</label>
+			<input  id="name" name="name" value="" class="inputmed validALPHA max30" />
+			<div class="fieldhelp">
+				<p>Please enter your first name or names.</p>
+			</div>
+		</div>
+	
+		<div>
+			<label for="gender" title="your gender">gender:</label>
+			<select id="gender" name="gender" class="inputmed validSTRING">
+				<option value="">choose...</option>
+				<option value="male">male</option>
+				<option value="female">female</option>
+				<option value="confidential">confidential</option>
+			</select>
+			<div class="fieldhelp">
+				<p>Please select your gender.</p>
+			</div>
+		</div>
+		
+		<div>
+			<label for="dob" title="the date you were born">date of birth:</label>
+			<input  id="dob" name="dob" type="text" value="" class="inputsml validDATE min19000101 max20050101" />
+			<div class="fieldhelp">
+				<p>Please enter the date you were born.</p>
+			</div>
+		</div>
+		
+		<div>
+			<label for="telephone" title="your telephone number">telephone:</label>
+			<input  id="telephone" name="telephone" type="text" value="" class="inputmed validTEXT max20" />
+			<div class="fieldhelp">
+				<p>Please enter your telephone number.</p>
+			</div>
+		</div>
+		
+		<div>
+			<label for="email" title="your email address">email:</label>
+			<input  id="email" name="email" type="text" value="" class="inputbig validEMAIL max50" />
+			<div class="fieldhelp">
+				<p>Please enter your email address. This entry is required.</p>
+				<p>Your address will not be passed to third parties, and we will only contact you if you subscribe to the newsletter.</p>
+			</div>
+		</div>
+
+		<div>
+			<label for="comments" title="your comments or questions">comments:</label>
+			<textarea  id="comments" name="comments" rows="3" cols="10" class="inputbig validTEXT max100"></textarea>
+			<div class="fieldhelp">
+				<p>Please enter any comments or questions you have.</p>
+			</div>
+		</div>
+		
+		<div class="button">
+			<input type="submit" value="next" title="send your form information to us" />
+		</div>
+
+	</fieldset>
+
+</form>
+
+<div id="tabcontent3">
+	<p>This is content on tab 3.</p>
+	<p>When a tab is loaded, the TabControl object, tc, is passed to an event handler (if defined):</p>
+	<p><strong>tc.ActiveTab:</strong> <span id="activetab">-</span></p>
+	<p><strong>tc.Tabs[tc.ActiveTab].Text:</strong> <span id="activetext">-</span></p>
+</div>
+
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", Initialise);
+
+// initialise tab control
+function Initialise() {
+	var tc = new TabControl("tabs");
+	var lc = new ListControl("listcontrol");
+	var tabform = new FormValidator("tabcontent2");
+
+	new Event(tabform.Form, "submit", function(evt) { evt.Raised.StopDefaultAction(); tc.ActivateTab("tab 3"); });
+
+	tc.EventShow(0, function() { lc.PositionCheck(); }); // position list control
+	tc.EventHide(1, function() { return (tabform.ValidateForm()); }); // check form is valid before submit
+	tc.EventShow(2, function(tabcontrol) {
+		DOM.SetText("activetab", tabcontrol.ActiveTab);
+		DOM.SetText("activetext", tabcontrol.Tabs[tabcontrol.ActiveTab].Text);
+	});
+}
+// ]]>
+</script>
+
+<h2>TabControl class</h2>
+<p>Creates a tab control which shows and hides appropriate page content.</p>
+
+<h3>Dependencies</h3>
+<ul>
+<li>misc.js</li>
+<li>events.js</li>
+<li>dom.js</li>
+<li>graphic.js</li>
+</ul>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>tabset</dt> <dd>the tab list OL or UL node (or a string containing the ID)</dd>
+</dl>
+
+<h3>Public properties</h3>
+<dl>
+<dt>.TabSet</dt> <dd>the OL/UL node containing the tabs</dd>
+<dt>.ID</dt> <dd>the ID of .TabSet node</dd>
+<dt>.Tabs[]</dt> <dd>an array of <a href="#tabitem">TabItem objects</a> (zero based)</dd>
+<dt>.ActiveTab</dt> <dd>the index of the active tab (zero based)</dd>
+<dt>.NextTab</dt> <dd>the index of the next tab to be shown, e.g. following a click (zero based)</dd>
+<dt>.ContentHeight</dt> <dd>the height of the content boxes, e.g. "15em". This overrides any CSS-specified height.</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt>.ActivateTab(id, override)</dt> <dd>sets the active tab. The id can be a number, a DOM node for the tab item, or the tab text. If override is true, the tab will be shown even if EventOff results in false.</dd>
+<dt>.EventHide(id, function)</dt> <dd>the event run before switching tabs. This TabControl object is passed. If the function returns false, the new tab will not be shown (unless override is true)</dd>
+<dt>.EventShow(id, function)</dt> <dd>the event run after switching tabs. This TabControl object is passed.</dd>
+<dt>.FindTab(id)</dt> <dd>returns the index of a tab. The id can be a number, a DOM node for the tab item, or the tab text.</dd>
+</dl>
+
+<h3 id="tabitem">TabItem object properties</h3>
+<p>The .Tabs[] array holds a TabItem object for every tab. This has the following properties:</p>
+<dl>
+<dt>.Number</dt> <dd>the index in the .Tabs array (zero based)</dd>
+<dt>.ID</dt> <dd>the ID for the tab &lt;a&gt; node</dd>
+<dt>.Element</dt> <dd>the tab &lt;a&gt; node</dd>
+<dt>.Text</dt> <dd>the tab text</dd>
+<dt>.ContentID</dt> <dd>the ID of the content shown for this tab</dd>
+<dt>.ContentElement</dt> <dd>the node of the content shown for this tab</dd>
+<dt>.EventOff</dt> <dd>the function run just before a tab is hidden</dd>
+<dt>.EventOn</dt> <dd>the function run just after a tab has been shown.</dd>
+</dl>
+
+<h3>Usage notes</h3>
+<p>A set of tabs must be defined in an OL or UL list. If this has the class "tabcontrol", a TabControl object will be automatically created.</p>
+
+<p>Each list item must contain an &lt;a&gt; link to the content that will be shown when that tab is active.</p>
+
+<pre>
+&lt;ol id="tabs"&gt;
+	&lt;li&gt;&lt;a href="#tabcontent1"&gt;tab 1&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a href="#tabcontent2"&gt;tab 2&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a href="#tabcontent3"&gt;tab 3&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</pre>
+
+<p>The tab content blocks must be defined immediately after the tab set. All content blocks must be assigned a unique ID that matches a single tab link. A block can be any element and it will be assigned a class of 'tabcontent' to style the box.</p>
+
+<pre>
+&lt;div id="tabcontent1"&gt;
+	&lt;p&gt;Content box 1&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;form id="tabcontent2" action="index.html" method="get"&gt;
+	&lt;p&gt;your name: &lt;input type="text" id="name" name="name" /&gt;&lt;/p&gt;
+&lt;/form&gt;
+
+&lt;div id="tabcontent3"&gt;
+	&lt;p&gt;Content box 1&lt;/p&gt;
+&lt;/div&gt;
+</pre>
+
+<p>No further code is required unless advanced functionality is necessary. In the example at the top of this page, you can only switch away from tab 2 if the form validates correctly.</p>
+
+<p>In the following example, the user will not be permitted to leave tab 2 unless something is entered in the name box.</p>
+
+<pre>
+new Event(window, "load", Initialise);
+
+// initialise tab control
+function Initialise() {
+	var tc = new TabControl("tabs");
+	tc.EventHide("tab 2", function() { return (DOM.Id("name").value != ""); });
+}
+</pre>
+
+</body>
+</html>

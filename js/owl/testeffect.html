@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<link type="text/css" rel="stylesheet" media="all" href="styles/container.css" />
+
+<style type="text/css">
+/* <![CDATA[ */
+#infobox
+{
+	width: 10em;
+	padding: 6px 10px;
+	margin: 1em 100px;
+	background-color: #eee;
+	border: 1px solid #000;
+}
+/* ]]> */
+</style>
+
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_image.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_xml.js"></script>
+<script type="text/javascript" src="script/owl_innerhtml.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_container.js"></script>
+<script type="text/javascript" src="script/owl_effect.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_overlay.js"></script>
+<script type="text/javascript" src="script/owl_lightbox.js"></script>
+</head>
+<body>
+
+<h1>owl effect testbed</h1>
+
+<p>owl.Effect testing.</p>
+
+<h2>open/close</h2>
+<div id="infobox" class="collapsable">
+	<p>This is an expanding information box.</p>
+	<p>Any number of nodes can appear here.</p>
+	<p style="display:none">This sentence is hidden.</p>
+</div>
+
+<p>End of testing effect.</p>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+	var element = owl.Container.Anchor(owl.Dom.Get("#infobox"), false, true);
+	//owl.Effect.Collapse(element, function() { owl.Effect.Expand(element); } );
+	owl.Effect.Hide(element, [owl.Effect.Type.Fade, owl.Effect.Type.Height], function() { owl.Effect.Show(element, [owl.Effect.Type.Fade, owl.Effect.Type.Height]); } );
+	
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

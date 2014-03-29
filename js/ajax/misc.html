@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>JavaScript testbed: client-side DOM handler</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/styles.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: miscellaneous functions</h1>
+
+<p>Miscellaneous function testing.</p>
+
+<noscript>
+<p>Please use a JavaScript-enabled browser.</p>
+</noscript>
+
+<script type="text/javascript">
+// <![CDATA[
+// new Event(window, "load", MiscTest);
+
+function MiscTest(evt) {
+
+	var qstring = HTTParguments();
+	alert("Array qstring:\n"+AllValues(qstring));
+
+	var a = new Array();
+	a.value1 = 1;
+	a.value2 = 2;
+	a.value3 = 3;
+	a.bool = true;
+
+	alert("Array a:\n"+AllValues(a));
+
+	a.StoreAll("a_array");
+	a = null;
+
+	b = new Array();
+	b.LoadAll("a_array");
+
+	alert("Array b:\n"+AllValues(b));
+	if (b.bool === true) alert("true!");
+
+}
+
+
+function AllValues(arr) {
+	var values = "";
+	var val;
+	for (key in arr) {
+		val = arr.Exists(key);
+		if (val) values += key + " = " + val + "\n";
+	}
+	return values;
+}
+// ]]>
+</script>
+
+<h2>misc.js</h2>
+<p>The following functions are provided in misc.js.</p>
+
+<h3>toInt() integer conversion</h3>
+<p>Any object or value can be converted to an integer using <em>object</em>.toInt().</p>
+
+
+<h3>String prototypes</h3>
+<p>The following String prototypes are provided:</p>
+
+<ul>
+<li><strong>Trim()</strong><br />
+removes whitespace for the beginning and end of a string, e.g. str = str.Trim();</li>
+
+<li><strong>Clean()</strong><br />
+removes unnecessary whitespace and unusual characters from a string, e.g. str = str.Clean();</li>
+
+<li><strong>Pad(length[, char])</strong><br />
+adds characters to the beginning of a string so its length equals 'length', e.g. addzeros = addzeros.Pad(10, "0");. If char is omitted, a space is used by default.</li>
+
+<li><strong>SerialToDate()</strong><br />
+converts a string in the format YYYYMMDD to a real date, e.g. d = datestr.SerialToDate();</li>
+
+<li><strong>DateToSerial()</strong><br />
+converts a date to a string in YYYYMMDD format, e.g. s = date.DateToSerial();</li>
+</ul>
+
+<h3>Array prototypes</h3>
+<p>The following Array prototypes are provided:</p>
+
+<ul>
+<li><strong>push(object)</strong><br />
+pushes an object on to the array 'stack', e.g. arrayx.push(value); Note that this is already provided in some JavaScript implementations, but not in IE5.0.</li>
+
+<li><strong>pop(object)</strong><br />
+pops an object off the array 'stack', e.g. value = arrayx.pop(); Note that this is already provided in some JavaScript implementations, but not in IE5.0.</li>
+
+<li><strong>Exists(key)</strong><br />
+returns true if a value exists for a key within an associative array, e.g. arrayx.value1 = 1; alert(arrayx.Exists("value1")); // shows true;</li>
+
+<li><strong>StoreAll(name[, minutes])</strong><br />
+stores all array values (except for functions) in a single cookie called 'name' that expires in 'minutes' (session-only if not defined), e.g. arrayx.SaveAll("arrayx", 60); // saves a cookie for 1 hour</li>
+
+<li><strong>LoadAll(name)</strong><br />
+loads all array values stored using StoreAll, e.g. arrayx.LoadAll("arrayx");</li>
+</ul>
+
+<h3>HTTParguments()</h3>
+<p>This function returns an associative array of HTTP GET arguments passed on the URL, e.g. var a = HTTParguments(); if (a.Exists("id")) alert("ID = "+a.id);</p>
+
+<h3>Cookie functions</h3>
+<p>The following cookie functions are provided:</p>
+
+<ul>
+<li><strong>CookieSet(name, value[, minutes])</strong><br />
+defines a cookie called 'name' with a value of 'value' that expires in 'minutes' minutes (session-only if not defined)</li>
+
+<li><strong>CookieGet(name)</strong><br />
+returns the value of the cookie called 'name'. The value will always be a string.</li>
+
+<li><strong>CookiesEnabled()</strong><br />
+returns true if cookies are enabled.</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,1387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl - Optimalworks JavaScript Library</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/screen.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+
+<script type="text/javascript" src="scriptdemo/doc.js"></script>
+</head>
+<body>
+
+<h1>owl - Optimalworks JavaScript Library</h1>
+
+<p>owl is offers modular components that do not use the global namespace, overwrite other variables, or apply prototype functions to core objects. The following components are provided.</p>
+
+<ol>
+
+
+<!-- owl -->
+<li>
+<h2 id="owlcore">owl core</h2>
+<p>Provides core functionality.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl.js</dd>
+
+<dt>requires:</dt>
+<dd>n/a</dd>
+</dl>
+
+<ol>
+
+	<li>
+		<h3>owl.Version</h3>
+		<p>The owl version number.</p>
+	</li>
+	
+	<li>
+		<h3>owl.UserAgent</h3>
+		<p>The browser user agent string.</p>
+	</li>
+	
+	<li>
+		<h3>owl.Browser</h3>
+		<p>The browser name and version.</p>
+		<dl>
+			<dt>owl.Browser.IE</dt>
+			<dd>returns true if Internet Explorer</dd>
+			<dt>owl.Browser.Mozilla</dt>
+			<dd>returns true if Mozilla or Firefox</dd>
+			<dt>owl.Browser.Opera</dt>
+			<dd>returns true if Opera</dd>
+			<dt>owl.Browser.Safari</dt>
+			<dd>returns true if Safari</dd>
+			<dt>owl.Browser.Version</dt>
+			<dd>the browser version number as a string, e.g. 2.0.0.9</dd>
+			<dt>owl.Browser.VerNum</dt>
+			<dd>the browser version as a real number, e.g. 2</dd>
+		</dl>
+	</li>
+
+	<li>
+		<h3>owl.Number</h3>
+		<p>Basic number-handling functions.</p>
+		<dl>
+			<dt>owl.Number.toInt(<em>obj</em>)</dt>
+			<dd>pass any object to return an integer</dd>
+			
+			<dt>owl.Number.Sign(<em>num</em>)</dt>
+			<dd>returns -1 for negative, 0 for zero, or 1 for positive numbers</dd>
+		</dl>
+	</li>
+
+	<li>
+		<h3>owl.String</h3>
+		<p>Basic string-handling functions.</p>
+		<dl>
+			<dt>ow.String.Trim(<em>str</em>)</dt>
+			<dd>returns a original string with whitespace removed from start and end</dd>
+
+			<dt>ow.String.Clean(<em>str</em>)</dt>
+			<dd>applies a reduced character set and reduces all whitespace to a single space</dd>
+
+			<dt>ow.String.Pad(<em>str</em>, <em>length</em>, <em>chr</em>)</dt>
+			<dd>returns str with a minimum length. The start of the string is padded with chr if required.</dd>
+
+			<dt>ow.String.Format(<em>str</em>, <em>params</em>)</dt>
+			<dd>replaces %0, %1, ... %n with values in the params array.</dd>
+		</dl>
+	</li>
+
+	<li>
+		<h3>owl.Array</h3>
+		<p>Basic array-handling functions.</p>
+		<dl>
+			<dt>ow.Array.Is(<em>obj</em>)</dt>
+			<dd>returns true if obj is an array</dd>
+
+			<dt>owl.Array.Push(<em>array</em>, <em>element</em>)</dt>
+			<dd>adds element to the end of the array, increasing its length</dd>
+
+			<dt>owl.Array.Pop(<em>array</em>)</dt>
+			<dd>returns the last element of the array, decreasing its length</dd>
+			
+			<dt>owl.Array.Make(<em>array</em>, <em>default</em>)</dt>
+			<dd>will always return an array. The default is optional and only returned (as an array) if arr is falsy (undefined, false, null, etc.)</dd>
+		</dl>
+	</li>
+
+	<li>
+		<h3>owl.Each(<em>obj</em>, <em>func</em>)</h3>
+		<p>Iterates all items in obj (numbered i, from 0 to the length-1), and runs function func(obj[i], i). The iteration is stopped if func returns false.</p>
+	</li>
+
+	<li>
+		<h3>owl.Property</h3>
+		<p>Adds a property to an element or object using an owl namespace. Existing properties and methods should not conflict.</p>
+		<dl>
+			<dt>owl.Property.Set(<em>element</em>, <em>name</em>, <em>value</em>)</dt>
+			<dd>
+				<p>sets the 'name' property of an element to value, e.g.</p>
+				<code>owl.Property.Set(document.getElementById("x"), "pName", 10);</code>
+			</dd>
+
+			<dt>owl.Property.Get(<em>element</em>, <em>name</em>)</dt>
+			<dd>returns the value for the 'name' property (or null)</dd>
+
+			<dt>owl.Property.Exists(<em>element</em>, <em>name</em>)</dt>
+			<dd>returns true if the name property is available</dd>
+
+			<dt>owl.Property.Delete(<em>element</em>, <em>name</em>)</dt>
+			<dd>deletes the property</dd>
+		</dl>
+	</li>
+	
+	<li>
+		<h3>owl.Object</h3>
+		<p>Object manipulation and checking functions.</p>
+		<dl>
+			<dt>owl.Object.Exists(<em>object</em>, <em>item</em>)</dt>
+			<dd>returns true if item is a property or method of the object</dd>
+
+			<dt>owl.Object.PropertyExists(<em>object</em>, <em>item</em>)</dt>
+			<dd>returns true if item is a property of the object</dd>
+
+			<dt>owl.Object.MethodExists(<em>object</em>, <em>item</em>)</dt>
+			<dd>returns true if item is a method of the object</dd>
+
+			<dt>owl.Object.Serialize(<em>object</em>)</dt>
+			<dd>returns a JSON string representing all properties set within the object.</dd>
+			
+			<dt>owl.Object.DeSerialize(<em>string</em>)</dt>
+			<dd>returns an object from a serialised string.</dd>
+		</dl>
+	</li>
+
+</ol>
+
+</li>
+
+
+<!-- owl.Http -->
+<li>
+<h2 id="owlhttp">owl.Http</h2>
+<p>Returns server, page, and argument information.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_http.js</dd>
+
+<dt>requires:</dt>
+<dd>n/a</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Http.Arguments([url])</h3>
+		<p>returns an object containing all querystring values, e.g. if current URL is page.html?arg1=foo&amp;arg2=bar</p>
+		<code>var a = owl.Http.Arguments();
+alert( a.arg1 ) // show "foo"</code>
+		<p>Optionally, any page URL can be passed to the method.</p>
+	</li>
+
+	<li>
+		<h3>owl.Http.Argument(<em>name</em>)</h3>
+		<p>returns a single named querystring value (for the current URL only)</p>
+	</li>
+</ol>
+</li>
+
+
+<!-- owl.Cookie -->
+<li>
+<h2 id="owlcookie">owl.Cookie</h2>
+<p>Saves state information to a cookie.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_cookie.js</dd>
+
+<dt>requires:</dt>
+<dd>n/a</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Cookie.Enabled()</h3>
+		<p>returns true if cookies are enabled</p>
+	</li>
+	
+	<li>
+		<h3>owl.Cookie.Set(<em>name</em>, <em>value</em> [, <em>seconds</em>])</h3>
+		<p>stores a cookie value for the specified number of seconds (session only if not specified)</p>
+	</li>
+
+	<li>
+		<h3>owl.Cookie.Get(<em>name</em>)</h3>
+		<p>returns a cookie value</p>
+	</li>
+	
+	<li>
+		<h3>owl.Cookie.Delete(<em>name</em>)</h3>
+		<p>deletes a cookie value</p>
+	</li>
+	
+	<li>
+		<h3>owl.Cookie.Store(<em>name</em>, <em>object</em> [, <em>seconds</em>])</h3>
+		<p>stores (a serialised representation of) the object properties as a cookie</p>
+	</li>
+	
+	<li>
+		<h3>owl.Cookie.Restore(<em>name</em>)</h3>
+		<p>restores the object properties from (a serialised representation within) a cookie</p>
+	</li>
+
+</ol>
+</li>
+
+
+<!-- owl.Image -->
+<li>
+<h2 id="owlimage">owl.Image</h2>
+<p>Provides image handling functions.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_image.js</dd>
+
+<dt>requires:</dt>
+<dd>n/a</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Image.Load(<em>filename</em> [, <em>callback</em>])</h3>
+		<p>loads an image. If defined, the callback function is called with the Image() object once the image download is complete</p>
+	</li>
+	
+	<li>
+		<h3>owl.Image.IEpng(<em>element</em>, <em>filename</em> [, <em>sizing</em>])</h3>
+		<p>loads an alpha-transparent PNG in IE 5.5/6.0 using a filter. By default, a sizingMethod of 'crop' is used, but 'image' or 'scale' can be passed</p>
+	</li>
+</ol>
+</li>
+
+
+<!-- owl.Css -->
+<li>
+<h2 id="owlcss">owl.Css</h2>
+<p>Provides Cascading Style Sheet functionality.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_css.js</dd>
+
+<dt>requires:</dt>
+<dd>n/a</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Css.ClassExists(<em>element(s)</em>, <em>name</em>)</h3>
+		<p>returns true if the element, or the array of elements, all have the class 'name' applied</p>
+	</li>
+
+	<li>
+		<h3>owl.Css.ClassApply(<em>element(s)</em>, <em>name</em>)</h3>
+		<p>applies the class 'name' to all elements</p>
+	</li>
+
+	<li>
+		<h3>owl.Css.ClassRemove(<em>element(s)</em>, <em>name</em>)</h3>
+		<p>removes the class 'name' from all elements</p>
+	</li>
+
+	<li>
+		<h3>owl.Css.Opacity(<em>element(s)</em>, <em>opacity</em> [, <em>autoHide</em>])</h3>
+		<p>Sets the opacity of all elements to 'opacity', a value between 0 (fully transparent) to 100 (fully opaque).</p>
+		<p>Visibility is set to visible or hidden as necessary, unless autoHide is set to false. This ensures cross-browser compatibility with browsers that do not support transparency.</p>
+		<p>IE only supports transparency for elements with hasLayout.</p>
+	</li>
+	
+	<li>
+		<h3>owl.Css.ComputedStyle(<em>element</em>, <em>property</em>)</h3>
+		<p>returns the computed style for an element, e.g.</p>
+		<code>alert ( owl.Css.ComputedStyle ( owl.Dom.Get("h1") ), "margin-top"); // fetch H1 top margin</code>
+	</li>
+</ol>
+</li>
+
+
+<!-- owl.Dom -->
+<li>
+<h2 id="owldom">owl.Dom</h2>
+<p>Provides simple DOM access.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_dom.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owlcss">owl.Css</a></dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Dom.ElementNode</h3>
+		<p>An element node type (1).</p>
+	</li>
+
+	<li>
+		<h3>owl.Dom.AttributeNode</h3>
+		<p>An attribute node type (2).</p>
+	</li>
+
+	<li>
+		<h3>owl.Dom.TextNode</h3>
+		<p>A text node type (3).</p>
+	</li>
+
+	<li>
+		<h3>owl.Dom.CommentNode</h3>
+		<p>A comment node type (8).</p>
+	</li>
+
+	<li>
+		<h3>owl.Dom.Get(<em>csspath</em> [, <em>element(s)</em>])</h3>
+		<p>Returns an array of nodes determined from a string containing one or more CSS-like selectors.</p>
+
+		<table summary="Supported CSS selectors">
+			<tr>
+				<th>selector</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td>tag</td>
+				<td>a standard tag, such as div, h1, p etc. Note that * refers to all tags.</td>
+			</tr>
+			<tr>
+				<td>#id</td>
+				<td>an element ID</td>
+			</tr>
+			<tr>
+				<td>.class</td>
+				<td>an element class name</td>
+			</tr>
+			<tr>
+				<td>[attribute]</td>
+				<td>an element with this attribute</td>
+			</tr>
+			<tr>
+				<td>[attribute=value]</td>
+				<td>an element that has this attribute set to value</td>
+			</tr>
+			<tr>
+				<td>[attribute!=value]</td>
+				<td>an element where the attribute is not set to the value (or the attribute is not defined)</td>
+			</tr>
+			<tr>
+				<td>[attribute*=value]</td>
+				<td>an element that has this attribute with this value somewhere in its definition, e.g. [attr*='foo'] matches 'foo' or 'fool'</td>
+			</tr>
+			<tr>
+				<td>[attribute~=value]</td>
+				<td>an element that has this attribute with this value within a space-separated definition, e.g. [attr~='foo'] matches 'abc foo' but not 'abc fool'</td>
+			</tr>
+		</table>
+
+		<h4>Examples:</h4>
+
+		<code>// return all h1 and h2 nodes
+var d = owl.Dom.Get("h1, h2");
+
+// returns nodes with a class of <em>foo</em> and a summary attribute of <em>'my table'</em>
+var d = owl.Dom.Get(".foo[summary='my table']");
+
+// return P nodes with a class of <em>foo</em> within the DIV node that has an ID of <em>main</em>
+var d = owl.Dom.Get("div#main p.foo");
+
+// this does exactly the same
+var d = owl.Dom.Get("div#main");
+var e = owl.Dom.Get("p.foo", d); // pass starting nodes</code>
+	</li>
+
+	<li>
+		<h3>owl.Dom.Descendents(<em>element(s)</em> [, <em>level</em>, <em>condition</em>])</h3>
+		<p>Returns and array of child nodes from the passed element(s) to an optional maximum level (1 = immediate children only) and a certain condition.</p>
+
+		<h4>Examples</h4>
+		<code>// get a starting node
+var d = owl.Dom.Get("#section");
+
+// get all child nodes
+var c = owl.Dom.Descendents(d);
+
+// get immediate children only
+var c1 = owl.Dom.Descendents(d, 1);
+
+// get children up to level 2 that have at least one child of their own
+var c2 = owl.Dom.Descendents(d, 2, function(node) { return (node.childNodes.length > 1); });</code>
+	</li>
+
+	<li>
+		<h3>owl.Dom.Ancestors(<em>element(s)</em> [, <em>nodename</em>])</h3>
+		<p>Finds a node by name, e.g. div, ol, etc. for each element passed. If the passed node does not match, all parent nodes will be tested until a matching one is found. This can be useful when events return a child element of the node expected.</p>
+		
+		<p>Null is returned if no match is found. Passing a single node returns a single node, and passing an array (even with one element) returns an array.</p>
+		
+		<h4>Examples</h4>
+		<code>// get all LI nodes
+var li = owl.Dom.Get("li");
+
+// return single ancestors that match OL
+// UL lists will return null, unless that in turn is enclosed in an OL list
+var ol = owl.Dom.Ancestors(li, "ol");</code>
+	</li>
+	
+	<li>
+		<h3>owl.Dom.Clone(<em>fNode</em>, <em>tNode</em> [, <em>move</em>, <em>clear</em>])</h3>
+		<p>Safely copies all child nodes from fNode to tNode.</p>
+		<p>If move is set to true, then the child nodes are moved rather than copied. If it is set to false (or not specified), then the copied nodes (in tNode) will have conflicting IDs removed.</p>
+		<p>If clear is set to true, tNodes children are removed prior to the copying process.</p>
+	</li>
+
+	<li>
+		<h3>owl.Dom.RemoveIDs(<em>element(s)</em>)</h3>
+		<p>Removes any IDs defined for the element(s) children. This can be useful when nodes are cloned.</p>
+	</li>
+
+	<li>
+		<h3>owl.Dom.RemoveChildren(<em>element(s)</em>)</h3>
+		<p>Removes all element(s) child nodes.</p>
+	</li>
+
+	<li>
+		<h3>owl.Dom.Text(<em>element(s)</em> [, <em>string|array</em>])</h3>
+		<p>If no second argument is defined, this method will return the text values for all nodes separated by carriage returns (\n).</p>
+		<p>If the second argument is a string, every element will have that value assigned to its text node.</p>
+		<p>If the second argument is an array of strings, the values will be assigned to the elements in order. If there are more elements than strings in the array, the last string will be repeated.</p>
+	</li>
+
+</ol>
+</li>
+
+
+<!-- owl.Xml -->
+<li>
+<h2 id="owlxml">owl.Xml</h2>
+<p>Provides XML loading and manipulation functions.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_xml.js</dd>
+
+<dt>requires:</dt>
+<dd>n/a</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Xml.ElementNode</h3>
+		<p>An element node type (1).</p>
+	</li>
+
+	<li>
+		<h3>owl.Xml.AttributeNode</h3>
+		<p>An attribute node type (2).</p>
+	</li>
+
+	<li>
+		<h3>owl.Xml.TextNode</h3>
+		<p>A text node type (3).</p>
+	</li>
+
+	<li>
+		<h3>owl.Xml.CommentNode</h3>
+		<p>A comment node type (8).</p>
+	</li>
+
+	<li>
+		<h3>owl.Xml.New()</h3>
+		<p>Creates an empty XML document.</p>
+	</li>
+
+	<li>
+		<h3>owl.Xml.Load(<em>string</em>)</h3>
+		<p>Creates an XML document containing a parsed version of the string.</p>
+
+		<code>var xml = owl.Xml.Load("&lt;p&gt;testing&lt;/p&gt;");
+alert(xml.documentElement.nodeName); // shows P</code>
+
+		<p>Note that most <a href="#owldom">owl.Dom</a> functions can be used on XML documents, e.g. owl.Dom.Get.</p>
+	</li>
+
+	<li>
+		<h3>owl.Xml.Copy(<em>domFrom</em>, <em>domTo</em>)</h3>
+		<p>Copies all child nodes from domFrom to domTo. Unlike owl.Dom.Clone, this can accept XML document nodes.</p>
+		<p>The final node added as a child of domTo is returned.</p>
+	</li>
+
+	<li>
+		<h3>owl.Xml.Transform(<em>xml</em>, <em>xsl</em>)</h3>
+		<p>Transforms XML using XSLT and returns a new XML document.</p>
+	</li>
+
+</ol>
+</li>
+
+
+<!-- owl.innerHTML -->
+<li>
+<h2 id="owlinnerhtml">owl.innerHTML</h2>
+<p>Provides a safe innerHTML function that converts an HTML string and loads it into the DOM.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_innerhtml.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owldom">owl.Dom</a>, <a href="#owlxml">owl.Xml</a></dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.innerHTML(<em>element(s)</em>, <em>HTMLstring</em> [, <em>clear</em>])</h3>
+		<p>A valid XHTML string must be passed. This will be converted to a DOM object and inserted into the element(s).</p>
+		<p>Any existing element children are removed by default. Set clear to false to append the nodes instead.</p>
+		<p>The final node added as a child of the last element is returned.</p>
+	</li>
+</ol>
+
+</li>
+
+
+<!-- owl.Event -->
+<li>
+<h2 id="owlevent">owl.Event</h2>
+<p>Provides cross-browser event handling.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_event.js</dd>
+
+<dt>requires:</dt>
+<dd>n/a</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>new owl.Event(<em>element</em>, <em>type</em>, <em>handler</em>[, <em>priority</em>])</h3>
+		<p>Define events for one or more elements and cleans up all events when the page is unloaded.</p>
+		<code>new owl.Event(window, "load", MyStartFunction, 0);
+var e = new owl.Event(document.getElementsByTagName("p"), "click", MyEventHandler);</code>
+
+		<dl>
+			<dt>element</dt>
+			<dd>one or more DOM elements</dd>
+			<dt>type</dt>
+			<dd>the event type, e.g. load, unload, change, focus, blur, resize, submit, mouseover, mouseout, mousedown, mouseup, mousemove, click, keypress, etc.</dd>
+			<dt>handler</dt>
+			<dd>the function run when the event occurs (passes an <a href="#EventInformation">owl.EventInformation object</a>)</dd>
+			<dt>priority</dt>
+			<dd>a number indicating the precedence of the event - ones with a lower number are executed first (optional)</dd>
+		</dl>
+
+		<p>The owl.Event object also supports the following methods:</p>
+
+		<dl>
+			<dt>.Detach()</dt>
+			<dd>cancels the event(s) so they cannot be fired again</dd>
+		</dl>
+	</li>
+
+	<li>
+		<h3 id="EventInformation">owl.EventInformation</h3>
+		<p>This object is passed to every event handler function as the first argument. The following properties and methods can be used:</p>
+
+		<dl>
+			<dt>.Event</dt>
+			<dd>the standard browser event object</dd>
+			<dt>.Element</dt>
+			<dd>returns the element the event was attached to, e.g. a table (read-only)</dd>
+			<dt>.Target</dt>
+			<dd>returnes the element that fired the event, e.g. a table cell (read-only)</dd>
+			<dt>.Type</dt>
+			<dd>the event type, e.g. click, mouseover, etc.</dd>
+			<dt>.Key()</dt>
+			<dd>
+				<p>returns an object with information about any key pressed during the event (see <a href="#keyboard">keyboard events</a>):</p>
+				<dl>
+					<dt>.Pressed</dt>
+					<dd>the key that was pressed, e.g. 'a'</dd>
+					<dt>.Function</dt>
+					<dd>the function key that was pressed, e.g. tab, up, pageup, etc.</dd>
+					<dt>.Shift</dt>
+					<dd>true if Shift was pressed</dd>
+					<dt>.Ctrl</dt>
+					<dd>true if Ctrl was pressed</dd>
+					<dt>.Alt</dt>
+					<dd>true if Alt was pressed</dd>
+				</dl>
+			</dd>
+			<dt>.Mouse()</dt>
+			<dd>
+				<p>returns an object with information about the mouse location:</p>
+				<dl>
+					<dt>.X</dt>
+					<dd>the horizontal location of the cursor on the page</dd>
+					<dt>.Y</dt>
+					<dd>the vertical location of the cursor on the page</dd>
+				</dl>
+			</dd>
+			<dt>.StopHandlers()</dt>
+			<dd>cancels all further functions for this event that have a lower precedence</dd>
+			<dt>.StopPropagation()</dt>
+			<dd>cancels an event being fired for parent elements with the same event type</dd>
+			<dt>.StopDefaultAction()</dt>
+			<dd>stops the default action occurring, e.g. a form submit</dd>
+			<dt>.Detach()</dt>
+			<dd>cancels the event(s) so they cannot be fired again</dd>
+		</dl>
+
+		<h4 id="keyboard">Keyboard events</h4>
+		<p>An element with a tabindex of zero becomes accessible from the keyboard:</p>
+		<code>element.setAttribute("tabindex", 0); // set to -1 to disable keyboard control</code>
+		<p>The element can now receive focus and blur events, then react to key presses.</p>
+		<p>Note that keyboard handling is not consistent across browsers. The following codes are used in the table below:</p>
+
+		<ul>
+			<li><strong>stan</strong>: can return a standard key code</li>
+			<li><strong>ascii</strong>: a real character has been returned, i.e. Shift+1 will return "!"</li>
+			<li><strong>kbd</strong>: a keyboard code has been returned, e.g. Shift+1 will return "1". In most cases these will be similar to the ascii equivalent, but some punctuation keys can return strange codes.</li>
+			<li><strong>ctrl</strong>: can return a control key code, such as up, down, pageup, etc.</li>
+			<li><strong>cancel</strong>: the event can be cancelled at this point to ensure that the default action does not occur</li>
+		</ul>
+
+		<table summary="keyboard events">
+			<tr>
+				<th>&nbsp;</th>
+				<th>keydown</th>
+				<th>keypress</th>
+				<th>keyup</th>
+			</tr>
+			<tr>
+				<th>fired</th>
+				<td>when a key is pressed and before it is displayed</td>
+				<td>just before the key character is displayed. This event is the only one that will return a true ASCII value for the key that has been pressed.</td>
+				<td>just after the key character is displayed</td>
+			</tr>
+			<tr>
+				<th>Firefox</th>
+				<td>stan - kbd<br />ctrl<br />cancel</td>
+				<td>stan - ascii<br />ctrl<br />cancel</td>
+				<td>ctrl<br />standard keys cannot be cancelled and may start a quick find</td>
+			</tr>
+			<tr>
+				<th>Internet Explorer</th>
+				<td>stan - kbd<br />ctrl<br />cancel</td>
+				<td>stan - ascii<br />control keys are not captured at this point<br />only standard key presses can be cancelled</td>
+				<td>stan - kbd<br />ctrl</td>
+			</tr>
+			<tr>
+				<th>Opera</th>
+				<td>ctrl<br />standard keys start browser shortcuts</td>
+				<td>stan - ascii<br />ctrl<br />cancel</td>
+				<td>ctrl<br />standard keys start browser shortcuts</td>
+			</tr>
+		</table>
+
+		<p>To ensure cross-browser keyboard compatibility, define two keyboard events to handle the same action:</p>
+		<ul>
+			<li>Define a keydown event. Modify the element then cancel the default action of a control key, e.g. pressing down does not scroll the page (ensures IE compatibility).</li>
+			<li>Create a keypress event. Modify the element then cancel the default action of a control key (ensures Opera compatibility. Note that Opera returns the same key codes for some standard and control keys, i.e. an apostrophe has the same code as the right cursor. Therefore, if you are checking for the right cursor key, check for the apostrophe too.)</li>
+		</ul>
+
+
+	</li>
+</ol>
+
+
+</li>
+
+
+<!-- owl.Session -->
+<li>
+<h2 id="owlsession">owl.Session</h2>
+<p>Store and retrieve session values. This method is similar to using <a href="#owlcookie">cookies</a>, except that the values only live for the current browser session (they will survive if moving away from the domain and clicking back), no data is transferred to the server, and several megabytes of information can be stored.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_session.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owlevent">owl.Event</a></dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Session.Store(<em>name</em>, <em>value</em>)</h3>
+		<p>Store a value or object by name, e.g.</p>
+		<code>owl.Session.Store("var1", "my string");
+owl.Session.Store("var2", { arg1: 1, arg2: "two" });</code>
+	</li>
+	<li>
+		<h3>owl.Session.Restore(<em>name</em>)</h3>
+		<p>Retrieves the session value/object for the stored name, or returns null if it does not exist.</p>
+	</li>
+	<li>
+		<h3>owl.Session.Clear()</h3>
+		<p>Resets all session variables.</p>
+	</li>
+</ol>
+
+</li>
+
+
+<!-- owl.Ajax -->
+<li>
+<h2 id="owlajax">owl.Ajax</h2>
+<p>Provides cross-browser remote web service calls. Implements Ajax using XMLHttpRequest (GET and POST) and &lt;script&gt; insertion. Any HTML form can be converted to use Ajax rather than standard web posts (using accessible Hijax techniques).</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_ajax.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owldom">owl.Dom</a>, <a href="#owlxml">owl.Xml</a></dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>new owl.Ajax([<em>form</em>, <em>callback</em>])</h3>
+		<p>Define a web service call object.</p>
+
+		<dl>
+			<dt>form</dt>
+			<dd>a DOM form node. If this is provided, Hijax will be implemented so Ajax is used when submit is clicked (if form validation events are implemented, an invalid form should run the owl.Event.StopHandler() method no ensure no posting occurs.</dd>
+			<dt>callback</dt>
+			<dd>the function run when the web service returns data, fails, times out, or is aborted. The callback function is passed the owl.Ajax object so the reponse can be examined. If a callback is passed without a form node, then the Ajax call will be made automatically.</dd>
+		</dl>
+
+		<h4>Example</h4>
+		<code>new owl.Ajax( owl.Dom.Get("form#myform"), function(ws) { alert(ws.Status.Complete+"\n"+ws.Response.Text); });
+var ws = new owl.Ajax();</code>
+		
+		<p>The following properties and methods can be used:</p>
+
+		<dl>
+			<dt>.ID</dt>
+			<dd>an identifying name (set to the form ID if Hijax is used)</dd>
+			<dt>.Form</dt>
+			<dd>the form node (Hijax)</dd>
+			<dt>.Hijax(form)</dt>
+			<dd>implements Hijax functionality in the same way as using <strong>new owl.Ajax(form)</strong></dd>
+			<dt>.URL</dt>
+			<dd>the web service URL</dd>
+			<dt>.Method</dt>
+			<dd>the web service method: GET (default), POST or SCRIPT</dd>
+			<dt>.Async</dt>
+			<dd>true for asynchronous web service calls (the default of true recommended). SCRIPT calls is always asynchronous.</dd>
+			<dt>.Timeout</dt>
+			<dd>the timeout in milliseconds (default 10000 = 10 seconds). Set to 0 to have no timeout</dd>
+			<dt>.Callback</dt>
+			<dd>
+				<p>defines functions that are run under certain conditions:</p>
+				<dl>
+					<dt>.Start</dt>
+					<dd>called just prior to making the web service request</dd>
+					<dt>.Success</dt>
+					<dd>called when a web service response is successful</dd>
+					<dt>.Fail</dt>
+					<dd>called when a web service response fails, e.g. a 404 error</dd>
+					<dt>.Timeout</dt>
+					<dd>called if the web service request exceeds the .Timeout</dd>
+					<dt>.Abort</dt>
+					<dd>called if the web service call is aborted</dd>
+				</dl>
+			</dd>
+			<dt>.SetCallback(callback)</dt>
+			<dd>sets the same callback function for all conditions (Start, Success, Fail, Timeout and Abort)</dd>
+			<dt>.Argument(name, value)</dt>
+			<dd>defines an argument that will be posted to the web service. If Hijax is used, all form values are automatically posted.</dd>
+			<dt>.Call([callback])</dt>
+			<dd>calls the web service. If a callback function is specified, that function will be used for all conditions.</dd>
+			<dt>.Abort()</dt>
+			<dd>aborts the web service call</dd>
+			<dt>.HijaxEvent</dt>
+			<dd>the event object used to hijax a form (can use .Detach() to remove hijax functionality)</dd>
+			<dt>.Status</dt>
+			<dd>
+				<p>returns the status of the web service call:</p>
+				<dl>
+					<dt>.Active</dt>
+					<dd>true if the request is still running</dd>
+					<dt>.Complete</dt>
+					<dd>true if the request has been completed</dd>
+					<dt>.Success</dt>
+					<dd>true if a web service response was returned</dd>
+					<dt>.Timeout</dt>
+					<dd>true if the web service request exceeds the .Timeout</dd>
+					<dt>.Abort</dt>
+					<dd>true if the web service call was aborted</dd>
+				</dl>
+			</dd>
+			<dt>.Response</dt>
+			<dd>
+				<p>returned data from the web service (both will be null if .Status.Success is false):</p>
+				<dl>
+					<dt>.Text</dt>
+					<dd>a text response</dd>
+					<dt>.XML</dt>
+					<dd>a returned XML document</dd>
+				</dl>
+			</dd>
+			<dt>.Config</dt>
+			<dd>
+				<p>configuration for all web services</p>
+				<dl>
+					<dt>.AjaxIdentifier</dt>
+					<dd>if set, this parameter is added as an argument to all web service calls. It's value is set to the number of Ajax calls made. This setting will prevent caching and allow Ajax calls to be identified (the default name is "ajax")</dd>
+				</dl>
+			</dd>
+		</dl>
+		
+		<h4>Note about SCRIPT Methods</h4>
+		<p>Using a .Method of "SCRIPT" is inconsistent in Opera and Konqueror. Opera 8.5 and Konqueror always report a failure, whereas Opera 9.0 will never timeout or abort. To ensure cross-browser compatibility, a callback parameter could be passed to the script which runs that function once it has been loaded.</p>
+
+	</li>
+</ol>
+
+
+</li>
+
+
+<!-- owl.Timer -->
+<li>
+<h2 id="owltimer">owl.Timer</h2>
+<p>Clock timer and calling functionality.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_timer.js</dd>
+
+<dt>requires:</dt>
+<dd>n/a</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>new owl.Timer([<em>start</em>, <em>stop</em>, <em>step</em>, <em>pause</em>, <em>startDelay</em>, <em>stopDelay</em>, <em>callback</em>])</h3>
+		<p>Defines a new timer:</p>
+
+		<dl>
+			<dt>start</dt>
+			<dd>the timer start value (default 0)</dd>
+			<dt>stop</dt>
+			<dd>the timer stop value (default 100)</dd>
+			<dt>step</dt>
+			<dd>the step used when moving from start to stop</dd>
+			<dt>pause</dt>
+			<dd>the delay between steps in milliseconds</dd>
+			<dt>startDelay</dt>
+			<dd>the time in milliseconds to wait before starting the timer</dd>
+			<dt>stopDelay</dt>
+			<dd>the time in milliseconds to wait after the timer has stopped</dd>
+			<dt>callback</dt>
+			<dd>
+				<p>the function that is run during every iteration of the timer. The function is passed the timer object, so it can analyse values or change settings.</p>
+				<p>If the callback function is defined, the timer will start immediately.</p>
+			</dd>
+		</dl>
+
+		<h4>Example:</h4>
+		<code>// start a timer
+new owl.Timer(0, 100, 1, 20, 0, 0, function(t) { window.status = t.Value; });</code>
+
+		<p>The following properties and methods can be used:</p>
+
+		<dl>
+			<dt>.Value</dt>
+			<dd>the current value of the timer, as it moves from StartValue to StopValue (read/write)</dd>
+			<dt>.StartValue</dt>
+			<dd>the starting value (read/write)</dd>
+			<dt>.StopValue</dt>
+			<dd>the stopping value (read/write)</dd>
+			<dt>.Start()</dt>
+			<dd>starts or restarts the timer. This must be done if no callback argument is provided when the timer is created.</dd>
+			<dt>.Stop()</dt>
+			<dd>stop the timer</dd>
+			<dt>.Reverse()</dt>
+			<dd>reverse the timer</dd>
+			<dt>.SetStep(<em>newstep</em>)</dt>
+			<dd>defines a new step value. The timer will start, stop (0 passed), or reverse as necessary.</dd>
+			<dt>.GetStep()</dt>
+			<dd>returns the current step value</dd>
+			<dt>.CallBack</dt>
+			<dd>the function called every timer iteration (read/write). The timer object is passed as the first argument.</dd>
+			<dt>.OnStart</dt>
+			<dd>the function called when the timer starts from .StartValue following any startDelay (read/write). The timer object is passed as the first argument.</dd>
+			<dt>.OnStop</dt>
+			<dd>the function called when the timer stops when reaching .StopValue following any stopDelay (read/write). The timer object is passed as the first argument.</dd>
+			<dt>.OnReverse</dt>
+			<dd>the function called if the timer is reversed (read/write). The timer object is passed as the first argument.</dd>
+		</dl>
+
+	</li>
+</ol>
+</li>
+
+
+<!-- owl.Screen -->
+<li>
+<h2 id="owlscreen">owl.Screen</h2>
+<p>Provides browser viewport and screen functionality.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_screen.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owldom">owl.Dom</a>, <a href="#owltimer">owl.Timer</a></dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Screen.Location(<em>element</em>)</h3>
+		<p>Returns the .X and .Y page co-ordinates of a single element, e.g.</p>
+		<code>var Loc = owl.Screen.Location(document.getElementById("x")); alert(Loc.X + " , " + Loc.Y);</code>
+	</li>
+
+	<li>
+		<h3>owl.Screen.ViewPort()</h3>
+		<p>Returns the .Width and .Height of the browser HTML window.</p>
+		<code>alert( owl.Screen.ViewPort().Width );</code>
+	</li>
+
+	<li>
+		<h3>owl.Screen.ViewScroll()</h3>
+		<p>Returns the .X and .Y page scroll location.</p>
+		<code>alert( owl.Screen.ViewScroll().Y );</code>
+	</li>
+
+	<li>
+		<h3>owl.Screen.Page()</h3>
+		<p>Returns the .Width and .Height of the whole page.</p>
+		<code>alert( owl.Screen.Page().Height );</code>
+	</li>
+	
+	<li>
+		<h3>owl.Screen.Resolution()</h3>
+		<p>Returns the OS desktop .Width, .Height, .AvailWidth (width minus taskbar and widgets), .AvailHeight, .AvailLeft, .AvailTop, and .ColorDepth.</p>
+		<code>alert( "Available resolution: " + owl.Screen.Resolution().AvailWidth + " x " + owl.Screen.Resolution().AvailHeight );</code>
+	</li>
+		
+	<li>
+		<h3>owl.Screen.ScrollTo(<em>X</em>, <em>Y</em>[, <em>animate</em>, <em>callback</em>])</h3>
+		<p>Scrolls the browser viewport to X, Y. The scroll is slowly animated if animate is not set to false. An optional callback function is run once the viewport is in position.</p>
+	</li>
+	
+	<li>
+		<h3>owl.Screen.ScrollToElement(<em>element</em>, <em>left</em>, <em>right</em>, <em>top</em>, <em>bottom</em>[, <em>absolute</em>, <em>animate</em>, <em>callback</em>])</h3>
+		<p>Scrolls the browser viewport so that the element is contained within the left, right, top and bottom co-ordinates of the viewport. The co-ordinates are assumed to be percentages, but will be taken as pixel values if absolute is set to true.</p>
+		<p>The scroll is slowly animated if animate is not set to false. An optional callback function is run once the viewport is in position.</p>
+		<code>// ensure element is shown in the top 30% of the page
+owl.Screen.ScrollToElement(document.getElementById("x"), 0, 100, 0, 30);</code>
+	</li>
+</ol>
+</li>
+
+
+<!-- owl.Container -->
+<li>
+<h2 id="owlcontainer">owl.Container</h2>
+<p>Creates container elements (DIVs by default) around elements within the page. These container blocks can then be used for animation effects or other purposes.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_container.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owlcss">owl.Css</a>. container.css should also be included within the page.</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Container.Config</h3>
+		<p>Sets container defaults and provides the properties:</p>
+
+		<dl>
+			<dt>.Element</dt>
+			<dd>the container element type (default "div").</dd>
+			<dt>.Class</dt>
+			<dd>the class name applied to the container (default "econtainer")</dd>
+			<dt>.InnerClass</dt>
+			<dd>the class name applied to container's inner child element (default "econtained")</dd>
+		</dl>
+	</li>
+
+	<li>
+		<h3>owl.Container.Create(<em>element</em>)</h3>
+		<p>creates containers around all passed elements and returns an array of container nodes</p>
+	</li>
+	
+	<li>
+		<h3>owl.Container.Anchor(<em>element</em>, <em>fixtop</em>, <em>fixleft</em>)</h3>
+		<p>this will also create containers around all passed elements and anchor the inner child node to the top (if fixtop is true), bottom (fixtop false), left (fixleft true), or bottom (fixleft false). An array of container nodes is returned.</p>
+	</li>
+</ol>
+</li>
+
+
+<!-- owl.Effect -->
+<li>
+<h2 id="owleffect">owl.Effect</h2>
+<p>Provides dynamic animation and effects.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_effect.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owlcss">owl.Css</a>, <a href="#owlevent">owl.Event</a>, <a href="#owltimer">owl.Timer</a></dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Effect.Config</h3>
+		<p>Sets defaults for all effects on the page. It provides the properties:</p>
+
+		<dl>
+			<dt>.Timer.FadeHover</dt>
+			<dd>the name of the timer property applied to elements using FadeHover</dd>
+			<dt>.Timer.ShowHide</dt>
+			<dd>the name of the timer property applied to elements using the generic Show and Hide functions</dd>
+			<dt>.Timer.Fade</dt>
+			<dd>the name of the timer property applied to elements being faded only</dd>
+			<dt>.Timer.Height</dt>
+			<dd>the name of the timer property applied to elements being collapsed or expanded</dd>
+			<dt>.Frame.Start</dt>
+			<dd>the starting frame (default 0)</dd>
+			<dt>.Frame.End</dt>
+			<dd>the ending frame (default 100)</dd>
+			<dt>.Frame.Step</dt>
+			<dd>the step when moving between .Frame.Start and .Frame.End (default 3)</dd>
+			<dt>.Frame.Pause</dt>
+			<dd>the number of milliseconds between frames (default 10)</dd>
+			<dt>.FadeHover.Min</dt>
+			<dd>the minimum opacity for a .FadeHover element</dd>
+			<dt>.Height.ScrollVert</dt>
+			<dd>true to open or close vertically</dd>
+			<dt>.Height.ScrollHorz</dt>
+			<dd>true to open or close horizontally</dd>
+		</dl>
+	</li>
+	
+	<li>
+		<h3>owl.Effect.Type</h3>
+		<p>Provides a range of animation functions. Functions can be added, removed or overridden. Each function is passed a single element node and an <a href="#owltimer">owl.Timer</a> object so its .Value can be used. Note that these functions can be passed in an array to .Show and .Hide.</p>
+
+		<dl>
+			<dt>.Fade</dt>
+			<dd>sets the opacity of the element to t.Value</dd>
+			<dt>.Height</dt>
+			<dd>sets the element height according to the child's height multiplied by t.Value/100. The height will therefore expand or contract.</dd>
+		</dl>
+	</li>
+
+	<li>
+		<h3>owl.Effect.FadeHover(<em>element</em>)</h3>
+		<p>fades out one or more elements, but fades them in on hover</p>
+	</li>
+	
+	<li>
+		<h3>owl.Effect.Show(<em>element</em>, <em>animationFunction</em> [, <em>callback</em>])</h3>
+		<p>applies one or more effects to display the elements: a single animationFunction or an array of animationFunctions can be passed so multiple effects can be applied (e.g. fade in and expand the height). The optional callback function is called when the animation is complete.</p>
+	</li>
+
+	<li>
+		<h3>owl.Effect.Hide(<em>element</em>, <em>animationFunction</em> [, <em>callback</em>])</h3>
+		<p>itentical to .Show, except that the elements will be hidden</p>
+	</li>
+	
+	<li>
+		<h3>owl.Effect.FadeIn(<em>element</em> [, <em>callback</em>])</h3>
+		<p>fades an element in from fully transparent to fully opaque. The optional callback function is called when the animation is complete.</p>
+	</li>
+	
+	<li>
+		<h3>owl.Effect.FadeOut(<em>element</em> [, <em>callback</em>])</h3>
+		<p>identical to .FadeIn, except that the element fades out</p>
+	</li>
+	
+	<li>
+		<h3>owl.Effect.Expand(<em>element</em> [, <em>callback</em>])</h3>
+		<p>expands an element to its full width and height. The optional callback function is called when the animation is complete.</p>
+	</li>
+
+	<li>
+		<h3>owl.Effect.Collapse(<em>element</em> [, <em>callback</em>])</h3>
+		<p>identical to .Expand, except that the element collapses</p>
+	</li>
+</ol>
+</li>
+
+
+<!-- owl.Overlay -->
+<li>
+<h2 id="owloverlay">owl.Overlay</h2>
+<p>Provides page and element overlaying facilites.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_overlay.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owlcss">owl.Css</a>, <a href="#owldom">owl.Dom</a>, <a href="#owlscreen">owl.Screen</a>, <a href="#owltimer">owl.Timer</a></dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>owl.Overlay.PageFadeOut([<em>callback</em>, <em>color</em>, <em>opacityMax</em>, <em>opacityStep</em>, <em>opacityPause</em>])</h3>
+		<p>'fades' the page out using a chosen overlay colour, which has opacity changing from 0 to opacityMax in steps of opacityStep every opacityPause milliseconds. Once the fade out has been completed, the callback function is run.</p>
+		<p>It is also possible to change the default parameters in owl.Overlay.Config:</p>
+		<code>owl.Config.PageFadeColor = "#0000cc";
+owl.Config.PageFadeMax = 60;
+owl.Config.PageFadeStep = 5;
+owl.Config.PageFadePause = 50;</code>
+	</li>
+
+	<li>
+		<h3>owl.Overlay.PageFadeIn([<em>callback</em>])</h3>
+		<p>reverses the fade out, returns the page to normal, and calls the optional callback function</p>
+	</li>
+
+	<li>
+		<h3>new owl.Overlay.Elements(topX, topY, bottomX, bottomY)</h3>
+		<p>Fixes elements that can not be overlaid in IE (select boxes, applets and iframes). In IE5.5 and IE6.0, IFRAMEs are used to overlay elements under the co-ordinates. In IE5.0, the elements are temporarily removed.</p>
+		
+		<p>The following properties and methods can be used:</p>
+
+		<dl>
+			<dt>.Cover()</dt>
+			<dd>hides/removes the elements (automatically called by the constructor)</dd>
+			<dt>.Show()</dt>
+			<dd>re-displays the elements</dd>
+		</dl>
+	</li>
+	
+	<li>
+		<h3>owl.Overlay.CreateIframe()</h3>
+		<p>returns an empty IFRAME element which can be added to the DOM (used by the owl.Overlay.Elements)</p>
+	</li>
+</ol>
+</li>
+
+
+<!-- owl.Lightbox -->
+<li>
+<h2 id="owllightbox">owl.Lightbox</h2>
+<p>Creates an attractive image browser for any list of image thumbnails.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_lightbox.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owlimage">owl.Image</a>, <a href="#owlcss">owl.Css</a>, <a href="#owldom">owl.Dom</a>, <a href="#owlxml">owl.Xml</a>, <a href="#owlinnerhtml">owl.innerHTML</a>, <a href="#owlevent">owl.Event</a>, <a href="#owltimer">owl.Timer</a>, <a href="#owlscreen">owl.Screen</a>, <a href="#owloverlay">owl.Overlay</a>, and lightbox styles and images.</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>new owl.Lightbox(<em>node</em>)</h3>
+		<p>This creates a new lightbox for a set of images. The HTML for that set is formatted in a certain way, i.e. you have a parent node that contains one or more images that are contained in links to larger versions of that image. For example:</p>
+		
+		<code>&lt;ol class="lightbox"&gt; &lt;-- lightbox is automatically started --&gt;
+
+	&lt;li&gt;&lt;a href="images/image1.jpg"&gt;
+		&lt;img src="images/image1_thumb.jpg" width="120" height="160" alt="image 1" /&gt;
+		&lt;strong&gt;IMAGE 1&lt;/strong&gt;
+		&lt;span&gt;This is image 1 of 3&lt;/span&gt;
+	&lt;/a&gt;&lt;/li&gt;
+
+	&lt;li&gt;&lt;a href="images/image2.jpg"&gt;
+		&lt;img src="images/image2_thumb.jpg" width="120" height="160" alt="image 2" /&gt;
+		&lt;strong&gt;IMAGE 2&lt;/strong&gt;
+		&lt;span&gt;This is image 2 of 3&lt;/span&gt;
+	&lt;/a&gt;&lt;/li&gt;
+	
+	&lt;li&gt;&lt;a href="images/image3.jpg"&gt;
+		&lt;img src="images/image3_thumb.jpg" width="120" height="160" alt="image 3" /&gt;
+		&lt;strong&gt;IMAGE 3&lt;/strong&gt;
+		&lt;span&gt;This is image 3 of 3&lt;/span&gt;
+	&lt;/a&gt;&lt;/li&gt;
+
+&lt;/ol&gt;</code>
+
+		<p>If the parent node is assigned the class <strong>owl.Lightbox.Config.Container.Element</strong> and <strong>owl.Lightbox.Config.AutoStart is true</strong>, then the lightbox will start automatically and there is no need to create the object.</p>
+
+	</li>
+	
+	<li>
+		<h3>owl.Lightbox.Config</h3>
+		<p>Sets defaults for all the lightboxes on the page. It provides the properties:</p>
+
+		<dl>
+			<dt>.AutoStart</dt>
+			<dd>automatically creates a lightbox for a node with a class set to <strong>owl.Lightbox.Config.Container.Element</strong></dd>
+			<dt>.Enabled</dt>
+			<dd>if true, the lightbox effect will be enabled</dd>
+			<dt>.ShowInfo</dt>
+			<dd>if true, the animated information bar will appear at the bottom of the image</dd>
+			<dt>.Magnify</dt>
+			<dd>if true, images that are larger than the available area will be scrolled</dd>
+			<dt>.Throttle</dt>
+			<dd>the number of milliseconds to wait before the information bar or zooming occurs when the mouse moves over the image (this should not be too low, or mouse out/over events can clash)</dd>
+			<dt>.Container.Element</dt>
+			<dd>the class name of an element that will have the lightbox applied (default of "lightbox")</dd>
+			<dt>.Container.ActiveClass</dt>
+			<dd>the class name applied to a lightbox-enabled node. The lightbox uses this to ensure the effect cannot be applied to the same node more than once</dd>
+			<dt>.Preload.All</dt>
+			<dd>if true, all images will be preloaded and cached when the page is loaded. This provides a fast user experience, but requires more bandwidth</dd>
+			<dt>.Preload.Next</dt>
+			<dd>if true, the next image will be preloaded and cached. This still requires a little more bandwidth, but less than owl.Lightbox.Config.Preload.All. Note that owl.Lightbox.Config.Preload.All must be set to false for this to work</dd>
+			<dt>.Size.Start</dt>
+			<dd>the width and height of the lightbox window when it starts (in pixels)</dd>
+			<dt>.Size.Minimum</dt>
+			<dd>the minimum width/height of the lightbox window (pixels)</dd>
+			<dt>.Size.WidthPad</dt>
+			<dd>the width of the lightbox window will be the browser width minus this value (pixels)</dd>
+			<dt>.Size.HeightPad</dt>
+			<dd>the height of the lightbox window will be the browser height minus this value (pixels)</dd>
+			<dt>.Animation.FramePause</dt>
+			<dd>the number of milliseconds between frame animations</dd>
+			<dt>.Animation.FadeStep</dt>
+			<dd>the opacity/transparency step when animated between 0 and 100</dd>
+			<dt>.Animation.SizeStep</dt>
+			<dd>the number of pixels the lightbox window resizes during a frame</dd>
+			<dt>.Animation.BarOpacity</dt>
+			<dd>the opacity of the information bar (0 = fully transparent, 100 = fully opaque)</dd>
+			<dt>.Animation.BarSteps</dt>
+			<dd>the number of pixels the information bar moves during a frame</dd>
+			<dt>.Animation.ZoomSteps</dt>
+			<dd>the number of zooming frames when moving from fully zoomed out to zoomed in</dd>
+		</dl>
+	</li>
+	
+	<li>
+		<h3>owl.Lightbox.CreateWindow</h3>
+		<p>Returns a node reference to the lightbox window.</p>
+	</li>
+	
+	<li>
+		<h3>new owl.Lightbox.Image(<em>linknode</em>)</h3>
+		<p>An image-handling object used by the lightbox. Several properties and methods are available:</p>
+		
+		<dl>
+			<dt>.Node</dt>
+			<dd>the linknode passed to the object</dd>
+			<dt>.Src</dt>
+			<dd>the URL of the image referenced in linknode</dd>
+			<dt>.Pic</dt>
+			<dd>the loaded image object</dd>
+			<dt>.RealWidth</dt>
+			<dd>the actual width of the image</dd>
+			<dt>.RealHeight</dt>
+			<dd>the actual height of the image</dd>
+			<dt>.Ratio</dt>
+			<dd>the current zoomed ratio of the image (0 to 1)</dd>
+			<dt>.Width</dt>
+			<dd>the current zoomed width (.RealWidth x .Ratio)</dd>
+			<dt>.Height</dt>
+			<dd>the current zoomed height (.RealHeight x .Ratio)</dd>
+			<dt>.Loading</dt>
+			<dd>if true, the image is being loaded</dd>
+			<dt>.LoadCallback</dt>
+			<dd>the function(s) to run once the image has loaded</dd>
+			<dt>.Load(callback)</dt>
+			<dd>load the image and run callback once complete</dd>
+			<dt>.Resize(<em>maxwidth</em>, <em>maxheight</em>)</dt>
+			<dd>calculates the .Ratio, .Width and .Height given maximum dimensions</dd>
+		</dl>
+	</li>
+	
+</ol>
+
+</li>
+
+
+<!-- owl.Assess -->
+<li>
+<h2 id="owlassess">owl.Assess</h2>
+<p>Changes a series of questions into a step-by-step assessment. Each answer can be assigned a score and the total is used to determine which result is shown.</p>
+<dl>
+<dt>file:</dt>
+<dd>owl_assess.js</dd>
+
+<dt>requires:</dt>
+<dd><a href="#owlcss">owl.Css</a>, <a href="#owldom">owl.Dom</a>, <a href="#owlxml">owl.Xml</a>, <a href="#owlinnerhtml">owl.innerHTML</a>, <a href="#owlevent">owl.Event</a>, <a href="#owltimer">owl.Timer</a>, <a href="#owlscreen">owl.Screen</a>, <a href="#owleffect">owl.Effect</a>, and assess styles and images.</dd>
+</dl>
+
+<ol>
+	<li>
+		<h3>new owl.Assess(<em>node</em>)</h3>
+		<p>Creates a new assessment system for a set of questions that use XHTML such as:</p>
+		
+		<code>&lt;div class="assess"&gt; &lt;!-- assessment is automatically started --&gt;
+
+	&lt;!-- question list --&gt;
+	&lt;ol&gt;
+		&lt;li&gt;&lt;span&gt;Are you an animal?&lt;/span&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;span&gt;Are you grey?&lt;/span&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;span&gt;Do you have a trunk?&lt;/span&gt;&lt;/li&gt;
+	&lt;/ol&gt;
+
+	&lt;!-- question element --&gt;
+	&lt;p class="ask"&gt;&lt;/p&gt;
+
+	&lt;!-- answer possibilities --&gt;
+	&lt;ul&gt;
+		&lt;li&gt;&lt;a href="#1" class="tick" title="answer yes"&gt;&lt;strong&gt;yes&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#0" class="cross" title="answer no"&gt;&lt;strong&gt;no&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+
+	&lt;!-- results --&gt;
+	&lt;p&gt;I don't know enough to work out what you are!&lt;/p&gt;
+	&lt;p class="score2"&gt;Mmm, are you a grey animal?&lt;/p&gt;
+	&lt;p class="score3"&gt;Are you an elephant?&lt;/p&gt;
+
+&lt;/div&gt;</code>
+
+		<p>The &lt;p class="ask"&gt;&lt;/p&gt; and the &lt;ul&gt; can be positioned where necessary.</p>
+		
+		<p>The answer possibilities are all assigned a score in the link's href. The final score is used to determine which result sentence is shown (the first is the default).</p>
+
+		<p>If the parent node is assigned the class owl.Assess.Config.Element and owl.Assess.Config.AutoStart is true, then the assessment will start automatically and there is no need to create the object.</p>
+	</li>
+	
+	<li>
+		<h3>owl.Assess.Config</h3>
+		<p>Sets defaults for all the assessments on the page. It provides the properties:</p>
+
+		<dl>
+			<dt>.AutoStart</dt>
+			<dd>automatically creates an assessment for a node with a class set to <strong>owl.Assess.Config.Element</strong></dd>
+			<dt>.Element</dt>
+			<dd>the class name of an element that will have the assessment applied (default of "assess")</dd>
+			<dt>.QuestionListNodes</dt>
+			<dd>the elements inside the assessment node that contain questions (default of "ul li")</dd>
+			<dt>.QuestionNode</dt>
+			<dd>the node containing the single asked question (default of "p.ask")</dd>
+			<dt>.AnswerContainer</dt>
+			<dd>the node containing a list of answer links (default of "ul)</dd>
+			<dt>.ResultNodes</dt>
+			<dd>the elements inside the assessment node that contain results (default of "p[class!='ask']")</dd>
+			<dt>.QuestionText</dt>
+			<dd>the question introduction text (default "&lt;strong&gt;Question [QN] of [QT]:&lt;/strong&gt;"). The string [QT] is changed to the current question number, and [QT] is changed to the number of questions.</dd>
+			<dt>.RestartHTML</dt>
+			<dd>HTML containing a link that will restart the assessment (default "&lt;p class="restart"&gt;&lt;a href="#restart"&gt;Restart assessment...&lt;/a&gt;&lt;/p&gt;"). This is dynamically added if the assessment is started successfully.</dd>
+			<dt>.Effect.ShowQuestion</dt>
+			<dd>the function that shows the question (default owl.Effect.FadeIn). It is always passed a node and possibly a callback function.</dd>
+			<dt>.Effect.HideQuestion</dt>
+			<dd>the function that hides the question (default owl.Effect.FadeOut). It is always passed a node and possibly a callback function.</dd>
+			<dt>.Effect.ShowResult</dt>
+			<dd>the function that shows the result sentence (default owl.Effect.FadeIn). It is always passed a node and possibly a callback function.</dd>
+		</dl>
+		
+	</li>
+</ol>
+</li>
+
+</ol>
+
+</body>
+</html>

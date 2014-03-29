@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>JavaScript testbed: client-side slider control</title>
+
+<link type="text/css" rel="stylesheet" media="screen" href="styles/slider.css" />
+
+<script type="text/javascript" src="scriptlibrary/misc.js"></script>
+<script type="text/javascript" src="scriptlibrary/events.js"></script>
+<script type="text/javascript" src="scriptlibrary/dom.js"></script>
+<script type="text/javascript" src="scriptlibrary/graphic.js"></script>
+<script type="text/javascript" src="scriptlibrary/dragdrop.js"></script>
+<script type="text/javascript" src="scriptlibrary/localisation.js"></script>
+<script type="text/javascript" src="scriptlibrary/validatorsupport.js"></script>
+<script type="text/javascript" src="scriptlibrary/validator.js"></script>
+<script type="text/javascript" src="scriptlibrary/slidercontrol.js"></script>
+</head>
+<body>
+
+<h1>JavaScript testbed: client-side slider control</h1>
+
+<p>Client-side cross-browser generic slider control.</p>
+
+<form id="sliderform" action="slidercontrol.html" method="get">
+
+<fieldset>
+<legend title="slider demonstration">slider demonstration</legend>
+
+<div class="slidervert">
+	<label for="age" title="your age">age</label>
+	<input  id="age" name="age" type="text" value="30" maxlength="2" class="inputsml validNUMBER dp0 min18 max65 req" />
+	<div id="ageslider" class="sliderb"></div>
+	<div class="fieldhelp">
+		<p>Please enter your age (18 to 65).</p>
+	</div>
+</div>
+
+<div class="slidervert">
+	<label for="salary" title="your salary">salary</label>
+	<input  id="salary" name="salary" type="text" value="25000" maxlength="7" class="inputsml validCURRENCY dp0 min0 max99000 req" />
+	<div id="salaryslider" class="sliderb"></div>
+	<div class="fieldhelp">
+		<p>Please enter your salary. Any value up to &pound;99,000 is accepted.</p>
+	</div>
+</div>
+
+<div class="slidervert">
+	<label for="efficiency" title="your working efficiency">efficiency</label>
+	<input  id="efficiency" name="efficiency" type="text" value="50" maxlength="4" class="inputsml validPERCENT dp0 min0 max100 req" />
+	<div id="efficiencyslider" class="sliderb"></div>
+	<div class="fieldhelp">
+		<p>Please enter your working efficiency as a percentage of 0% to 100%.</p>
+	</div>
+</div>
+
+<br style="clear: both;" /><br />
+
+<div class="sliderhorz">
+	<label for="rating" title="your rating">rating</label>
+	<input  id="rating" name="rating" type="text" value="5" maxlength="2" class="inputsml validNUMBER dp0 min0 max10 req" />
+	<div id="ratingslider" class="sliderr"></div>
+	<div class="fieldhelp">
+		<p>Please enter your rating (0 to 10).</p>
+	</div>
+</div>
+
+</fieldset>
+
+</form>
+
+<div class="result">
+<p>age value: <span id="ageresult">-</span></p>
+<p>salary value: <span id="salaryresult">-</span></p>
+<p>efficiency value: <span id="efficiencyresult">-</span></p>
+<p>rating value: <span id="ratingresult">-</span></p>
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+new Event(window, "load", Initialise);
+
+function Initialise() {
+
+	// validate myform
+	var vform = new FormValidator("sliderform");
+
+	// stop form submission
+	new Event(vform.Form, "submit", function(evt) { evt.Raised.StopDefaultAction(); });
+
+	// define sliders
+	var age = new SliderControl("ageslider", vform.Element.age, UpdateResult);
+	//age.DragOpacity(50);
+
+	new SliderControl("salaryslider", vform.Element.salary, UpdateResult);
+	new SliderControl("efficiencyslider", vform.Element.efficiency, UpdateResult);
+	new SliderControl("ratingslider", vform.Element.rating, UpdateResult);
+
+}
+
+
+// modify results
+function UpdateResult(slider) {
+
+	if (slider.ID == "ageslider") DOM.SetText("ageresult", slider.ValidValue);
+	if (slider.ID == "salaryslider") DOM.SetText("salaryresult", slider.ValidValue);
+	if (slider.ID == "efficiencyslider") DOM.SetText("efficiencyresult", slider.ValidValue);
+	if (slider.ID == "ratingslider") DOM.SetText("ratingresult", slider.ValidValue);
+
+}
+// ]]>
+</script>
+
+<h2>SliderControl class</h2>
+<p>Creates a slider control given a background to slider over, a form element to bind to, and a function to call when the slider control value changes.</p>
+
+<h3>Features</h3>
+<p>The slider control implements the following features:</p>
+<ul>
+<li>the slider can be moved or the text box can be changed to modify the value</li>
+<li>automatic horizontal or vertical configuration depending on the width and height of the background</li>
+<li>values will be automatically rounded to the nearest 1, 2, 5 or factors of 10 of those numbers</li>
+<li>clicking the background to move the slider is supported</li>
+<li>the slider can slide in to its starting position</li>
+<li>the slider will wiggle if it is not moved within 2 seconds of the page loading</li>
+<li>sliders will remain in position even if the browser is resized, text is resized, or the background element changes dimensions</li>
+<li>automatic event clean up.</li>
+</ul>
+
+<h3>Constructor parameters</h3>
+<dl>
+<dt>SliderBack</dt> <dd>the slider background HTML element. If a string is passed, an the HTML element with that ID is used.</dd>
+<dt>BindFormElement</dt> <dd>a FormElement object obtained from a FormValidator object</dd>
+<dt>OnChangeEvent</dt> <dd>the function to call when a value is updated. This slider object is passed as the only argument.</dd>
+</dl>
+
+<h3>Public properties (get)</h3>
+<dl>
+<dt>.ID</dt> <dd>the ID of the slider background (can be used to identify a slider)</dd>
+<dt>.dd</dt> <dd>the DragDrop object - can be inspected or changed if necessary</dd>
+<dt>.ValidValue</dt> <dd>the current valid and formatted value</dd>
+</dl>
+
+<h3>Public properties (set)</h3>
+<dl>
+<dt>.OnChange</dt> <dd>the function called when the slider value changes</dd>
+<dt>.ReportingFunction</dt> <dd>the function handles errors (default is ValidationReport). It is passed a FormElement object</dd>
+<dt>.SlideOn</dt> <dd>set to true if the slider will slide into place at the start or on a background click (default true)</dd>
+<dt>.WiggleOn</dt> <dd>set to true if slider wiggling is enabled (default true)</dd>
+<dt>.WiggleDelay</dt> <dd>the number of milliseconds before wiggling occurs after page load (default 2000)</dd>
+<dt>.WiggleMovement</dt> <dd>the number of wiggle pixels (default 11)</dd>
+<dt>.WiggleFrames</dt> <dd>the minimum number of wiggle animation frames (default 35)</dd>
+<dt>.WigglePause</dt> <dd>the delay in milliseconds between wiggle frames (default 50)</dd>
+</dl>
+
+<h3>Public methods</h3>
+<dl>
+<dt>.Wiggle()</dt> <dd>wiggles the slider if the user has not moved it yet</dd>
+</dl>
+
+<h3>Example</h3>
+<pre>
+new Event(window, "load", function(evt) { evt.Detach(); Initialise(); });
+
+function Initialise() {
+	var vform = new FormValidator("sliderform"); // form validation (form contains "salary" box)
+	var salaryslider = new SliderControl("salaryslider", vform.Element.salary, UpdateResult); // slider control
+}
+
+function UpdateResult(slider) {
+	if (slider.ID == "salaryslider") alert(slider.ValidValue);
+}
+</pre>
+
+</body>
+</html>

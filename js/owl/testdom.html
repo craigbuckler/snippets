@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<link type="text/css" rel="stylesheet" media="all" href="styles/lightbox.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_image.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_xml.js"></script>
+<script type="text/javascript" src="script/owl_innerhtml.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_overlay.js"></script>
+<script type="text/javascript" src="script/owl_lightbox.js"></script>
+</head>
+<body>
+
+<h1>owl testbed</h1>
+
+<ol id="test">
+<li id="item1">item 1</li>
+<li>item 2</li>
+<li>item 3</li>
+<li>item 4
+<ol>
+<li>item 4a</li>
+<li>item 4b</li>
+<li>item 4c</li>
+</ol>
+</li>
+<li class="end">item 5</li>
+</ol>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+
+	var d = owl.Dom.Get("ol li[class!='end']");
+	alert(d.length+"\n"+d+"\n"+d[d.length-1].firstChild.nodeValue);
+
+	//var d = owl.Dom.Get("#item1");
+	//console.log(d);
+	//console.log(owl.Dom.Ancestors(d[0], "ol"));
+	
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

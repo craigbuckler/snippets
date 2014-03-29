@@ -1,0 +1,32 @@
+*
+{
+	padding: 0;
+	margin: 0;
+}
+
+body
+{
+	font-family: tahoma, arial, helvetica, freesans, sans-serif;
+	font-size: 0.8em;
+	margin: 10px;
+	padding: 0px; /* do not use padding on body - it confuses the offset location in IE */
+}
+
+h1
+{
+	font-size: 1.6em;
+	font-weight: normal;
+}
+
+/* if position:relative is used, ensure element hasLayout */
+#seltest
+{
+	position: relative;
+	width: 50%;
+	margin: 10px;
+}
+
+p
+{
+	margin-bottom: 1em;
+}

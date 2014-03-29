@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+</head>
+<body>
+
+<h1>owl core test</h1>
+
+<div id="test">
+	<p id="testinner">element 1</p>
+	<p><strong class="class">test</strong></p>
+</div>
+
+<div title="testy test">
+	<p><span>element 2</span></p>
+	<p><a id="link" href="http://www.optimalworks.net/" class="class">link</a></p>
+</div>
+
+<div id="test2">
+<p class="class">This is div#test2</p>
+</div>
+
+<form id="testform" action="" method="get">
+<div>
+<input type="text" id="input1" name="input1" />
+<input type="submit" value="go" />
+</div>
+</form>
+
+<p><a id="testlink" href="#">test</a></p>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+/*
+	var u;
+	var f = document.getElementById("testform");
+	var n = 1;
+	var o = document.forms;
+	var a = [o];
+	
+	alert(owl.Array.Is(u)+"\n"+owl.Array.Is(f)+"\n"+owl.Array.Is(n)+"\n"+owl.Array.Is(o)+"\n"+owl.Array.Is(a));
+*/
+
+
+	var div1 = owl.Dom.Get("div#test");
+	//var div2 = owl.Dom.Get("div#test2");
+	
+	//owl.Dom.Clone(div1, div2, true, true);
+	
+	var t = new owl.Timer(0,100, 2, 25, 0, 0, function(t) { owl.Css.Opacity(div1, t.Value); } );
+
+	//var p = owl.Dom.Get("p", div1[0]);
+	//alert(p);
+
+	var x=true;
+	var y = owl.Css.ClassExists(owl.Dom.Get("strong"), "class");
+	alert(y+"\n"+x);
+	
+	/*
+	t.CallBack = function(t) {
+		console.log(t.Value);
+		if (t.Value >= 50) t.Reverse();
+		if (t.Value >=  80) t.Stop();
+	};
+	t.OnStart = function(t) { console.log("started"); };
+	t.OnReverse = function(t) { console.log("reverse"); };
+	t.OnStop = function(t) { console.log("stopped"); };
+	t.Start();
+	*/
+
+
+	new owl.Event(owl.Dom.Get("#input1"), "focus", function(evt) { window.status +="i"; } );
+
+	var f = owl.Dom.Get("form");
+	//alert(f.length+"\n"+f);
+	new owl.Event(f, "submit", function(evt) { evt.StopDefaultAction(); alert("sumbit!"); } );
+	
+	new owl.Event(owl.Dom.Get("#testlink"), "click", 
+		function(evt) {
+			evt.StopDefaultAction();
+			var f = document.forms['testform'];
+			//alert(f+"\n"+f.id+"\n"+f.onsubmit);
+			f.onsubmit();
+			f.submit();
+		}
+	);
+
+
+/*
+	var g = owl.Dom.Get("div#test");
+
+	alert(g.length+"\n"+g);
+	
+	var gp = owl.Dom.Get("p", g);
+	alert(gp.length+"\n"+gp);
+*/
+	
+	//var d = owl.Dom.Descendents(null, 0, function(n) { return n.nodeName.toLowerCase() == "p"; });
+	//alert(d);
+
+/*
+	var re = owl.RegEx.Add('new', /^\s*|\s*$/g);
+	alert(re);
+
+	var re2 = owl.RegEx.Add('new', /\s/g);
+	alert(re2);
+
+	var test = owl.String.Pad("te__ _   st", 20);
+	var ntest = owl.String.Clean(test);
+	alert(test.length+": '"+test+"'\n"+ntest.length+": '"+ntest+"'");
+
+
+	alert(owl.String.Format("hello %0 %1", ['craig','buckler']));
+
+
+	var a = [];
+	owl.Array.Push(a, "test");
+	alert(a.length+"\n"+owl.Array.Pop(a)+"\n"+a.length);
+*/
+
+
+//var e = new owl.Event(document.getElementsByTagName("div"), "click", EventHandler, 0);
+//alert(e.Element.length);
+
+
+/*
+	var d = document.getElementById("test");
+	var p = document.getElementById("testinner");
+
+	//d.onclick = clicked;
+	//p.onclick = clicked;
+
+	addEvent(d, "click", clicked);
+	addEvent(p, "click", clicked);
+*/
+
+/*
+var a = [5,10,15,20];
+var b = { a: 5, b: 10, c: 15 };
+var total = 0;
+owl.Each(a, function(v, i) { alert(i+": "+v); total += v; });
+alert("total: "+total);
+
+
+	var d = document.getElementById("test");
+	var p = document.getElementById("testinner");
+
+	new owl.Event(d, "click", clickme1, 1);
+	//new owl.Event(d, "click", clickme2, 2);
+	//var y = new owl.Event(d, "click", clickme2);
+	//var z = new owl.Event(d, "click", clickme3);
+	//x.Detach();
+	
+	var x = new owl.Event([d, p], "mouseover", clickme3);
+	x.Detach();
+	
+
+	new owl.Event(document.getElementsByTagName("a"), "click", function(e) { alert("link!"); e.StopDefaultAction(); e.Detach(); });
+	
+*/
+
+}
+
+
+function clickme1(e) {
+	var k = e.Key();
+	var m = e.Mouse();
+	alert("clickme1: "+e.Element.id+"\n"+e.Target.id+"\nMouse: "+m.X+" , "+m.Y+"\nShift: "+k.Shift);
+}
+
+function clickme2(e) {
+	alert("clickme2: "+e.Element.id+"\n"+e.Target.id);
+}
+
+function clickme3(e) {
+	alert("clickme3: "+e.Element.id+"\n"+e.Target.id);
+}
+
+function addEvent(element, eventType, handler) {
+	if (element.addEventListener) element.addEventListener(eventType, handler, false);
+	//else if (element.attachEvent) element.attachEvent("on"+eventType, handler); // cannot use 'this' in handler!
+	else element["on"+eventType] = handler;
+}
+
+function clicked(event) {
+
+	var e = (event ? event : window.event);
+	var t = (e.target ? e.target : e.srcElement);
+	var type = String(e.type).toLowerCase();
+
+	var msg = "";
+	for (var p in this) msg += p + "\n";
+	//alert(msg);
+
+	window.status += "[" + this.id + ", " + t.id + " - " + type + "] ";
+}
+
+function EventHandler(e) {
+
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

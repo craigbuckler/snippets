@@ -1,0 +1,24 @@
+/*
+CreationVideo IE6/7 stylesheet
+grid box content fallback
+*/
+
+.s25, .s33, .s50, .s66, .s100, .feature, article ul#news li
+{
+	width: 46%;
+	padding: 20px 1.9%;
+}
+
+.s33  { width: 29%; }
+.s66  { width: 62%; }
+.s100 { width: 96%; }
+
+div.playlist img
+{
+	width: 24%;
+}
+
+#search input
+{
+	width: 85%;
+}

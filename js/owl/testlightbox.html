@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<link type="text/css" rel="stylesheet" media="all" href="styles/lightbox.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_http.js"></script>
+<script type="text/javascript" src="script/owl_cookie.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_image.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_xml.js"></script>
+<script type="text/javascript" src="script/owl_innerHTML.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+<script type="text/javascript" src="script/owl_overlay.js"></script>
+<script type="text/javascript" src="script/owl_lightbox.js"></script>
+</head>
+<body>
+
+<h1>owl lightbox</h1>
+
+<p>This is a test of the owl.Lightbox which converts a list of image thumbnails to a nice graphic browsing system.</p>
+
+<ol class="lightbox">
+
+	<li><a href="images/claire.jpg">
+		<img src="images/claire_t.jpg" width="120" height="160" alt="Claire" />
+		<strong>Claire Buckler</strong>
+		<span>Claire relaxing at Winston Road</span>
+		<span>Isn't she lovely!</span>
+		<span>Isn't she wonderful!</span>
+	</a></li>
+
+	<li><a href="images/ross.jpg">
+		<img src="images/ross_t.jpg" width="120" height="160" alt="Ross" />
+		<strong>Ross Buckler</strong>
+		<span>on a space hopper!</span>
+	</a></li>
+
+	<li><a href="images/sophie.jpg">
+		<img src="images/sophie_t.jpg" width="120" height="160" alt="Sophie" />
+		<span>Sophie looking for Easter eggs</span>
+	</a></li>
+
+</ol>
+
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+}
+
+new owl.Event(window, "load", Start);
+
+// ]]>
+</script>
+
+</body>
+</html>

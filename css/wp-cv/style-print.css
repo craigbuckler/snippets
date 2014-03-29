@@ -1,0 +1,58 @@
+/*
+CreationVideo printer-friendly stylesheet
+*/
+
+*
+{
+	color: #000 !important;
+}
+
+body
+{
+	font-size: 80%;
+}
+
+article, footer
+{
+	padding: 0;
+}
+
+div.content
+{
+	margin: 0;
+}
+
+header
+{
+	margin: 0;
+	padding: 0;
+}
+
+header img
+{
+	max-width: 50%;
+}
+
+article#intro
+{
+	border-bottom: 2px solid #999;
+}
+
+article img
+{
+	clear: right;
+	float: right;
+	max-width: 50%;
+	margin: 0 0 20px 20px;
+}
+
+footer
+{
+	border-top: 1px dotted #999;
+	background-color: #fff;
+}
+
+aside, nav, hr, div.video, #copyright, p.add, ul#newsnav, ol#pagenav, div.twitterstatus
+{
+	display: none;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+<title>owl core test</title>
+
+<style type="text/css">
+/* <![CDATA[ */
+.move
+{
+	text-align: center;
+	padding: 1.5em;
+	margin: 2em 0;
+	background-color: #eee;
+	border: 1px solid #ddd;
+}
+/* ]]> */
+</style>
+
+<link type="text/css" rel="stylesheet" media="all" href="styles/test.css" />
+<script type="text/javascript" src="script/owl.js"></script>
+<script type="text/javascript" src="script/owl_css.js"></script>
+<script type="text/javascript" src="script/owl_event.js"></script>
+<script type="text/javascript" src="script/owl_dom.js"></script>
+<script type="text/javascript" src="script/owl_timer.js"></script>
+<script type="text/javascript" src="script/owl_screen.js"></script>
+</head>
+<body>
+
+<h1>owl testbed</h1>
+
+<div id="test">
+	<p id="testinner">element 1</p>
+	<p><strong class="class">test</strong></p>
+</div>
+
+<div title="testy test">
+	<p><span>element 2</span></p>
+	<p><a id="link" href="http://www.optimalworks.net/" class="class">link</a></p>
+</div>
+
+<div id="test2">
+<p class="class">This is div#test2</p>
+</div>
+
+<div id="movetest1" class="move">
+test moving viewport system 1
+</div>
+
+<div id="movetest2" class="move">
+test moving viewport system 2
+</div>
+
+<div id="movetest3" class="move">
+test moving viewport system 3
+</div>
+
+<div id="movetest4" class="move">
+test moving viewport system 4
+</div>
+
+<div id="movetest5" class="move">
+test moving viewport system 5
+</div>
+
+<div id="movetest6" class="move">
+test moving viewport system 6
+</div>
+
+<div id="movetest7" class="move">
+test moving viewport system 7
+</div>
+
+<div id="movetest8" class="move">
+test moving viewport system 8
+</div>
+
+<div id="movetest9" class="move">
+test moving viewport system 9
+</div>
+
+<form id="testform" action="" method="get">
+<div>
+<input type="text" id="input1" name="input1" />
+<input type="submit" value="go" />
+</div>
+</form>
+
+<p><a id="testlink" href="#">test</a></p>
+
+<div id="bigblock" style="width:100px; height:100px; background-color: #ccc;" onclick="Start();"></div>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function Start() {
+
+/*
+	var d = owl.Dom.Get("#test2");
+	var loc = owl.Screen.Location(d[0]);
+	alert(loc.X+" , "+loc.Y);
+*/
+
+	var loc = owl.Screen.Location(owl.Dom.Get("#test")[0]);
+	//alert(loc.X+" , "+loc.Y);
+	
+	var vp = owl.Screen.ViewPort();
+	var s = owl.Screen.ViewScroll();
+	var p = owl.Screen.Page();
+
+	//alert("ViewPort: "+vp.Width+" x "+vp.Height+"\nScroll: "+s.X+" , "+s.Y+"\nPage: "+p.Width+" x "+p.Height+"\n");
+	//alert(owl.Screen.Resolution().AvailWidth+" x "+owl.Screen.Resolution().AvailHeight);
+
+}
+new owl.Event(window, "load", Start);
+
+function Start2() {
+
+	owl.Each(owl.Dom.Get(".move"), function(n) {
+		new owl.Event(n, "click", function(e) { owl.Screen.ScrollToElement(e.Element, 0, 100, 10, 30, true); } );
+	});
+
+}
+
+new owl.Event(window, "load", Start2);
+
+// ]]>
+</script>
+
+</body>
+</html>

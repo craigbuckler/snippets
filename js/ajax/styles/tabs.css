@@ -1,0 +1,82 @@
+/* tab control CSS */
+div#tool
+{
+	width: 45em;
+	margin: 2em auto;
+}
+
+.tabcontrol
+{
+	position: relative;
+	width: 100%;
+	overflow: auto;
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	border-left: 1px solid #7f9db9;
+	z-index: 2;
+}
+
+.tabcontrol li
+{
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+
+.tabcontrol li a
+{
+	display: block;
+	width: 8em;
+	text-align: center;
+	line-height: 1.5em;
+	text-decoration: none;
+	padding:  0;
+	margin: 0;
+	color: #369;
+	background-color: #eef2f7;
+	border-width: 1px;
+	border-color: #7f9db9;
+	border-style: solid solid solid none;
+}
+
+.tabcontrol li a.active
+{
+	background-color: #fff;
+	border-bottom-color: #fff;
+}
+
+.tabcontrol li a:hover
+{
+	background-color: #fff;
+}
+
+.tabcontent
+{
+	position: relative;
+	top: -1px;
+	height: 22em; /* can be overridden */
+	margin: 0;
+	padding: 15px;
+	border: 1px solid #7f9db9;
+	z-index: 1;
+}
+
+/* override standard form styles */
+fieldset
+{
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	border-style: none;
+}
+
+fieldset legend
+{
+	display: none;
+}
+
+div#fieldhelpbox
+{
+	z-index: 10;
+}
