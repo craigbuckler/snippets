@@ -29,7 +29,7 @@ var
     'out': dst + 'images/'
   },
   css = {
-    'in':  src + 'scss/*',
+    'in':  src + 'scss/**/*',
     'out': dst + 'css/'
   },
   js = {
